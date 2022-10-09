@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Post, Comment, Status
+from .models import Category, Post, Comment, Status, PostLikes, CommentLikes
 
 
 @admin.register(Category)
@@ -20,3 +20,13 @@ class PostModelAdmin(admin.ModelAdmin):
 @admin.register(Status)
 class PostModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
+
+
+@admin.register(PostLikes)
+class PostModelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'post_id', 'user_id', 'like_count', 'active']
+
+
+@admin.register(CommentLikes)
+class PostModelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'comment_id', 'user_id', 'like_count', 'active']
