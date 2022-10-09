@@ -9,7 +9,7 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_active', )
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_active',)
     readonly_fields = ('password', )
     fields = ('username', 'password', 'email', 'first_name', 'last_name', 'middle_name', 'avatar', 'birthday',
-              'phone_number', 'gender', 'comments', 'skills_id', 'is_active', 'delete', )
+              'phone_number', 'gender', 'comments', 'skills_id', 'is_active', 'delete',)
