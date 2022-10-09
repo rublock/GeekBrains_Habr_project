@@ -11,6 +11,15 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split()
 
+LOCAL_APPS = [
+    'mainapp',
+    'userapp',
+]
+
+THIRD_PARTY_APPS = [
+    'ckeditor',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -19,8 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
-    'mainapp',
-    'userapp',
+    *LOCAL_APPS,
+    *THIRD_PARTY_APPS
 ]
 
 MIDDLEWARE = [
