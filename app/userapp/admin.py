@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Skills, UserProfile
+from .models import Skills, User
 
 
 @admin.register(Skills)
@@ -7,7 +7,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', )
 
 
-@admin.register(UserProfile)
+@admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_active', )
     readonly_fields = ('password', )

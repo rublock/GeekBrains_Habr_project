@@ -15,7 +15,7 @@ class Skills(models.Model):
         return self.name
 
 
-class UserProfile(AbstractUser):
+class User(AbstractUser):
     # Модель пользователя
     MALE = 'M'
     FEMALE = 'W'
