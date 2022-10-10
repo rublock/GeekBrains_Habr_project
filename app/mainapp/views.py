@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render
 
+
 class HomePageView(TemplateView):
     template_name = 'home_page.html'
 
@@ -11,6 +12,7 @@ class HomePageView(TemplateView):
 
 def reg_page(request):
     return render(request, 'reg_page.html')
+
 
 def terms_of_service(request):
     return render(request, 'terms_of_service.html')
