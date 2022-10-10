@@ -11,6 +11,16 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split()
 
+LOCAL_APPS = [
+    'mainapp',
+    'userapp',
+]
+
+THIRD_PARTY_APPS = [
+    'ckeditor',
+    'ckeditor_uploader',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -19,8 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
-    'mainapp',
-    'userapp',
+    *LOCAL_APPS,
+    *THIRD_PARTY_APPS
 ]
 
 MIDDLEWARE = [
@@ -104,3 +114,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'userapp.User'
+
+# django_ckeditor
+CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/'
+CKEDITOR_UPLOAD_PATH = 'uploads/'

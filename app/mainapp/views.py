@@ -8,5 +8,9 @@ class HomePageView(TemplateView):
         context = super().get_context_data(**kwargs)
         return context
 
+
 def reg_page(request):
     return render(request, 'reg_page.html')
+
+def terms_of_service(request):
+    return render(request, 'terms_of_service.html')
