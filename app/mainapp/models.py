@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 
+from ckeditor.fields import RichTextField
+
 
 class Category(models.Model):
     # Модель категорий
@@ -39,6 +41,7 @@ class Post(models.Model):
     # status = models.ForeignKey(Status, verbose_name='Статусы статьи', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    content = RichTextField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.title}{"" if self.active else "(блок)"}'
