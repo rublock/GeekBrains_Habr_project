@@ -7,4 +7,6 @@ app_name = MainappConfig.name
 
 urlpatterns = [
     path('', views.HomePageView.as_view(), name='home'),
+    path('reg_page/', views.reg_page, name='reg_page'),
+    path('terms_of_service/', views.terms_of_service, name='terms_of_service'),
 ]
