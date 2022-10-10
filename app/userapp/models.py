@@ -35,6 +35,8 @@ class User(AbstractUser):
     delete = models.BooleanField(verbose_name='Удалена', default=False, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    email = models.EmailField(verbose_name='email', unique=True)
+    #email_verify = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Пользователь'
