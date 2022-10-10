@@ -10,5 +10,9 @@ class HomePageView(TemplateView):
         return context
 
 
+def reg_page(request):
+    return render(request, 'reg_page.html')
+
+
 def terms_of_service(request):
     return render(request, 'terms_of_service.html')
