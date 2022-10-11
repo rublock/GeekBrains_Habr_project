@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from distutils.util import strtobool
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -118,8 +119,19 @@ AUTH_USER_MODEL = 'userapp.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # django_ckeditor
 CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
+
+# EMAIL CONFIG
+EMAIL_FROM_USER=os.getenv('EMAIL_FROM_USER')
+EMAIL_HOST=os.getenv('EMAIL_HOST', 'smtp.yandex.ru')
+EMAIL_HOST_USER=os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS=bool(strtobool(os.getenv('EMAIL_USE_TLS', 'False')))
+EMAIL_USE_SSL=bool(strtobool(os.getenv('EMAIL_USE_SSL', 'True')))
+EMAIL_PORT=int(os.getenv('EMAIL_PORT', '465'))
+
