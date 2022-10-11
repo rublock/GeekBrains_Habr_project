@@ -20,7 +20,7 @@ class Page404(TemplateView):
 
 
 def reg_page(request):
-    return render(request, 'reg_page.html')
+    return render(request, 'register.html')
 
 def terms_of_service(request):
     return render(request, 'terms_of_service.html')
