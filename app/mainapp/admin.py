@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib import admin
-from .models import Category, Post, Comment, Status, PostLikes, CommentLikes
 
 from ckeditor.widgets import CKEditorWidget
+
+from .models import Category, Post, Comment, Status, PostLikes, CommentLikes
 
 
 class PostAdminForm(forms.ModelForm):
