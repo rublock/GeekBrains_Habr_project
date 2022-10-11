@@ -34,14 +34,6 @@ def send_activation_email(user, request):
     email.send()
 
 
-
-
-
-
-
-
-
-
 def activate_user(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))

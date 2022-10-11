@@ -126,10 +126,10 @@ CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 # EMAIL CONFIG
-EMAIL_FROM_USER=os.getenv('EMAIL_FROM_USER')
-EMAIL_HOST=os.getenv('EMAIL_HOST', 'smtp.yandex.ru')
-EMAIL_HOST_USER=os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD=os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS=os.getenv('EMAIL_USE_TLS', 'False').lower() == 'true'
-EMAIL_USE_SSL=os.getenv('EMAIL_USE_SSL', 'True').lower() == 'true'
-EMAIL_PORT=int(os.getenv('EMAIL_PORT', '465'))
+EMAIL_FROM_USER = os.getenv('EMAIL_FROM_USER')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.yandex.ru')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'False').lower() == 'true'
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'True').lower() == 'true'
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '465'))
