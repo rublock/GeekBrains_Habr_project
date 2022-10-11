@@ -3,51 +3,16 @@
 
 
 <html lang="ru">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}codeBusters{% endblock %}</title>
     {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css">
 </head>
+
 <body>
-
-<header class="p-3 mb-3 border-bottom">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"
-                     style="border: 1px solid black">
-                    <use xlink:href="#bootstrap"></use>
-                </svg>
-            </a>
-
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">Inventory</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">Customers</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">Products</a></li>
-
-
-            </ul>
-
-
-
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-            </form>
-            <div>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}"  class="nav-link px-2 link-dark">{{user}}
-                        <button type="button" class="btn btn-primary">Logout</button>
-                    </a>
-                {% else %}
-                    <a href="{% url 'login' %}" class="">
-                        <button type="button" class="btn btn-outline-primary me-2">Login</button>
-                    </a>
-                    <a href="{% url 'register' %}" class="">
-                        <button type="button" class="btn btn-primary">Sign-up</button>
-                    </a>
-                {%endif %}
 
     <header class="p-3 mb-3 border-bottom">
         <div class="container">
@@ -67,29 +32,37 @@
                 </ul>
 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                    <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search">
+                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
                 </form>
                 <div>
-                    <button type="button" class="btn btn-outline-primary me-2">Войти</button>
-                    <button id="buttonSignUp" type="button" class="btn btn-primary">Регистрация</button>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="nav-link px-2 link-dark">{{user}}
+                        <button type="button" class="btn btn-primary">Выйти</button>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="">
+                        <button type="button" class="btn btn-outline-primary me-2">Войти</button>
+                    </a>
+                    <a href="{% url 'register' %}" class="">
+                        <button type="button" class="btn btn-primary">Регистрация</button>
+                    </a>
+                    {% endif %}
+
                 </div>
-
-
-
             </div>
-        </div>
     </header>
-{% block content %}{% endblock %}
-<div class="container">
-    <footer class="py-3 my-4">
-        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Ссылка1</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Ссылка2</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Ссылка3</a></li>
-        </ul>
-        <p class="text-center text-muted">© {% now 'Y' %} codeBusters</p>
-    </footer>
-</div>
-{% bootstrap_javascript %}
+    {% block content %}{% endblock %}
+    <div class="container">
+        <footer class="py-3 my-4">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Ссылка1</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Ссылка2</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Ссылка3</a></li>
+            </ul>
+            <p class="text-center text-muted">© {% now 'Y' %} codeBusters</p>
+        </footer>
+    </div>
+    {% bootstrap_javascript %}
 </body>
+
 </html>
