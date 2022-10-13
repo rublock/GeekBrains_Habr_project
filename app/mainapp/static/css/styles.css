@@ -1,0 +1,19 @@
+.responsive, .bi {
+    border: 1px solid black
+}
+
+.responsive, .bi {
+    border: 1px solid black
+}
+
+.regContainer {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    margin: 3vh 2vh 3vh 2vh;
+}
+
+.modal-content {
+    max-width: 450px;
+}
