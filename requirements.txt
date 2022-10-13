@@ -1,11 +1,14 @@
-## The following requirements were added by pip freeze:
-asgiref==3.5.2
+# Please, add installed packages manually.
+# pip freeze - output packages with all dependencies.
+# pip install -r requirements.txt - install packages
+# from requirements.txt with all needed dependencies automatically.
+
 Django==4.1.1
+tzdata==2022.2
+python-dotenv==0.21.0
 django-bootstrap5==22.1
 django-ckeditor==6.5.1
-django-js-asset==2.0.0
-Pillow==9.2.0
 psycopg2-binary==2.9.4
-python-dotenv==0.21.0
-sqlparse==0.4.2
-tzdata==2022.2
+Pillow==9.2.0
+requests==2.28.1
+bs4==0.0.1
