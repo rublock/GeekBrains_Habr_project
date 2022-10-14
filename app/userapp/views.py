@@ -9,10 +9,10 @@ from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeErr
 from django.views import View
 from django.shortcuts import render, redirect
 from django.conf import settings
+from .models import User
+from .utils import generate_token
+from .forms import UserCreateForm
 
-from userapp.forms import UserCreateForm
-from userapp.models import User
-from userapp.utils import generate_token
 
 
 def send_activation_email(user, request):

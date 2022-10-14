@@ -1,6 +1,5 @@
 from django.urls import path, include
-
-from userapp.views import Register, activate_user
+from .views import Register, activate_user
 
 
 urlpatterns = [
