@@ -36,7 +36,8 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     email = models.EmailField(verbose_name='email', unique=True)
-    #email_verify = models.BooleanField(default=False)
+    is_email_verified = models.BooleanField(default=False)
+
 
     class Meta:
         verbose_name = 'Пользователь'

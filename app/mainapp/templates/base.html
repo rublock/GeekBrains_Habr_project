@@ -15,13 +15,19 @@
 <body>
 
     <header class="p-3 mb-3 border-bottom">
+        {% if user.is_superuser %}
+        <div class="container">
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><span class="nav-link px-2 link-dark">Панель СУПЕРЮЗЕРА:</span></li>
+                <li><a href="{% url 'mainapp:create_demo_post' %}" class="nav-link px-2 link-dark">Создать демо-статью</a></li>
+                <li><a href="{% url 'mainapp:delete_demo_posts' %}" class="nav-link px-2 link-dark">Удалить все демо-статьи</a></li>
+            </ul>
+        </div>
+        {% endif %}
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"
-                        style="border: 1px solid black">
-                        <use xlink:href="#bootstrap"></use>
-                    </svg>
+                    <img src="../static/img/logo.png">
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
