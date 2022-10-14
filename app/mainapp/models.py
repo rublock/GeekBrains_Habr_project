@@ -33,11 +33,11 @@ class Status(models.Model):
 class Post(models.Model):
     # Модель статьей
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Автор', on_delete=models.CASCADE)
-    title = models.CharField(verbose_name='Заголовок статьи', max_length=70, unique=True)
+    title = models.CharField(verbose_name='Заголовок статьи', max_length=70, unique=False)
     description = models.TextField(verbose_name='Описание')
     category = models.ForeignKey(Category, verbose_name='Категории статей', on_delete=models.CASCADE)
     active = models.BooleanField(verbose_name='активна', default=True, db_index=True)
-    delete = models.BooleanField(verbose_name='Удалена', default=False, db_index=True)
+    is_deleted = models.BooleanField(verbose_name='Удалена', default=False, db_index=True)
     # status = models.ForeignKey(Status, verbose_name='Статусы статьи', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
