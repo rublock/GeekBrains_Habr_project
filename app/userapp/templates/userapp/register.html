@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div  class="regContainer">
+    <div class="modal-content rounded-5 shadow">
+        <div class="modal-header p-5 pb-4 border-bottom-0">
+            <!-- <h5 class="modal-title">Modal title</h5> -->
+            <h2 align="center" class="title text-center">Регистрация</h2>
+            <a href="{% url 'users:logout' %}">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></a>
+        </div>
+
+        <div class="modal-body p-5 pt-0">
+            <form action="{% url 'users:register' %}" method="post" class="">
+            {% csrf_token %}
+            <div  class="form-floating mb-4">
+                {{ register_form.username }}
+                <label for="floatingInput">Введите ваш логин</label>
+            </div>
+            <div  class="form-floating mb-3">
+                {{ register_form.email }}
+                <label for="floatingInput">Введите ваш Email</label>
+            </div>
+            <div  class="form-floating mb-3">
+                {{ register_form.password1 }}
+                <label for="floatingPassword">Введите ваш пароль</label>
+            </div>
+            <div  class="form-floating mb-3">
+                {{ register_form.password2 }}
+                <label for="floatingPassword">Повторите ваш пароль</label>
+            </div>
+                <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Зарегистироваться</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

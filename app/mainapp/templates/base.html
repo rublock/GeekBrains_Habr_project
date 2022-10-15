@@ -41,21 +41,22 @@
                     <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search">
                 </form>
                 <div>
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}" class="nav-link px-2 link-dark">{{user}}
+                     {% if user.is_authenticated %}
+                    <a href="{% url 'users:logout' %}" class="nav-link px-2 link-dark">{{user}}
                         <button type="button" class="btn btn-primary">Выйти</button>
                     </a>
                     {% else %}
-                    <a href="{% url 'login' %}" class="">
+                    <a href="{% url 'users:login' %}" class="">
                         <button type="button" class="btn btn-outline-primary me-2">Войти</button>
                     </a>
-                    <a href="{% url 'register' %}" class="">
+                    <a href="{% url 'users:register' %}" class="">
                         <button type="button" class="btn btn-primary">Регистрация</button>
                     </a>
                     {% endif %}
 
                 </div>
             </div>
+        </div>
     </header>
     {% block content %}{% endblock %}
     <div class="container">
