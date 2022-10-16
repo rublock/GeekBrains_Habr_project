@@ -15,3 +15,5 @@ python-dotenv==0.21.0
 sqlparse==0.4.2
 tzdata==2022.2
 six==1.16.0
+requests==2.28.1
+beautifulsoup4==4.11.1
