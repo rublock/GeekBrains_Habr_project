@@ -11,7 +11,6 @@ from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.conf import settings
 from .models import User
 from .utils import generate_token
-#from .forms import UserCreateForm
 from userapp.forms import MyUserRegisterForm
 from django.contrib import auth
 from userapp.forms import MyUserLoginForm
