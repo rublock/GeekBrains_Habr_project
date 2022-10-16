@@ -112,7 +112,7 @@ def register(request):
             return HttpResponseRedirect(reverse('users:login'))
         else:
             messages.error(request, 'Пароль должен содержать 8 элементов,включая буквы и цифры')
-            return HttpResponseRedirect(reverse('users:register'))
+
     else:
         register_form = MyUserRegisterForm()
     content = {'register_form': register_form}
