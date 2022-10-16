@@ -10,10 +10,15 @@
             <a href="{% url 'users:logout' %}">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></a>
         </div>
-
+        {% for message in messages %}
+        <div class="message {{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
         <div class="modal-body p-5 pt-0">
             <form action="{% url 'users:register' %}" method="post" class="">
             {% csrf_token %}
+
             <div  class="form-floating mb-4">
                 {{ register_form.username }}
                 <label for="floatingInput">Введите ваш логин</label>
@@ -30,6 +35,7 @@
                 {{ register_form.password2 }}
                 <label for="floatingPassword">Повторите ваш пароль</label>
             </div>
+
                 <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Зарегистироваться</button>
 
             </form>
