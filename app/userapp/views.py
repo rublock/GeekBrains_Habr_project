@@ -117,3 +117,4 @@ def register(request):
         register_form = MyUserRegisterForm()
     content = {'register_form': register_form}
     return render(request, 'userapp/register.html', content)
+
