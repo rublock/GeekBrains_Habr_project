@@ -4,7 +4,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 User = get_user_model()
 
-
 #class UserCreateForm(UserCreationForm):
 #    email = forms.EmailField(
 #        label=('Email'), max_length=254, widget=forms.EmailInput(attrs={'autocomplete': 'email'})
