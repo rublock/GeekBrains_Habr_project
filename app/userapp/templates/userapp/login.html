@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static django_bootstrap5 %}
 
 {% block content %}
 <div class="regContainer">
@@ -14,29 +14,11 @@
 
             <form action="{% url 'users:login' %}" method="post" class="" >
                 {% csrf_token %}
+                {% bootstrap_form login_form %}
                 <div  class="form-floating mb-3">
-                    {{login_form.username}}
-                    <label for="floatingInput">Введите ваш логин</label>
                 </div>
                 <div  class="form-floating mb-3">
-                    {{login_form.password}}
-                <label for="floatingPassword">Введите ваш пароль</label>
                 </div>
-                {% if login_form.errors %}
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 50px;">
-                    {% if login_form.errors %}
-                        {% for field, errors in login_form.errors.items %}
-                        <h6>
-                            {% if not field == 'all' %}
-                            <strong>{{ field }}</strong>:{% endif %}
-                                {% for error in errors %}
-                                    {{ error }}
-                                {% endfor %}
-                        </h6>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-                {% endif %}
                 <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Войти</button>
             </form>
         </div>

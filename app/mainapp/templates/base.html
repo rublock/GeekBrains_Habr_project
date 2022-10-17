@@ -1,7 +1,6 @@
 <!doctype html>
 {% load static django_bootstrap5 %}
 
-
 <html lang="ru">
 
 <head>
@@ -9,11 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}codeBusters{% endblock %}</title>
     {% bootstrap_css %}
-    <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css" media="screen">
 </head>
 
 <body>
-
     <header class="p-3 mb-3 border-bottom">
         {% if user.is_superuser %}
         <div class="container">
