@@ -110,8 +110,10 @@ def register(request):
         if register_form.is_valid():
             register_form.save()
             return HttpResponseRedirect(reverse('users:login'))
-        else:
-            messages.error(request, 'Пароль должен содержать 8 элементов,включая буквы и цифры')
+        #else:
+         #   messages.error(request, 'Пароль должен содержать 8 элементов,включая буквы и цифры!')
+        #    messages.error(request, 'Такой пользователь уже есть!')
+           # return pwd_error, login_error
 
     else:
         register_form = MyUserRegisterForm()
