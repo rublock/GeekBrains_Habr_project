@@ -1,9 +1,8 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import user_passes_test
+from django.views.generic import ListView
 
-from .models import Post
-from .utils import DemoPosts
+from .utils import *
 
 
 class HomePageView(TemplateView):
@@ -40,12 +39,14 @@ def terms_of_service(request):
 
 def all_posts(request):
     posts = Post.objects.order_by('-created_at')
-    return render(request, 'home_page.html',  {'posts': posts})
+    menu = Category.objects.all()
+    return render(request, 'home_page.html',  {'posts': posts, 'menu': menu})
 
 
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    return render(request, 'detailed_article.html', {'post': post})
+    menu = Category.objects.all()
+    return render(request, 'detailed_article.html', {'menu': menu, 'post': post})
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -62,4 +63,8 @@ def delete_demo_posts(request):
     return redirect('/')
 
 
-
+def posts_category(request, alias):
+    posts = Post.objects.filter(category__alias=alias).order_by('-created_at')
+    # posts = Post.objects.filter(postCategory__id=pk)
+    menu = Category.objects.all()
+    return render(request, 'home_page.html', {'posts': posts, 'menu': menu})

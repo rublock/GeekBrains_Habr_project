@@ -2,13 +2,16 @@ from django.db import models
 from django.conf import settings
 
 from ckeditor.fields import RichTextField
+from django.urls import reverse
 
 
 class Category(models.Model):
     # Модель категорий
     name = models.CharField(max_length=45, verbose_name='наименование', unique=True)
     description = models.CharField(max_length=300, blank=True, verbose_name='описание')
+    alias = models.SlugField(max_length=50, unique=True, verbose_name='Alias')
     active = models.BooleanField(default=True, verbose_name='активна')
+    objects = models.Manager()
 
     def __str__(self):
         return f'{self.name}{"" if self.active else "(блок)"}'
@@ -16,6 +19,9 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'категории'
+
+    def get_absolute_url(self):
+        return reverse('alias', kwargs={'menu': self.alias})
 
 
 class Status(models.Model):
@@ -42,6 +48,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     content = RichTextField(null=True, blank=True)
+    objects = models.Manager()
 
     def __str__(self):
         return f'{self.title}{"" if self.active else "(блок)"}'
