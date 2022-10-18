@@ -61,23 +61,16 @@ def activate_user(request, uidb64, token):
     return render(request, "registration/activate-failed.html", {"user": user})
 
 
+
 def login(request):
     login_form = MyUserLoginForm(data=request.POST)
     if request.method == "POST" and login_form.is_valid():
-        if login_form.is_valid():
-            login_form.save()
-#     return redirect("success")
-# else:
-#     for field in form.errors:
-#         form[field].field.widget.attrs['class'] += ' is-invalid'
-        
-            username = request.POST["username"]
-            password = request.POST["password"]
-
-            user = auth.authenticate(username=username, password=password)
-            if user and user.is_active and user.is_email_verified:
-                auth.login(request, user)
-                return redirect("/")
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = auth.authenticate(username=username, password=password)
+        if user and user.is_active:
+            auth.login(request, user)
+            return redirect("/")
     content = {"login_form": login_form}
     return render(request, "userapp/login.html", content)
 
@@ -103,8 +96,8 @@ def register(request):
                 content = {"register_form": register_form}
                 return render(request, "userapp/register.html", content)
             return HttpResponseRedirect(reverse("users:login"))
-
     else:
         register_form = MyUserRegisterForm()
     content = {"register_form": register_form}
+
     return render(request, "userapp/register.html", content)
