@@ -7,7 +7,7 @@ from .utils import DemoPosts
 
 
 class HomePageView(TemplateView):
-    template_name = 'home_page.html'
+    template_name = "home_page.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -31,35 +31,32 @@ class DetailedArticle(TemplateView):
 
 
 def reg_page(request):
-    return render(request, 'register.html')
+    return render(request, "register.html")
 
 
 def terms_of_service(request):
-    return render(request, 'terms_of_service.html')
+    return render(request, "terms_of_service.html")
 
 
 def all_posts(request):
-    posts = Post.objects.order_by('-created_at')
-    return render(request, 'home_page.html',  {'posts': posts})
+    posts = Post.objects.order_by("-created_at")
+    return render(request, "home_page.html", {"posts": posts})
 
 
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    return render(request, 'detailed_article.html', {'post': post})
+    return render(request, "detailed_article.html", {"post": post})
 
 
 @user_passes_test(lambda u: u.is_superuser)
 def create_demo_post(request):
     user = request.user
     DemoPosts.create_demo_post(user)
-    return redirect('/')
+    return redirect("/")
 
 
 @user_passes_test(lambda u: u.is_superuser)
 def delete_demo_posts(request):
-    posts = Post.objects.filter(title__startswith='DEMO ')
+    posts = Post.objects.filter(title__startswith="DEMO ")
     [post.delete() for post in posts]
-    return redirect('/')
-
-
-
+    return redirect("/")
