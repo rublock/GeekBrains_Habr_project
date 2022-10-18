@@ -31,7 +31,7 @@ class DetailedArticle(TemplateView):
 
 
 def reg_page(request):
-    return render(request, 'reg_page.html')
+    return render(request, 'register.html')
 
 
 def terms_of_service(request):
