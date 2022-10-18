@@ -61,7 +61,6 @@ def activate_user(request, uidb64, token):
     return render(request, "registration/activate-failed.html", {"user": user})
 
 
-
 def login(request):
     login_form = MyUserLoginForm(data=request.POST)
     if request.method == "POST" and login_form.is_valid():
