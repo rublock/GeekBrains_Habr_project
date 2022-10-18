@@ -1,8 +1,9 @@
 name: Lint_Black
 
 on:
-  pull_request:
-    branches:
+  push:
+    branches-ignore:
+      - main
       - dev
 
 jobs:
