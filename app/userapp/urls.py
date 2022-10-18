@@ -1,5 +1,4 @@
 from django.urls import path, include
-
 # from .views import Register, activate_user
 import userapp.views as userapp
 

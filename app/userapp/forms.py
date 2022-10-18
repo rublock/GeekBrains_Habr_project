@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 User = get_user_model()
 
 
+
 class MyUserLoginForm(AuthenticationForm):
     def init(self, *args, **kwargs):
         super().init(*args, **kwargs)
