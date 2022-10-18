@@ -7,8 +7,8 @@ User = get_user_model()
 
 
 class MyUserLoginForm(AuthenticationForm):
-    def init(self, *args, **kwargs):
-        super().init(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
     class Meta:
@@ -17,8 +17,8 @@ class MyUserLoginForm(AuthenticationForm):
 
 
 class MyUserRegisterForm(UserCreationForm):
-    def init(self, *args, **kwargs):
-        super().init(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
     class Meta:
