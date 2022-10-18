@@ -1,5 +1,4 @@
 [tool.black]
 line-length = 88
 target-version = ['py310']
-exclude = '/migrations/*'
-check = True
+extend-exclude = '/migrations/|/.venv/|/venv/'
