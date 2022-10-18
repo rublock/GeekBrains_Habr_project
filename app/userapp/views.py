@@ -17,7 +17,7 @@ from userapp.forms import MyUserLoginForm
 from django.urls import reverse
 
 
-#def send_activation_email(user, request):
+# def send_activation_email(user, request):
 #    current_site = get_current_site(request)
 #    email_subject = 'Активируйте свой профиль'
 #
@@ -36,7 +36,7 @@ from django.urls import reverse
 #    email.send()
 
 
-#def activate_user(request, uidb64, token):
+# def activate_user(request, uidb64, token):
 #    try:
 #        uid = force_str(urlsafe_base64_decode(uidb64))
 #        user = User.objects.get(pk=uid)
@@ -53,7 +53,7 @@ from django.urls import reverse
 #        return redirect('login')
 #    return render(request, 'registration/activate-failed.html', {'user':user})
 
-#class Register(View):
+# class Register(View):
 
 #    template_name = 'registration/register.html'
 
@@ -72,50 +72,50 @@ from django.urls import reverse
 #            password = form.cleaned_data.get('password1')
 #            user = authenticate(username=username, password=password)
 
- #           if not user.is_email_verified:
+#           if not user.is_email_verified:
 #                messages.add_message(request, messages.ERROR,
 #                             'ваш e-mail не верифицирован, пожалуйста проверьте входящее сообщение для активации пользователя на портале.')
 #                return render(request, self.template_name)
 
 #            login(request, user)
- #           return redirect('/')
- #       context = {
- #           'form': form
+#           return redirect('/')
+#       context = {
+#           'form': form
 #        }
- #       return render(request, self.template_name, context)
+#       return render(request, self.template_name, context)
 
 
 def login(request):
     login_form = MyUserLoginForm(data=request.POST)
-    if request.method == 'POST' and login_form.is_valid():
-        username = request.POST['username']
-        password = request.POST['password']
+    if request.method == "POST" and login_form.is_valid():
+        username = request.POST["username"]
+        password = request.POST["password"]
 
         user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
             auth.login(request, user)
-            return redirect('/')
-    content = {'login_form': login_form}
-    return render(request, 'userapp/login.html', content)
+            return redirect("/")
+    content = {"login_form": login_form}
+    return render(request, "userapp/login.html", content)
 
 
 def logout(request):
     auth.logout(request)
-    return redirect('/')
+    return redirect("/")
 
 
 def register(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         register_form = MyUserRegisterForm(request.POST, request.FILES)
         if register_form.is_valid():
             register_form.save()
-            return HttpResponseRedirect(reverse('users:login'))
-        #else:
-         #   messages.error(request, 'Пароль должен содержать 8 элементов,включая буквы и цифры!')
+            return HttpResponseRedirect(reverse("users:login"))
+        # else:
+        #   messages.error(request, 'Пароль должен содержать 8 элементов,включая буквы и цифры!')
         #    messages.error(request, 'Такой пользователь уже есть!')
-           # return pwd_error, login_error
+        # return pwd_error, login_error
 
     else:
         register_form = MyUserRegisterForm()
-    content = {'register_form': register_form}
-    return render(request, 'userapp/register.html', content)
+    content = {"register_form": register_form}
+    return render(request, "userapp/register.html", content)
