@@ -7,6 +7,7 @@ from django.urls import reverse
 
 class Category(models.Model):
     # Модель категорий
+
     name = models.CharField(max_length=45, verbose_name="наименование", unique=True)
     description = models.CharField(max_length=300, blank=True, verbose_name="описание")
     alias = models.SlugField(max_length=50, unique=True, verbose_name="Alias")
@@ -21,7 +22,7 @@ class Category(models.Model):
         verbose_name_plural = "категории"
 
     def get_absolute_url(self):
-        return reverse('alias', kwargs={'menu': self.alias})
+        return reverse("alias", kwargs={"menu": self.alias})
 
 
 class Status(models.Model):
