@@ -1,17 +1,23 @@
-from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
 User = get_user_model()
 
 
-class UserCreateForm(UserCreationForm):
-    email = forms.EmailField(
-        label=('Email'), max_length=254, widget=forms.EmailInput(attrs={'autocomplete': 'email'})
+class MyUserLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-    )
-
-    class Meta(UserCreationForm.Meta):
+    class Meta:
         model = User
-        fields = ("username", "email")
+        fields = ("username", "password")
+
+
+class MyUserRegisterForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2")
