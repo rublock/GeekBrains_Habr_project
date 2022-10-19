@@ -43,10 +43,12 @@ def terms_of_service(request):
 def all_posts(request):
     posts = Post.objects.order_by("-created_at")
     paginator = Paginator(posts, 3)
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    return render(request, "home_page.html", { "page_obj":page_obj, "posts": posts, "menu": menu})
+    return render(
+        request, "home_page.html", {"page_obj": page_obj, "posts": posts, "menu": menu}
+    )
 
 
 def detail(request, post_id):
