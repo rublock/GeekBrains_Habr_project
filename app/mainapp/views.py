@@ -1,7 +1,7 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView
 
+from .models import Post
 from .utils import *
 
 
@@ -40,7 +40,7 @@ def terms_of_service(request):
 def all_posts(request):
     posts = Post.objects.order_by("-created_at")
     menu = Category.objects.all()
-    return render(request, "home_page.html",  {"posts": posts, "menu": menu})
+    return render(request, "home_page.html", {"posts": posts, "menu": menu})
 
 
 def detail(request, post_id):
@@ -60,11 +60,11 @@ def create_demo_post(request):
 def delete_demo_posts(request):
     posts = Post.objects.filter(title__startswith="DEMO ")
     [post.delete() for post in posts]
-    return redirect('/')
+    return redirect("/")
 
 
 def posts_category(request, alias):
-    posts = Post.objects.filter(category__alias=alias).order_by('-created_at')
+    posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
     # posts = Post.objects.filter(postCategory__id=pk)
     menu = Category.objects.all()
-    return render(request, 'home_page.html', {'posts': posts, 'menu': menu})
+    return render(request, "home_page.html", {"posts": posts, "menu": menu})
