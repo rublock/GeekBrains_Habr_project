@@ -1,5 +1,4 @@
 import requests
-
 from django.contrib.auth.decorators import login_required, user_passes_test
 from bs4 import BeautifulSoup
 
@@ -30,7 +29,7 @@ class DemoPosts:
     def create_demo_post(cls, user: User, category=None, service=None):
         if not category:
             target_category, created = Category.objects.get_or_create(
-                name="Demo", active=True
+                name="Demo", active=True, alias="demo", description="Демо статьи для быстрого наполнения"
             )
         new_post_title, new_post_content = DemoPosts.get_random_wikipost()
         post = Post.objects.create(user=user, category=target_category)

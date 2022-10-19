@@ -1,4 +1,5 @@
-from django.views.generic import TemplateView, ListView
+from django.core.paginator import Paginator
+from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import Post
@@ -41,12 +42,21 @@ def terms_of_service(request):
 
 def all_posts(request):
     posts = Post.objects.order_by("-created_at")
-    return render(request, "home_page.html", {"posts": posts, "menu": menu})
+    paginator = Paginator(posts, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "home_page.html", { "page_obj":page_obj, "posts": posts, "menu": menu})
 
 
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     return render(request, "detailed_article.html", {"menu": menu, "post": post})
+
+
+def posts_category(request, alias):
+    posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
+    return render(request, "home_page.html", {"posts": posts, "menu": menu})
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -63,7 +73,8 @@ def delete_demo_posts(request):
     return redirect("/")
 
 
-def posts_category(request, alias):
-    posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
-    # posts = Post.objects.filter(postCategory__id=pk)
-    return render(request, "home_page.html", {"posts": posts, "menu": menu})
+@user_passes_test(lambda u: u.is_superuser)
+def create_category(request):
+    user = request.user
+    DemoPosts.create_category(user)
+    return redirect("/")
