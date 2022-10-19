@@ -4,6 +4,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from .utils import *
 
+menu = Category.objects.all()
+
 
 class HomePageView(TemplateView):
     template_name = "home_page.html"
@@ -39,13 +41,11 @@ def terms_of_service(request):
 
 def all_posts(request):
     posts = Post.objects.order_by("-created_at")
-    menu = Category.objects.all()
     return render(request, "home_page.html", {"posts": posts, "menu": menu})
 
 
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    menu = Category.objects.all()
     return render(request, "detailed_article.html", {"menu": menu, "post": post})
 
 
@@ -66,5 +66,4 @@ def delete_demo_posts(request):
 def posts_category(request, alias):
     posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
     # posts = Post.objects.filter(postCategory__id=pk)
-    menu = Category.objects.all()
     return render(request, "home_page.html", {"posts": posts, "menu": menu})

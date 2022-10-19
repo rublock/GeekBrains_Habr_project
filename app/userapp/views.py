@@ -15,6 +15,9 @@ from userapp.forms import MyUserRegisterForm
 from django.contrib import auth
 from userapp.forms import MyUserLoginForm
 from django.urls import reverse
+from mainapp.models import Category
+
+menu = Category.objects.all()
 
 
 def send_activation_email(user, request):
@@ -41,7 +44,8 @@ def send_activation_email(user, request):
     email.send()
 
 
-def activate_user(request, uidb64, token):
+def activate_user(request, uidb64, token, menu):
+
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -58,7 +62,9 @@ def activate_user(request, uidb64, token):
         )
 
         return redirect("users:login")
-    return render(request, "registration/activate-failed.html", {"user": user})
+    return render(
+        request, "registration/activate-failed.html", {"user": user, "menu": menu}
+    )
 
 
 def login(request):
@@ -70,7 +76,7 @@ def login(request):
         if user and user.is_active:
             auth.login(request, user)
             return redirect("/")
-    content = {"login_form": login_form}
+    content = {"login_form": login_form, "menu": menu}
     return render(request, "userapp/login.html", content)
 
 
@@ -92,11 +98,11 @@ def register(request):
                     messages.ERROR,
                     'Ваш e-mail не верифицирован, пожалуйста проверьте входящее сообщение для активации пользователя на портале. Если вы не получили сообщение, проверьте папку "Спам".',
                 )
-                content = {"register_form": register_form}
+                content = {"register_form": register_form, "menu": menu}
                 return render(request, "userapp/register.html", content)
             return HttpResponseRedirect(reverse("users:login"))
     else:
         register_form = MyUserRegisterForm()
-    content = {"register_form": register_form}
+        content = {"register_form": register_form, "menu": menu}
 
     return render(request, "userapp/register.html", content)
