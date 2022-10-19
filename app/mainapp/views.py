@@ -58,7 +58,7 @@ def create_demo_post(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def delete_demo_posts(request):
-    posts = Post.objects.filter(title__startswith="DEMO ")
+    posts = Post.objects.filter(title__startswith="DEMO")
     [post.delete() for post in posts]
     return redirect("/")
 
