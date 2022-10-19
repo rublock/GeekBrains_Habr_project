@@ -17,6 +17,8 @@ from userapp.forms import MyUserLoginForm
 from django.urls import reverse
 from mainapp.models import Category
 
+menu = Category.objects.all()
+
 
 def send_activation_email(user, request):
     current_site = get_current_site(request)
@@ -42,8 +44,8 @@ def send_activation_email(user, request):
     email.send()
 
 
-def activate_user(request, uidb64, token):
-    menu = Category.objects.all()
+def activate_user(request, uidb64, token, menu):
+
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -66,7 +68,6 @@ def activate_user(request, uidb64, token):
 
 
 def login(request):
-    menu = Category.objects.all()
     login_form = MyUserLoginForm(data=request.POST)
     if request.method == "POST" and login_form.is_valid():
         username = request.POST["username"]
@@ -85,7 +86,6 @@ def logout(request):
 
 
 def register(request):
-    menu = Category.objects.all()
     if request.method == "POST":
         register_form = MyUserRegisterForm(request.POST, request.FILES)
         if register_form.is_valid():
