@@ -1,0 +1,18 @@
+name: Lint_Black
+
+on:
+  push:
+    branches-ignore:
+      - main
+      - dev
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: psf/black@stable
+        with:
+          options: "--check --verbose"
+          src: "app/"
+          jupyter: true
