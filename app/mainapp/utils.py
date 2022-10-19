@@ -29,13 +29,41 @@ class DemoPosts:
     def create_demo_post(cls, user: User, category=None, service=None):
         if not category:
             target_category, created = Category.objects.get_or_create(
-                name="Demo",
-                active=True,
-                alias="demo",
-                description="Демо статьи для быстрого наполнения",
+                name="Demo", active=True
             )
         new_post_title, new_post_content = DemoPosts.get_random_wikipost()
         post = Post.objects.create(user=user, category=target_category)
         post.title = f"DEMO {new_post_title}"
         post.content = new_post_content
         post.save()
+
+    @classmethod
+    def create_category(cls, category=None):
+        if "Дизайн" not in Category.objects.all():
+            Category.objects.get_or_create(
+                name="Дизайн",
+                active=True,
+                alias="design",
+                description="Все о дизайне и для дизайна",
+            )
+        if "Веб-разработка" not in Category.objects.all():
+            Category.objects.get_or_create(
+                name="Веб-разработка",
+                active=True,
+                alias="web",
+                description="Все что надо знать о Web разработке",
+            )
+        if "Мобильная разработка" not in Category.objects.all():
+            Category.objects.get_or_create(
+                name="Мобильная разработка",
+                active=True,
+                alias="mobile",
+                description="Только то что касается мобильной разработки",
+            )
+        if "Маркетинг" not in Category.objects.all():
+            Category.objects.get_or_create(
+                name="Маркетинг",
+                active=True,
+                alias="marketing",
+                description="Ты маркетолог, тогда тебе точно сюда.",
+            )
