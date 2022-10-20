@@ -46,18 +46,20 @@ def all_posts(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(
-        request, "home_page.html", {"page_obj": page_obj, "posts": posts, "menu": menu}
+        request,
+        "home_page.html",
+        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
     )
 
 
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    return render(request, "detailed_article.html", {"menu": menu, "post": post})
+    return render(request, "detailed_article.html", {"menu": menu.all(), "post": post})
 
 
 def posts_category(request, alias):
     posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
-    return render(request, "home_page.html", {"posts": posts, "menu": menu})
+    return render(request, "home_page.html", {"posts": posts, "menu": menu.all()})
 
 
 @user_passes_test(lambda u: u.is_superuser)

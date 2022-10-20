@@ -38,7 +38,7 @@ class DemoPosts:
         post.save()
 
     @classmethod
-    def create_category(cls, category=None):
+    def create_category(cls, user: User):
         if "Дизайн" not in Category.objects.all():
             Category.objects.get_or_create(
                 name="Дизайн",
