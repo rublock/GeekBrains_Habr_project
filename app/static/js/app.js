@@ -5,8 +5,4 @@ function removeLoginClass() {
     elementPassword.classList.remove("is-invalid");
 }
 
-try {
-    removeLoginClass();
-} catch (err) {
-
-}
+removeLoginClass();
