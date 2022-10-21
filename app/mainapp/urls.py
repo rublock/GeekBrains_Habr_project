@@ -16,5 +16,4 @@ urlpatterns = [
     path("delete_demo_posts/", views.delete_demo_posts, name="delete_demo_posts"),
     path("create_category/", views.create_category, name="create_category"),
     path("<slug:alias>/", views.posts_category, name="posts_category"),
-
 ]

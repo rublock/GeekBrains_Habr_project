@@ -5,7 +5,7 @@
 
 <div class="container">
     <h2>Кол-во постов: {{ posts.count }}</h2>
-    {% for post in posts %}
+    {% for post in page_obj %}
 
     <div class="row-md-6">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -21,9 +21,17 @@
     </div>
     {% endfor %}
 </div>
-<!--
-{% for mypost in page_obj %}
-<p>{{mypost}}</p>
-{% endfor %}
--->
+
+<center>
+        {%if page_obj.has_previous %}
+            <a href="?page={{page_obj.previous_page_number}}"><</a>
+        {% endif %}
+        <span>{{page_obj.number}}</span>
+
+        {%if page_obj.has_next %}
+            <a href="?page={{page_obj.next_page_number}}">></a>
+        {% endif %}
+    </center>
+
 {% endblock content %}
+
