@@ -15,7 +15,7 @@
                 <svg class="responsive" width="auto" height="400"></svg>
                 <div class="mb-1 text-muted">{{ post.updated_at|date:'Y m d' }}</div>
                 <p class="mb-auto">{{ post.description|safe|truncatechars:500 }}</p>
-                <a href="{% url 'mainapp:detail' post.id %}" class="stretched-link">Continue reading</a>
+                <a href="{% url 'mainapp:detail' post.id %}" class="btn btn-primary w-25">Продолжить чтение</a>
             </div>
         </div>
     </div>
