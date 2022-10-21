@@ -2,6 +2,7 @@ from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -106,3 +107,9 @@ def register(request):
         content = {"register_form": register_form, "menu": menu.all()}
 
     return render(request, "userapp/register.html", content)
+
+
+@login_required(login_url='/users/login')
+def profile(request):
+    print('******************************')
+    return render(request, 'userapp/profile.html')

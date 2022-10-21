@@ -10,4 +10,5 @@ urlpatterns = [
     path("login/", userapp.login, name="login"),
     path("logout/", userapp.logout, name="logout"),
     path("register/", userapp.register, name="register"),
+    path('profile/', userapp.profile, name='users-profile'),
 ]
