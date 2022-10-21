@@ -44,7 +44,7 @@ def send_activation_email(user, request):
     email.send()
 
 
-def activate_user(request, uidb64, token, menu):
+def activate_user(request, uidb64, token):
 
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -63,7 +63,7 @@ def activate_user(request, uidb64, token, menu):
 
         return redirect("users:login")
     return render(
-        request, "registration/activate-failed.html", {"user": user, "menu": menu.all()}
+        request, "registration/activate-failed.html", {"user": user}
     )
 
 
