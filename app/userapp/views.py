@@ -62,9 +62,7 @@ def activate_user(request, uidb64, token):
         )
 
         return redirect("users:login")
-    return render(
-        request, "registration/activate-failed.html", {"user": user}
-    )
+    return render(request, "registration/activate-failed.html", {"user": user})
 
 
 def login(request):
