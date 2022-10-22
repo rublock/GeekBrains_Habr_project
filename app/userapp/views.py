@@ -44,7 +44,7 @@ def send_activation_email(user, request):
     email.send()
 
 
-def activate_user(request, uidb64, token, menu):
+def activate_user(request, uidb64, token):
 
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -62,9 +62,7 @@ def activate_user(request, uidb64, token, menu):
         )
 
         return redirect("users:login")
-    return render(
-        request, "registration/activate-failed.html", {"user": user, "menu": menu.all()}
-    )
+    return render(request, "registration/activate-failed.html", {"user": user})
 
 
 def login(request):
@@ -86,8 +84,9 @@ def logout(request):
 
 
 def register(request):
+    register_form = MyUserRegisterForm(request.POST, request.FILES)
+    content = {"register_form": register_form, "menu": menu.all()}
     if request.method == "POST":
-        register_form = MyUserRegisterForm(request.POST, request.FILES)
         if register_form.is_valid():
             user = register_form.save()
             # Mail activation
@@ -98,11 +97,9 @@ def register(request):
                     messages.ERROR,
                     'Ваш e-mail не верифицирован, пожалуйста проверьте входящее сообщение для активации пользователя на портале. Если вы не получили сообщение, проверьте папку "Спам".',
                 )
-                content = {"register_form": register_form, "menu": menu.all()}
                 return render(request, "userapp/register.html", content)
             return HttpResponseRedirect(reverse("users:login"))
     else:
         register_form = MyUserRegisterForm()
-        content = {"register_form": register_form, "menu": menu.all()}
 
     return render(request, "userapp/register.html", content)
