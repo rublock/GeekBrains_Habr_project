@@ -1,8 +1,8 @@
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect
-
-from .models import Post
+from .forms import CommentForm
+from .models import Post, Comment
 from .utils import *
 
 menu = Category.objects.all()
@@ -54,7 +54,24 @@ def all_posts(request):
 
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    return render(request, "detailed_article.html", {"menu": menu.all(), "post": post})
+    comment = Comment.objects.filter(post=post)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comm = form.save(commit=False)
+            # Заложил для дальнейшей реализации Комментармй на комментарий
+            if request.POST.get("parent", None):
+                form.parent_id = int(request.POST.get("parent"))
+            comm.user = request.user
+            comm.post = post
+            comm.save()
+    else:
+        form = CommentForm()
+    return render(
+        request,
+        "detailed_article.html",
+        {"menu": menu.all(), "post": post, "form": form, "comment": comment},
+    )
 
 
 def posts_category(request, alias):
