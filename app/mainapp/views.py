@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Q
 
 from .models import Post
 from .utils import *
@@ -40,7 +41,15 @@ def terms_of_service(request):
 
 
 def all_posts(request):
-    posts = Post.objects.order_by("-created_at")
+    search_query = request.GET.get('search', '')
+
+    if search_query:
+        posts = Post.objects.filter(Q(title__icontains=search_query) |
+                                    Q(description__icontains=search_query) |
+                                    Q(content__icontains=search_query)).order_by("-created_at")
+
+    else:
+        posts = Post.objects.all().order_by("-created_at")
     return render(request, "home_page.html", {"posts": posts, "menu": menu})
 
 
