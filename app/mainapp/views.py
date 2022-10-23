@@ -42,12 +42,14 @@ def terms_of_service(request):
 
 
 def all_posts(request):
-    search_query = request.GET.get('search', '')
+    search_query = request.GET.get("search", "")
 
     if search_query:
-        posts = Post.objects.filter(Q(title__icontains=search_query) |
-                                    Q(description__icontains=search_query) |
-                                    Q(content__icontains=search_query)).order_by("-created_at")
+        posts = Post.objects.filter(
+            Q(title__icontains=search_query)
+            | Q(description__icontains=search_query)
+            | Q(content__icontains=search_query)
+        ).order_by("-created_at")
 
     else:
         posts = Post.objects.all().order_by("-created_at")
