@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CommentForm
 from .models import Post, Comment
 from .utils import *
+from django.db.models import Q
 
 menu = Category.objects.all()
 
@@ -41,7 +42,15 @@ def terms_of_service(request):
 
 
 def all_posts(request):
-    posts = Post.objects.order_by("-created_at")
+    search_query = request.GET.get('search', '')
+
+    if search_query:
+        posts = Post.objects.filter(Q(title__icontains=search_query) |
+                                    Q(description__icontains=search_query) |
+                                    Q(content__icontains=search_query)).order_by("-created_at")
+
+    else:
+        posts = Post.objects.all().order_by("-created_at")
     paginator = Paginator(posts, 3)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
