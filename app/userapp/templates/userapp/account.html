@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static django_bootstrap5 %}
+
+{% block content %}
+
+<ol>
+    <li> <a href="{% url 'users:users-profile' %}">Профиль</a></li>
+    <li> <a href="{% url 'mainapp:author-posts' user.id %}">Статьи</a></li>
+    <li> <a href="{% url 'mainapp:post-new' %}">Создать новую статью</a></li>
+</ol>
+{% endblock %} 

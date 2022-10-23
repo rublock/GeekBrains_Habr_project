@@ -1,1 +1,45 @@
-<p>Привет я профиль</p>
+{% extends 'base.html' %}
+{% load static django_bootstrap5 %}
+
+{% block content %}
+	<style type="text/css">
+		.profile-pic{
+			max-width: 200px;
+			max-height: 200px;
+			margin: 0 auto;
+			border-radius: 50%;
+		}
+
+	</style>
+
+	<br>
+	<form action="" method="POST" enctype="multipart/form-data">
+
+
+		<div class="row">
+			<div class="col-md-3">
+				<div class="card card-body">
+					<a href="{% url 'users:users-account' %}" class="btn btn-warning">&#8592; Вернуться в личный кабинет</a>
+					<hr>
+					<h3 style="text-align: center;">Настройки профиля</h3>
+					<hr>
+					{% if request.user.avatar %}
+					<img class="profile-pic" src="{{request.user.avatar.url}}" >
+					{% else %}
+					<img class="profile-pic" src="{% static 'img/user.png' %}" >
+					{% endif %}
+				</div> 
+			</div>
+			<div class="col-md-7">
+				<div class="card card-body">
+
+					{% csrf_token %}
+					{{ form.as_p }}
+					<input type="submit" class="btn btn-primary mt-3" name="Обновить информацию">
+				</div>
+			</div>
+		</div>
+	</form>
+
+
+{% endblock %}
