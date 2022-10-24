@@ -52,6 +52,7 @@ def all_posts(request):
         {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
     )
 
+
 def author_posts(request, author_id):
     posts = Post.objects.filter(user_id=author_id).order_by("-created_at")
     paginator = Paginator(posts, 3)
@@ -63,20 +64,19 @@ def author_posts(request, author_id):
         {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
     )
 
-@login_required(login_url='/users/login')
+
+@login_required(login_url="/users/login")
 def post_new(request):
     context = {}
     form = PostForm(request.POST or None)
-    
-    if request.method == 'POST':
+
+    if request.method == "POST":
         if form.is_valid():
             form.save()
-        
-    context = {'form': form}
+
+    context = {"form": form}
     return render(request, "article.html", context)
 
-
- 
 
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)

@@ -63,9 +63,7 @@ def activate_user(request, uidb64, token):
         )
 
         return redirect("users:login")
-    return render(
-        request, "registration/activate-failed.html", {"user": user}
-    )
+    return render(request, "registration/activate-failed.html", {"user": user})
 
 
 def login(request):
@@ -109,22 +107,20 @@ def register(request):
     return render(request, "userapp/register.html", content)
 
 
-
-
-@login_required(login_url='/users/login')
+@login_required(login_url="/users/login")
 def account(request):
-    context = {'user': request.user}
-    return render(request, 'userapp/account.html', context)
+    context = {"user": request.user}
+    return render(request, "userapp/account.html", context)
 
 
-@login_required(login_url='/users/login')
+@login_required(login_url="/users/login")
 def profile(request):
     form = ProfileForm(instance=request.user)
-    
-    if request.method == 'POST':
+
+    if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-    
-    context = {'user': request.user, 'form': form}
-    return render(request, 'userapp/profile.html', context)
+
+    context = {"user": request.user, "form": form}
+    return render(request, "userapp/profile.html", context)

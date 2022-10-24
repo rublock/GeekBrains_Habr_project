@@ -13,8 +13,8 @@ urlpatterns = [
     path("login/", userapp.login, name="login"),
     path("logout/", userapp.logout, name="logout"),
     path("register/", userapp.register, name="register"),
-    path('account/', userapp.account, name='users-account'),
-    path('profile/', userapp.profile, name='users-profile'),
+    path("account/", userapp.account, name="users-account"),
+    path("profile/", userapp.profile, name="users-profile"),
 ]
 
-urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -31,8 +31,12 @@ class User(AbstractUser):
     last_name = models.CharField(verbose_name="Фамилия", blank=True, max_length=45)
     first_name = models.CharField(verbose_name="Имя", blank=True, max_length=45)
     middle_name = models.CharField(verbose_name="Отчество", blank=True, max_length=45)
-    avatar = models.ImageField(default="user.png", null=True,
-        verbose_name="Аватар", upload_to="user_avatar", blank=True
+    avatar = models.ImageField(
+        default="user.png",
+        null=True,
+        verbose_name="Аватар",
+        upload_to="user_avatar",
+        blank=True,
     )
     birthday = models.DateField(verbose_name="Дата рождения", blank=True, null=True)
     phone_number = models.CharField(verbose_name="Телефон", blank=True, max_length=15)
