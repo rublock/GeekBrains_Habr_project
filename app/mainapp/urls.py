@@ -9,6 +9,7 @@ urlpatterns = [
     path("", views.all_posts, name="home"),
     path("<int:author_id>/", views.author_posts, name="author-posts"),
     path("post_new/", views.post_new, name="post-new"),
+    path("post_edit/<int:post_id>/", views.post_edit, name="post-edit"),
     path("posts/<int:post_id>/", views.detail, name="detail"),
     path("page_404/", views.Page404.as_view(), name="page_404"),
     path("reg_page/", views.reg_page, name="reg_page"),

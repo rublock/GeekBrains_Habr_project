@@ -78,6 +78,19 @@ def post_new(request):
     return render(request, "article.html", context)
 
 
+@login_required(login_url="/users/login")
+def post_edit(request, post_id):
+    post = Post.objects.filter(pk=post_id)[0]
+    form = PostForm(request.POST, instance=post)
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+
+    context = {"form": form}
+    return render(request, "article.html", context)
+
+
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     return render(request, "detailed_article.html", {"menu": menu.all(), "post": post})
