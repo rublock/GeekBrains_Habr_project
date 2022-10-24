@@ -52,3 +52,9 @@
 .user_btn {
 text-decoration:none;
 }
+
+.paginationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
