@@ -12,7 +12,9 @@
             <div class="card card-body">
 
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form.media }}
+                {{ form.as_div }}
+                {{ content|safe }}
                 <input type="submit" class="btn btn-primary mt-3 col-7" name="Обновить информацию">
             </div>
         </div>
