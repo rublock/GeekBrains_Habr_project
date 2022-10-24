@@ -81,6 +81,7 @@ def post_new(request):
 @login_required(login_url="/users/login")
 def post_edit(request, post_id):
     post = Post.objects.filter(pk=post_id)[0]
+    print(f'-------------------{post.user}')
     form = PostForm(request.POST, instance=post)
 
     if request.method == "POST":
