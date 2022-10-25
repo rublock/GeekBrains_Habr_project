@@ -2,22 +2,12 @@
 {% load static django_bootstrap5 %}
 
 {% block content %}
-	<style type="text/css">
-		.profile-pic{
-			max-width: 200px;
-			max-height: 200px;
-			margin: 0 auto;
-			border-radius: 50%;
-		}
-
-	</style>
-
 	<br>
 	<form action="" method="POST" enctype="multipart/form-data">
 
 
-		<div class="row">
-			<div class="col-md-3">
+		<div class="col container">
+			<div class="col container">
 				<div class="card card-body">
 					<a href="{% url 'users:users-account' %}" class="btn btn-warning">&#8592; Вернуться в личный кабинет</a>
 					<hr>
@@ -30,7 +20,7 @@
 					{% endif %}
 				</div> 
 			</div>
-			<div class="col-md-7">
+			<div class="col container">
 				<div class="card card-body">
 
 					{% csrf_token %}
