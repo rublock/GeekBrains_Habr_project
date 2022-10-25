@@ -36,28 +36,28 @@ class ProfileForm(UserChangeForm):
 
     class Meta:
         model = User
-        # widgets = {
-        #     "username": forms.TextInput(attrs={"class": "form-control"}),
-        #     "email": forms.EmailInput(attrs={"class": "form-control"}),
-        #     "first_name": forms.TextInput(attrs={"class": "form-control"}),
-        #     "last_name": forms.TextInput(attrs={"class": "form-control"}),
-        #     "middle_name": forms.TextInput(attrs={"class": "form-control"}),
-        #     "birthday": forms.DateInput(
-        #         format=("%Y-%m-%d"),
-        #         attrs={
-        #             "class": "form-control",
-        #             "placeholder": "Select a date",
-        #             "type": "date",
-        #         },
-        #     ),
-        #     "phone_number": forms.TextInput(attrs={"class": "form-control"}),
-        #     "gender": forms.Select(
-        #         choices=model.GENDER_CHOICES, attrs={"class": "form-control input"}
-        #     ),
-        #     "comments": forms.TextInput(attrs={"class": "form-control"}),
-        #     "skills_id": forms.TextInput(attrs={"class": "form-control"}),
-        #     "avatar": forms.FileInput(attrs={"class": "form-control"}),
-        # }
+        widgets = {
+            "username": forms.TextInput(attrs={"class": "form-control"}),
+            "email": forms.EmailInput(attrs={"class": "form-control"}),
+            "first_name": forms.TextInput(attrs={"class": "form-control"}),
+            "last_name": forms.TextInput(attrs={"class": "form-control"}),
+            "middle_name": forms.TextInput(attrs={"class": "form-control"}),
+            "birthday": forms.DateInput(
+                format=("%Y-%m-%d"),
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Select a date",
+                    "type": "date",
+                },
+            ),
+            "phone_number": forms.TextInput(attrs={"class": "form-control"}),
+            "gender": forms.Select(
+                choices=model.GENDER_CHOICES, attrs={"class": "form-control input"}
+            ),
+            "comments": forms.TextInput(attrs={"class": "form-control"}),
+            "skills_id": forms.TextInput(attrs={"class": "form-control"}),
+            "avatar": forms.FileInput(attrs={"class": "form-control"}),
+        }
         fields = (
             "username",
             "email",
