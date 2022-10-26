@@ -1,7 +1,8 @@
 from django.forms import ModelForm
 from django import forms
 from ckeditor.widgets import CKEditorWidget
-from .models import *
+
+from .models import Post, Category, Comment
 
 
 class PostForm(ModelForm):
@@ -29,3 +30,12 @@ class PostForm(ModelForm):
             "updated_at",
             "objects",
         ]
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ("text",)
+        widgets = {
+            "text": forms.Textarea(attrs={"class": "form-control"}),
+        }

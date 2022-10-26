@@ -85,8 +85,9 @@ def logout(request):
 
 
 def register(request):
+    register_form = MyUserRegisterForm(request.POST, request.FILES)
+    content = {"register_form": register_form, "menu": menu.all()}
     if request.method == "POST":
-        register_form = MyUserRegisterForm(request.POST, request.FILES)
         if register_form.is_valid():
             user = register_form.save()
             # Mail activation
@@ -97,12 +98,10 @@ def register(request):
                     messages.ERROR,
                     'Ваш e-mail не верифицирован, пожалуйста проверьте входящее сообщение для активации пользователя на портале. Если вы не получили сообщение, проверьте папку "Спам".',
                 )
-                content = {"register_form": register_form, "menu": menu.all()}
                 return render(request, "userapp/register.html", content)
             return HttpResponseRedirect(reverse("users:login"))
     else:
         register_form = MyUserRegisterForm()
-        content = {"register_form": register_form, "menu": menu.all()}
 
     return render(request, "userapp/register.html", content)
 

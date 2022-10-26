@@ -12,17 +12,7 @@
 </head>
 
 <body>
-    <header class="p-3 border-bottom">
-        {% if user.is_superuser %}
-        <div class="container">
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><span class="nav-link px-2 link-dark">Панель СУПЕРЮЗЕРА:</span></li>
-                <li><a href="{% url 'mainapp:create_demo_post' %}" class="nav-link px-2 link-dark">Создать демо-статью</a></li>
-                <li><a href="{% url 'mainapp:delete_demo_posts' %}" class="nav-link px-2 link-dark">Удалить все демо-статьи</a></li>
-                <li><a href="{% url 'mainapp:create_category' %}" class="nav-link px-2 link-dark">Создать категории</a></li>
-            </ul>
-        </div>
-        {% endif %}
+    <header class="p-3 border-bottom bg-light sticky-xl-top">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
@@ -34,41 +24,62 @@
                     <li><a href="#" class="nav-link px-2 text-muted">Авторы</a></li>
                     <li><a href="#" class="nav-link px-2 text-muted">Рейтинг</a></li>
                 </ul>
-
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                    <div>
-                        
-                        <div class="row">
-                            <div class="col-6">
-                            <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search">
-                            </div>
-                        {% if user.is_authenticated %}
-                            <div class="col-3">
-                                <a href="{% url 'users:users-account' %}" class="nav-link px-2 link-dark user_btn mt-2">{{user}}
-                                    
-                                </a>
-                            </div>
-                            <div class="col-3">
-                                <a href="{% url 'users:logout' %}" class="nav-link px-2 link-dark user_btn">
-                                    <button type="button" class="btn btn-primary" >Выйти</button>
-                                </a>
-                            </div>
-                        {% else %}
-                            <div class="col-2">
-                                <a href="{% url 'users:login' %}" class="user_btn">
-                                    <button type="button" class="btn btn-outline-primary ms-3">Войти</button>
-                                </a>
-                            </div>
-                            <div class="col-3">
-                                <a href="{% url 'users:register' %}" class="user_btn">
-                                    <button type="button" class="btn btn-primary ms-1">Регистрация</button>
-                                </a>
-                            </div>
-                        {% endif %}
-                        </div>
-                        
-                    </div>
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{% url 'mainapp:home' %}" method="Get">
+                    <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search" name="search">
                 </form>
+                <div>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'users:users-account' %}" class="user_btn">
+                        {{user}}&nbsp;&nbsp;
+                    </a>
+                    <a href="{% url 'users:logout' %}" class="user_btn">
+                        <button type="button" class="btn btn-primary">Выйти</button>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'users:login' %}" class="user_btn">
+                        <button type="button" class="btn btn-outline-primary me-2">Войти</button>
+                    </a>
+                    <a href="{% url 'users:register' %}" class="user_btn">
+                        <button type="button" class="btn btn-primary">Регистрация</button>
+                    </a>
+                    {% endif %}
+                </div>
+
+                {% if user.is_superuser %}
+                <nav class="navbar">
+                    <div class="container-fluid d-flex justify-content-end">
+
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                            aria-labelledby="offcanvasNavbarLabel">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Админские функции</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                    aria-label="Закрыть"></button>
+                            </div>
+                            <div class="offcanvas-body">
+
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-dark" type="button"
+                                        onclick="location.href='{% url 'mainapp:create_demo_post' %}'">Создать
+                                        демо-статью</button>
+                                    <button class="btn btn-dark" type="button"
+                                        onclick="location.href='{% url 'mainapp:delete_demo_posts' %}'">Удалить все
+                                        демо-статьи</button>
+                                    <button class="btn btn-dark" type="button"
+                                        onclick="location.href='{% url 'mainapp:create_category' %}'">Создать
+                                        категории</button>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                {% endif %}
             </div>
         </div>
     </header>
