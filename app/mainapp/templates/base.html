@@ -30,7 +30,7 @@
                 <div>
                     {% if user.is_authenticated %}
                     <a href="{% url 'users:users-account' %}" class="user_btn">
-                        {{user}}&nbsp;&nbsp;
+                        {{user}}
                     </a>
                     <a href="{% url 'users:logout' %}" class="user_btn">
                         <button type="button" class="btn btn-primary">Выйти</button>
