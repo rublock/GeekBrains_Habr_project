@@ -1,7 +1,9 @@
+from importlib.resources import contents
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -11,9 +13,8 @@ from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.conf import settings
 from .models import User
 from .utils import generate_token
-from userapp.forms import MyUserRegisterForm
+from userapp.forms import MyUserRegisterForm, MyUserLoginForm, ProfileForm
 from django.contrib import auth
-from userapp.forms import MyUserLoginForm
 from django.urls import reverse
 from mainapp.models import Category
 
@@ -103,3 +104,22 @@ def register(request):
         register_form = MyUserRegisterForm()
 
     return render(request, "userapp/register.html", content)
+
+
+@login_required(login_url="/users/login")
+def account(request):
+    context = {"user": request.user}
+    return render(request, "userapp/account.html", context)
+
+
+@login_required(login_url="/users/login")
+def profile(request):
+    form = ProfileForm(instance=request.user)
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+
+    context = {"user": request.user, "form": form}
+    return render(request, "userapp/profile.html", context)

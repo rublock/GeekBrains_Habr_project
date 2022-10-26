@@ -10,3 +10,14 @@ try {
 } catch (err) {
 
 }
+
+function addClassToRedactor() {
+    let element = document.querySelector(".django-ckeditor-widget");
+    element.classList.add("container");
+}
+
+try {
+    addClassToRedactor();
+} catch (err) {
+
+}

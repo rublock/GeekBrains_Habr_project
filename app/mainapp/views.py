@@ -1,10 +1,11 @@
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import CommentForm
+from django.db.models import Q
+
+from .forms import PostForm, CommentForm
 from .models import Post, Comment
 from .utils import *
-from django.db.models import Q
 
 menu = Category.objects.all()
 
@@ -61,6 +62,60 @@ def all_posts(request):
         "home_page.html",
         {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
     )
+
+
+def author_posts(request, author_id):
+    posts = Post.objects.filter(user_id=author_id).order_by("-created_at")
+    paginator = Paginator(posts, 3)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(
+        request,
+        "home_page.html",
+        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
+    )
+
+
+@login_required(login_url="/users/login")
+def post_new(request):
+    context = {}
+    form = PostForm(request.POST or None)
+
+    if request.method == "POST":
+        if form.is_valid():
+            result = form.save(commit=False)
+            result.user = request.user
+            result.save()
+            return redirect("/")
+
+    context = {"form": form}
+    return render(request, "article.html", context)
+
+
+@login_required(login_url="/users/login")
+def post_edit(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            result = form.save(commit=False)
+            result.user = request.user
+            result.save()
+            return redirect("/")
+    elif request.method == "GET":
+        data = {
+            "title": post.title,
+            "description": post.description,
+            "category": post.category,
+            "content": post.content,
+        }
+        form = PostForm(initial=data)
+    else:
+        pass
+
+    context = {"form": form}
+    return render(request, "article.html", context)
 
 
 def detail(request, post_id):

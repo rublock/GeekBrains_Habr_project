@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static django_bootstrap5 %}
+
+{% block content %}
+
+<form action="" method="POST" enctype="multipart/form-data">
+        <div class="container">
+            <div>
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form.as_div }}
+                {{ content|safe }}
+                <input type="submit" class="btn btn-primary mt-3 col-7" name="Обновить информацию">
+            </div>
+        </div>
+</form>
+{% endblock %}

@@ -3,35 +3,8 @@
 {% block title %}Главная страница{% endblock %}
 {% block content %}
 
-<div class="container">
-    <h2>Кол-во постов: {{ posts.count }}</h2>
-    {% for post in page_obj %}
-
-    <div class="row-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-                <strong class="d-inline-block mb-2 text-success">{{ post.category }}</strong>
-                <h3 class="mb-0">{{ post.title }}</h3>
-                <svg class="responsive" width="auto" height="400"></svg>
-                <div class="mb-1 text-muted">{{ post.updated_at|date:'Y m d' }}</div>
-                <p class="mb-auto">{{ post.description|safe|truncatechars:500 }}</p>
-                <a href="{% url 'mainapp:detail' post.id %}" class="btn btn-primary w-25">Продолжить чтение</a>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
+<div class="container main">
+    {% include 'posts.html' %}
 </div>
-
-<center>
-        {%if page_obj.has_previous %}
-            <a href="?page={{page_obj.previous_page_number}}"><</a>
-        {% endif %}
-        <span>{{page_obj.number}}</span>
-
-        {%if page_obj.has_next %}
-            <a href="?page={{page_obj.next_page_number}}">></a>
-        {% endif %}
-    </center>
-
 {% endblock content %}
 
