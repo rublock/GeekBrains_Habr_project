@@ -3,9 +3,12 @@
 
 {% block content %}
 
-<ol>
-    <li> <a href="{% url 'users:users-profile' %}">Профиль</a></li>
-    <li> <a href="{% url 'mainapp:author-posts' user.id %}">Статьи</a></li>
-    <li> <a href="{% url 'mainapp:post-new' %}">Создать новую статью</a></li>
-</ol>
+<div>
+	<div class="d-grid gap-2 col-6 mx-auto">
+		<a class="btn btn-warning" href="{% url 'users:users-profile' %}">Профиль {{ user.username }}</a>
+		<a class="btn btn-success" href="{% url 'mainapp:author-posts' user.id %}">Статьи {{ user.username }}</a>
+        <a class="btn btn-outline-primary" href="{% url 'mainapp:post-new' %}">Создать новую статью</a>
+	</div>
+</div>
+
 {% endblock %} 
