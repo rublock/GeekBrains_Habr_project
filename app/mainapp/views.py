@@ -62,7 +62,11 @@ def all_posts(request):
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    return render(request, "home_page.html", {"page_obj": page_obj, "posts": posts, "menu": menu.all()},)
+    return render(
+        request,
+        "home_page.html",
+        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
+    )
 
 
 def author_posts(request, author_id):
