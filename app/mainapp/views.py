@@ -146,8 +146,31 @@ def detail(request, post_id):
 
 
 def posts_category(request, alias):
-    posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
-    return render(request, "home_page.html", {"posts": posts, "menu": menu.all()})
+    search_query = request.GET.get("search", "")
+
+    if search_query:
+        posts = Post.objects.filter(
+            Q(title__icontains=search_query)
+            | Q(description__icontains=search_query)
+            | Q(content__icontains=search_query)
+        ).order_by("-created_at")
+
+    else:
+        posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
+
+    paginator = Paginator(posts, 3)
+    page_obj = request.GET.get("page")
+    try:
+        posts = paginator.page(page_obj)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(
+        request,
+        "home_page.html",
+        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
+    )
 
 
 @user_passes_test(lambda u: u.is_superuser)
