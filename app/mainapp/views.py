@@ -157,7 +157,6 @@ def posts_category(request, alias):
 
     else:
         posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
-
     paginator = Paginator(posts, 3)
     page_obj = request.GET.get("page")
     try:
