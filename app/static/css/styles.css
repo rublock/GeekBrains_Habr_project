@@ -71,3 +71,7 @@
   margin: 0 auto;
   border-radius: 50%;
 }
+
+.main {
+  min-height: calc(100vh - 350px);
+}
