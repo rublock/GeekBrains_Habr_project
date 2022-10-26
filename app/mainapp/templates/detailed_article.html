@@ -10,7 +10,7 @@
                     <strong class="d-inline-block mb-2 mt-2 text-primary">{{ post.category }}</strong>
                     <div class="col-10 ms-3">
                         {% if user == post.user %}
-                        <a href="#" class="btn btn-secondary w-25">Редактировать</a>
+                        <a href="{% url "mainapp:post-edit" post.id %}" class="btn btn-secondary w-25">Редактировать</a>
                         {% endif %}
                     </div>
                 </div>
