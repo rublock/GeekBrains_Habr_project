@@ -9,11 +9,10 @@ class PostForm(ModelForm):
     category.widget.attrs.update({'class': 'form-control'})
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)  
-          
+
     class Meta:
         model = Post
         widgets = {
-            "user": forms.TextInput(attrs={"class": "form-control"}),
             "title": forms.TextInput(attrs={"class": "form-control"}),
             "description": forms.TextInput(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control"}),
@@ -21,6 +20,7 @@ class PostForm(ModelForm):
         }
         fields = "__all__"
         exclude = [
+            "user",
             "active",
             "is_deleted",
             "created_at",

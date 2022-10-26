@@ -72,7 +72,10 @@ def post_new(request):
 
     if request.method == "POST":
         if form.is_valid():
-            form.save()
+            result = form.save(commit=False)
+            result.user = request.user
+            result.save()
+            return redirect("/")
 
     context = {"form": form}
     return render(request, "article.html", context)
@@ -80,13 +83,25 @@ def post_new(request):
 
 @login_required(login_url="/users/login")
 def post_edit(request, post_id):
-    post = Post.objects.filter(pk=post_id)[0]
-    print(f"-------------------{post.user}")
-    form = PostForm(request.POST, instance=post)
+    post = get_object_or_404(Post, pk=post_id)
 
     if request.method == "POST":
+        form = PostForm(request.POST)
         if form.is_valid():
-            form.save()
+            result = form.save(commit=False)
+            result.user = request.user
+            result.save()
+            return redirect("/")
+    elif request.method == "GET":
+        data = {
+            "title": post.title,
+            "description": post.description,
+            "category": post.category,
+            "content": post.content,
+        }
+        form = PostForm(initial=data)
+    else:
+        pass
 
     context = {"form": form}
     return render(request, "article.html", context)
