@@ -5,4 +5,19 @@ function removeLoginClass() {
     elementPassword.classList.remove("is-invalid");
 }
 
-removeLoginClass();
+try {
+    removeLoginClass();
+} catch (err) {
+
+}
+
+function addClassToRedactor() {
+    let element = document.querySelector(".django-ckeditor-widget");
+    element.classList.add("container");
+}
+
+try {
+    addClassToRedactor();
+} catch (err) {
+
+}
