@@ -1,4 +1,4 @@
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
@@ -53,15 +53,16 @@ def all_posts(request):
         ).order_by("-created_at")
 
     else:
-        posts = Post.objects.all().order_by("-created_at")
+        posts = Post.objects.order_by("-created_at")
     paginator = Paginator(posts, 3)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-    return render(
-        request,
-        "home_page.html",
-        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
-    )
+    page_obj = request.GET.get("page")
+    try:
+        posts = paginator.page(page_obj)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request, "home_page.html", {"page_obj": page_obj, "posts": posts, "menu": menu.all()},)
 
 
 def author_posts(request, author_id):
