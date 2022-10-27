@@ -18,10 +18,10 @@
                 <p class="mb-auto">{{ post.description|safe|truncatechars:500 }}</p>
                 <div class="btn-group">
                     <div class="col-8">
-                        <a href="{% url 'mainapp:detail' post.id %}" class="btn btn-primary w-25 me-3">Продолжить
+                        <a href="{% url 'mainapp:detail' post.id %}" class="btn btn-primary me-3">Продолжить
                             чтение</a>
                         {% if user == post.user %}
-                        <a href="{% url 'mainapp:post-edit' post.id %}" class="btn btn-secondary w-25">Редактировать</a>
+                        <a href="{% url 'mainapp:post-edit' post.id %}" class="btn btn-secondary">Редактировать</a>
                         {% endif %}
                     </div>
                 </div>

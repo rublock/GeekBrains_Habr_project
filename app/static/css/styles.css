@@ -74,4 +74,5 @@
 
 .main {
   min-height: calc(100vh - 350px);
+  max-width: 780px;
 }
