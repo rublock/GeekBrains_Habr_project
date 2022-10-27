@@ -21,3 +21,11 @@ try {
 } catch (err) {
 
 }
+
+let form = document.getElementById("commentForm");
+let text = document.getElementById("id_text");
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    event.preventDefault();
+    text.value = ''
+});
