@@ -33,7 +33,7 @@ class MyUserRegisterForm(UserCreationForm):
 class ProfileForm(UserChangeForm):
     avatar = forms.FileField()
     avatar.widget.attrs.update({"class": "form-control"})
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
