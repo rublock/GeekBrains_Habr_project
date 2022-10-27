@@ -84,7 +84,7 @@ def author_posts(request, author_id):
 @login_required(login_url="/users/login")
 def post_new(request):
     context = {}
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST, request.FILES)
 
     if request.method == "POST":
         if form.is_valid():
@@ -102,7 +102,7 @@ def post_edit(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
 
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             result = form.save(commit=False)
             result.user = request.user

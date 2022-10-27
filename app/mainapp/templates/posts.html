@@ -1,20 +1,27 @@
+{% load static %}
 <div>
     <h2>Кол-во постов: {{ posts.count }}</h2>
+    {% if posts %}
     {% for post in posts %}
     <div class="row-md-6">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
                 <strong class="d-inline-block mb-2 text-success">{{ post.category }}</strong>
                 <h3 class="mb-0">{{ post.title }}</h3>
-                <svg class="responsive" width="100%" height="400"></svg>
+                {% comment %} <svg class="responsive" width="100%" height="400"></svg> {% endcomment %}
+                {% if post.image %}
+                    <img class="responsive" width="100%" height="auto" src="{{ post.image.url }}" >
+                {% else %}
+                    <img class="responsive" width="100%" height="auto" src="{% static 'img/post_no_image.jpg' %}" >
+                {% endif %}
                 <div class="mb-1 text-muted">{{ post.updated_at }} ({{ post.user }})</div>
-                <p class="mb-auto">{{ post.description|safe|truncatechars:500 }}</p>
+                <p class="mb-2">{{ post.description|safe|truncatechars:500 }}</p>
                 <div class="btn-group">
                     <div class="col-8">
-                        <a href="{% url 'mainapp:detail' post.id %}" class="btn btn-primary w-25 me-3">Продолжить
+                        <a href="{% url 'mainapp:detail' post.id %}" class="btn btn-primary me-3 mb-2">Продолжить
                             чтение</a>
                         {% if user == post.user %}
-                        <a href="{% url 'mainapp:post-edit' post.id %}" class="btn btn-secondary w-25">Редактировать</a>
+                        <a href="{% url 'mainapp:post-edit' post.id %}" class="btn btn-secondary mb-2">Редактировать</a>
                         {% endif %}
                     </div>
                 </div>
@@ -22,6 +29,7 @@
         </div>
     </div>
     {% endfor %}
+    {% endif %}
 </div>
 <div class="paginationContainer">
     <ul class="pagination">
