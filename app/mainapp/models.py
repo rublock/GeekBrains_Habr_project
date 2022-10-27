@@ -58,6 +58,12 @@ class Post(models.Model):
     # status = models.ForeignKey(Status, verbose_name='Статусы статьи', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField(
+        null=True,
+        verbose_name="Главное изображение статьи",
+        upload_to="post_image",
+        blank=True,
+    )
     content = RichTextField(null=True, blank=True)
     objects = models.Manager()
 
