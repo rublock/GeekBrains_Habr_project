@@ -1,5 +1,8 @@
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 import userapp.views as userapp
+
 
 app_name = "userapp"
 
@@ -10,4 +13,8 @@ urlpatterns = [
     path("login/", userapp.login, name="login"),
     path("logout/", userapp.logout, name="logout"),
     path("register/", userapp.register, name="register"),
+    path("account/", userapp.account, name="users-account"),
+    path("profile/", userapp.profile, name="users-profile"),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

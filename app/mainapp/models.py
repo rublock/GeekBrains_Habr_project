@@ -74,17 +74,22 @@ class Comment(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, verbose_name="Автор", on_delete=models.CASCADE
     )
-    parent_id = models.IntegerField(
-        verbose_name="ID комментария", default=0, blank=True
+    parent = models.ForeignKey(
+        "self",
+        verbose_name="Родитель",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
     )
     post = models.ForeignKey(
         Post, verbose_name="Название статьи", on_delete=models.CASCADE
     )
-    comment = models.TextField(verbose_name="Комментарий")
+    text = models.TextField(verbose_name="Комментарий")
     active = models.BooleanField(verbose_name="активна", default=True, db_index=True)
     delete = models.BooleanField(verbose_name="Удалена", default=False, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
 
     class Meta:
         verbose_name = "коментарий"

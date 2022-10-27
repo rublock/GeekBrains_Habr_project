@@ -1,5 +1,4 @@
 import requests
-
 from django.contrib.auth.decorators import login_required, user_passes_test
 from bs4 import BeautifulSoup
 
@@ -37,3 +36,34 @@ class DemoPosts:
         post.title = f"DEMO {new_post_title}"
         post.content = new_post_content
         post.save()
+
+    @classmethod
+    def create_category(cls, user: User):
+        if "Дизайн" not in Category.objects.all():
+            Category.objects.get_or_create(
+                name="Дизайн",
+                active=True,
+                alias="design",
+                description="Все о дизайне и для дизайна",
+            )
+        if "Веб-разработка" not in Category.objects.all():
+            Category.objects.get_or_create(
+                name="Веб-разработка",
+                active=True,
+                alias="web",
+                description="Все что надо знать о Web разработке",
+            )
+        if "Мобильная разработка" not in Category.objects.all():
+            Category.objects.get_or_create(
+                name="Мобильная разработка",
+                active=True,
+                alias="mobile",
+                description="Только то что касается мобильной разработки",
+            )
+        if "Маркетинг" not in Category.objects.all():
+            Category.objects.get_or_create(
+                name="Маркетинг",
+                active=True,
+                alias="marketing",
+                description="Ты маркетолог, тогда тебе точно сюда.",
+            )

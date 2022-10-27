@@ -6,10 +6,18 @@
     <div class="row-md-6">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
-                <strong class="d-inline-block mb-2 text-primary">{{ post.category }}</strong>
+                <div class="btn-group">
+                    <strong class="d-inline-block mb-2 mt-2 text-primary">{{ post.category }}</strong>
+                    <div class="col-10 ms-3">
+                        {% if user == post.user %}
+                        <a href="{% url "mainapp:post-edit" post.id %}" class="btn btn-secondary w-25">Редактировать</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <br>
                 <h3 class="mb-0">{{ post.title }}</h3>
                 <!--<svg class="responsive" width="auto" height="400"></svg>-->
-                <div class="mb-1 text-muted">{{ post.updated_at|date:'Y m d' }}</div>
+                <div class="mb-1 text-muted">{{ post.updated_at }}</div>
                 <p class="card-text mb-auto">{{ post.content|safe }}</p>
                 <br>
                 <h3 class="mb-0">Тематика статьи: </h3>
@@ -37,62 +45,6 @@
 </div>
 
 <div class="container">
-    <div class="row-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-                <strong class="d-inline-block mb-2">Опубликовано пользователем: </strong>
-                <h4 class="mb-0">Ксения М.</h4>
-                <div class="mb-1 text-muted">Опубликовано: <b>22/01/2022</b></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-                <h2 class="mb-0">Комментарии:</h2>
-
-                <h4 class="mb-0">Генерируемый Пользователь 1</h4>
-                <div class="mb-1 text-muted">Написал: <b>22/01/2022</b>
-
-                </div>
-                <p class="card-text mb-auto"> Его комментарий: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc consequat interdum varius sit amet mattis vulputate enim nulla. In fermentum posuere urna nec. Sit amet dictum sit amet justo donec enim diam. Convallis aenean et tortor at risus viverra adipiscing at. Quis viverra nibh cras pulvinar mattis nunc sed blandit libero. Urna nunc id cursus metus aliquam eleifend. Consectetur adipiscing elit duis tristique sollicitudin nibh sit. Nunc consequat interdum varius sit amet mattis vulputate enim. Sodales ut etiam sit amet nisl purus in mollis nunc. Diam maecenas ultricies mi eget mauris pharetra. At elementum eu facilisis sed odio morbi. In tellus integer feugiat scelerisque varius morbi enim nunc faucibus. Quis imperdiet massa tincidunt nunc. Et netus et malesuada fames ac turpis egestas integer. Viverra justo nec ultrices dui sapien eget mi. In mollis nunc sed id. Cursus metus aliquam eleifend mi in nulla posuere sollicitudin. In hac habitasse platea dictumst quisque. Lacus luctus accumsan tortor posuere ac ut consequat semper viverra.
-
-                                            Sed tempus urna et pharetra pharetra massa massa ultricies mi. Ut enim blandit volutpat maecenas volutpat blandit aliquam etiam erat. Pretium quam vulputate dignissim suspendisse in. Imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper. Gravida quis blandit turpis cursus in. Turpis egestas pretium aenean pharetra magna ac placerat. Mattis pellentesque id nibh tortor id aliquet lectus proin nibh. At consectetur lorem donec massa sapien faucibus. Nunc vel risus commodo viverra maecenas accumsan lacus vel. Ut eu sem integer vitae justo eget magna fermentum. Purus ut faucibus pulvinar elementum integer enim neque volutpat. Cras fermentum odio eu feugiat pretium. Ultrices gravida dictum fusce ut placerat.</p>
-            </div>
-
-            <div class="mb-1 text-muted d-flex p-4">
-                <button type="button" class="btn btn-outline-primary me-2">Закомментить</button>
-            </div>
-
-        </div>
-
-
-
-        <br>
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-                <h2 class="mb-0">Комментарии:</h2>
-
-                <h4 class="mb-0">Генерируемый Пользователь 2</h4>
-                <div class="mb-1 text-muted">Написал: <b>30/07/2022</b>
-                </div>
-
-                <p class="card-text mb-auto"> Его комментарий: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc consequat interdum varius sit amet mattis vulputate enim nulla. In fermentum posuere urna nec. Sit amet dictum sit amet justo donec enim diam. Convallis aenean et tortor at risus viverra adipiscing at. Quis viverra nibh cras pulvinar mattis nunc sed blandit libero. Urna nunc id cursus metus aliquam eleifend. Consectetur adipiscing elit duis tristique sollicitudin nibh sit. Nunc consequat interdum varius sit amet mattis vulputate enim. Sodales ut etiam sit amet nisl purus in mollis nunc. Diam maecenas ultricies mi eget mauris pharetra. At elementum eu facilisis sed odio morbi. In tellus integer feugiat scelerisque varius morbi enim nunc faucibus. Quis imperdiet massa tincidunt nunc. Et netus et malesuada fames ac turpis egestas integer. Viverra justo nec ultrices dui sapien eget mi. In mollis nunc sed id. Cursus metus aliquam eleifend mi in nulla posuere sollicitudin. In hac habitasse platea dictumst quisque. Lacus luctus accumsan tortor posuere ac ut consequat semper viverra.
-
-                                            Sed tempus urna et pharetra pharetra massa massa ultricies mi. Ut enim blandit volutpat maecenas volutpat blandit aliquam etiam erat. Pretium quam vulputate dignissim suspendisse in. Imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper. Gravida quis blandit turpis cursus in. Turpis egestas pretium aenean pharetra magna ac placerat. Mattis pellentesque id nibh tortor id aliquet lectus proin nibh. At consectetur lorem donec massa sapien faucibus. Nunc vel risus commodo viverra maecenas accumsan lacus vel. Ut eu sem integer vitae justo eget magna fermentum. Purus ut faucibus pulvinar elementum integer enim neque volutpat. Cras fermentum odio eu feugiat pretium. Ultrices gravida dictum fusce ut placerat.</p>
-
-            </div>
-
-                        <div class="mb-1 text-muted d-flex p-4">
-                            <button type="button" class="btn btn-outline-primary me-2">Закомментить</button>
-                        </div>
-
-
-        </div>
-
-
-    </div>
-
+{% include 'comment.html' %}
 </div>
 {% endblock content %}
