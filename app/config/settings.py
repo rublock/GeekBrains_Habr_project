@@ -24,11 +24,13 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split()
 LOCAL_APPS = [
     "mainapp",
     "userapp",
+    "api",
 ]
 
 THIRD_PARTY_APPS = [
     "ckeditor",
     "ckeditor_uploader",
+    "rest_framework",
 ]
 
 INSTALLED_APPS = [
