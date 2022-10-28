@@ -88,20 +88,16 @@
     color: #000;
     outline: 0;
     border-radius: 8px;
-    border: none;
+    border: 1px solid #dee2e6;
     background-image: url('/static/search.svg');
     background-size: 1.4rem;
     background-position: left 1.05rem top .8rem;
     background-repeat: no-repeat;
     background-origin: border-box;
-    background-color: #ebf0f6;
+    background-color: #fff;
     transition: all .4s ease;
     -webkit-transition: all .4s ease;
     -webkit-transform: all .4s ease;
-}
-.autoComplete_wrapper>input:focus{
-    background-color: #fff;
-    border: 1px solid #9f9f9f;
 }
 .autoComplete_wrapper>input:hover {
     color: #000;

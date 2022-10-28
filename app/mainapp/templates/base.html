@@ -24,8 +24,8 @@
                     <li><a href="#" class="nav-link px-2 text-muted">Авторы</a></li>
                     <li><a href="#" class="nav-link px-2 text-muted">Рейтинг</a></li>
                 </ul>
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{% url 'mainapp:home' %}" method="Get">
-                    <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search" name="search">
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <input id="autoComplete" name="search" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" placeholder="Поиск...">
                 </form>
                 <div>
                     {% if user.is_authenticated %}
