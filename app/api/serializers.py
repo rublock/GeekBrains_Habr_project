@@ -10,8 +10,8 @@ class SearchPostSerializer(serializers.Serializer):
     url = serializers.SerializerMethodField()
 
     def get_url(self, obj):
-        return reverse('mainapp:detail', kwargs={'post_id': obj.id })
+        return reverse("mainapp:detail", kwargs={"post_id": obj.id})
 
     class Meta:
         model = Post
-        fields = ('id','name')
+        fields = ("id", "name")
