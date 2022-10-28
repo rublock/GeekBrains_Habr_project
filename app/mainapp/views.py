@@ -206,7 +206,7 @@ def search_post_json(request):
             .order_by("-created_at")
             .values("id", "title")[:10]
         )
-   
+
     posts = list(posts)
 
     return JsonResponse(posts, safe=False)
