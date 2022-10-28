@@ -67,3 +67,7 @@
   min-height: calc(100vh - 350px);
   max-width: 850px;
 }
+
+.avatar {
+  width: 100px;
+}
