@@ -9,7 +9,13 @@
     <title>{% block title %}codeBusters{% endblock %}</title>
     {% bootstrap_css %}
     <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css" media="screen">
-</head>
+
+
+{##}
+{#  <link rel="stylesheet" href="https://assets.habr.com/habr-web/css/chunk-vendors.76652d4b.css">#}
+{#    <link rel="stylesheet" href="https://assets.habr.com/habr-web/css/search.55a21187.css">#}
+
+  </head>
 
 <body>
     <header class="p-3 border-bottom bg-light sticky-xl-top">
@@ -24,8 +30,13 @@
                     <li><a href="#" class="nav-link px-2 text-muted">Авторы</a></li>
                     <li><a href="#" class="nav-link px-2 text-muted">Рейтинг</a></li>
                 </ul>
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                    <input id="autoComplete" name="search" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" placeholder="Поиск...">
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{% url 'mainapp:home' %}" method="Get">
+                    <div class="autoComplete_wrapper" role="combobox" aria-owns="autoComplete_list_[id]" aria-haspopup="true" aria-expanded="false">
+                        <input id="autoComplete" name="search" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" placeholder="Поиск...">
+                        <div class="autoComplete_button">
+                            <button type="submit" class="autoComplete_button_icon"></button>
+                        </div>
+                    </div>
                 </form>
                 <div>
                     {% if user.is_authenticated %}

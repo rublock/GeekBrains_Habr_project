@@ -1,7 +1,7 @@
 const autoCompleteJS = new autoComplete({
     name: 'autoComplete',
     selector: '#autoComplete',
-    wrapper: true,
+    wrapper: false,
     debounce: 300,
     threshold: 3,
     submit: false,
