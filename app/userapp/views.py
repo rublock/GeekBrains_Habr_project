@@ -122,6 +122,5 @@ def profile(request):
         if form.is_valid():
             form.save()
 
-
     context = {"user": request.user, "form": form}
     return render(request, "userapp/profile.html", context)
