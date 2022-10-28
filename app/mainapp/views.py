@@ -2,6 +2,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
+from django.core import serializers
+from django.http import JsonResponse
 
 from .forms import PostForm, CommentForm
 from .models import Post, Comment
@@ -191,3 +193,22 @@ def create_category(request):
     user = request.user
     DemoPosts.create_category(user)
     return redirect("/")
+
+
+def search_post_json(request):
+
+
+        search = request.GET.get("search", "")
+
+        if not search:
+            # return Response(Post.objects.none())
+            JsonResponse({'card': 'rendered_card'})
+
+        posts = Post.objects.filter(Q(title__icontains=search)).order_by("-created_at").values('id', 'title')[:10]
+        posts = list(posts)
+        print(posts)
+
+        # qs_json = serializers.serialize('json', posts)
+        # return Response(serializer.data)
+        return JsonResponse(posts, safe=False)
+

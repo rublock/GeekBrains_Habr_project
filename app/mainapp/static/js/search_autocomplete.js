@@ -12,7 +12,7 @@ const autoCompleteJS = new autoComplete({
         cache: false,
         src: async (query) => {
             try {
-                const source = await fetch(`/api/search-post/?search=${encodeURI(query)}`);
+                const source = await fetch(`/search-post-json/?search=${encodeURI(query)}`);
                 const data = await source.json();
                 return data;
             } catch (error) {
@@ -30,7 +30,7 @@ const autoCompleteJS = new autoComplete({
             selection(event) {
                 const selection = event.detail.selection.value
                 autoCompleteJS.input.value = selection.title;
-                window.location.href = encodeURI(selection.url);
+                window.location.href = `/posts/${encodeURI(selection.id)}/`;
             },
             keydown(event) {
                 if (event.key === 'Enter') {
