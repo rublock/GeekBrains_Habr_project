@@ -197,18 +197,20 @@ def create_category(request):
 
 def search_post_json(request):
 
+    search = request.GET.get("search", "")
 
-        search = request.GET.get("search", "")
+    if not search:
+        # return Response(Post.objects.none())
+        JsonResponse({"card": "rendered_card"})
 
-        if not search:
-            # return Response(Post.objects.none())
-            JsonResponse({'card': 'rendered_card'})
+    posts = (
+        Post.objects.filter(Q(title__icontains=search))
+        .order_by("-created_at")
+        .values("id", "title")[:10]
+    )
+    posts = list(posts)
+    print(posts)
 
-        posts = Post.objects.filter(Q(title__icontains=search)).order_by("-created_at").values('id', 'title')[:10]
-        posts = list(posts)
-        print(posts)
-
-        # qs_json = serializers.serialize('json', posts)
-        # return Response(serializer.data)
-        return JsonResponse(posts, safe=False)
-
+    # qs_json = serializers.serialize('json', posts)
+    # return Response(serializer.data)
+    return JsonResponse(posts, safe=False)
