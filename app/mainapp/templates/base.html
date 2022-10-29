@@ -80,10 +80,11 @@
                                     <button class="btn btn-dark" type="button"
                                         onclick="location.href='{% url 'mainapp:delete_demo_posts' %}'">Удалить все
                                         демо-статьи</button>
+                                    {% if demo_categories %}
                                     <button class="btn btn-dark" type="button"
                                         onclick="location.href='{% url 'mainapp:create_category' %}'">Создать
                                         категории</button>
-
+                                    {% endif %}
                                 </div>
 
                             </div>
