@@ -68,6 +68,10 @@
   max-width: 850px;
 }
 
+.avatar {
+  width: 100px;
+}
+=======
 /* Поле поиска с автодополнением */
 .autoComplete_wrapper {
     display: inline-block;
@@ -208,3 +212,4 @@
     justify-content: center
 }
 /* END Поле поиска с автодополнением */
+

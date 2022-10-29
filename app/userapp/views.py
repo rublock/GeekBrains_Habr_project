@@ -118,11 +118,9 @@ def profile(request):
 
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=request.user)
-        request.user.avatar.name = f"user_avatar/{request.user.avatar.name}"
+
         if form.is_valid():
             form.save()
-        else:
-            print(form.errors.as_data())
 
     context = {"user": request.user, "form": form}
     return render(request, "userapp/profile.html", context)

@@ -2,35 +2,37 @@
 {% load static django_bootstrap5 %}
 
 {% block content %}
-	<br>
-	<form action="" method="POST" enctype="multipart/form-data">
+<br>
+<form action="" method="POST" enctype="multipart/form-data">
 
 
-
-		<div class="col container">
-			<div class="col container">
+	<div class="container">
+		<div class="row container">
+			<div class="col-4">
 				<div class="card card-body">
-					<a href="{% url 'users:users-account' %}" class="btn btn-warning">&#8592; Вернуться в личный кабинет</a>
+					<a href="{% url 'users:users-account' %}" class="btn btn-warning">&#8592; Вернуться в личный
+						кабинет</a>
 					<hr>
 					<h3 style="text-align: center;">Настройки профиля</h3>
 					<hr>
 					{% if request.user.avatar %}
-					<img class="profile-pic" src="{{request.user.avatar.url}}" >
+					<img class="profile-pic" src="{{request.user.avatar.url}}">
 					{% else %}
-					<img class="profile-pic" src="{% static 'img/user.png' %}" >
+					<img class="profile-pic" src="{% static 'img/user.png' %}">
 					{% endif %}
-				</div> 
+				</div>
 			</div>
-			<div class="col container">
+			<div class="col-5">
 				<div class="card card-body">
 
 					{% csrf_token %}
 					{{ form.as_p }}
-					<input type="submit" class="btn btn-primary mt-3" name="Обновить информацию">
+					<button type="submit" class="btn btn-primary mt-3">Обновить</button>
 				</div>
 			</div>
 		</div>
-	</form>
+	</div>
+</form>
 
 
 {% endblock %}
