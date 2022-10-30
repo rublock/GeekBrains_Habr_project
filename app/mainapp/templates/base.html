@@ -172,7 +172,7 @@
         }
 
         window.onclick = function(event) {
-          if (event.target.matches('.btn') && !event.target.matches('.btn'))  {
+          if (!event.target.matches('.btn') && !event.target.matches('.bi-people') && !event.target.matches('.d-print-block'))  {
             var dropdowns = document.getElementsByClassName("dropdown-menu");
             var i;
             for (i = 0; i < dropdowns.length; i++) {
