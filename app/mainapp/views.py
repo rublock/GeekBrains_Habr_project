@@ -108,7 +108,10 @@ def post_edit(request, post_id):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             result = form.save(commit=False)
-            result.user = request.user
+            if request.user.is_superuser:
+                result.user = post.user
+            else:
+                result.user = request.user
             result.save()
             return redirect("/")
     elif request.method == "GET":

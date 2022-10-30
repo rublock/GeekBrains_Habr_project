@@ -20,10 +20,8 @@
                     <div class="col-8">
                         <a href="{% url 'mainapp:post_detail' post.id %}" class="btn btn-primary me-3 mb-2">Продолжить
                             чтение</a>
-                        {% if user == post.user %}
+                            {% if user == post.user or user.is_superuser %}
                         <a href="{% url 'mainapp:post-edit' post.id %}" class="btn btn-secondary me-3 mb-2">Редактировать</a>
-                        {% endif %}
-                        {% if user == post.user or user.is_superuser %}
                         <a href="{% url 'mainapp:post_delete' post.id %}" class="btn btn-danger mb-2">Удалить</a>
                         {% endif %}
                     </div>
