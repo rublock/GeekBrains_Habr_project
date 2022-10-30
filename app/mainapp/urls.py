@@ -11,6 +11,7 @@ urlpatterns = [
     path("posts/<int:post_id>/", views.post_detail, name="post_detail"),
     path("post_new/", views.post_new, name="post-new"),
     path("post_edit/<int:post_id>/", views.post_edit, name="post-edit"),
+    path("post_delete/<int:post_id>/", views.post_delete, name="post_delete"),
     path("<int:author_id>/", views.author_posts, name="author-posts"),
     path("reg_page/", views.reg_page, name="reg_page"),
     path("terms_of_service/", views.terms_of_service, name="terms_of_service"),
