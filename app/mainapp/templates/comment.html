@@ -1,34 +1,30 @@
 {% load static django_bootstrap5 %}
 
- <h5 class="mb-0">Комментариев {{ comment.count }}</h5>
+<h5 class="mb-0">Комментариев {{ comment.count }}</h5>
+
+{% for comm in comment %}
+
+<div class="row-md-6">
+    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+
+            <h4 class="mb-0">{{comm.user}}</h4>
+            <div class="mb-1 text-muted">Написал: <b>{{comm.created_at}}</b>
+
+            </div>
+            <p class="card-text mb-auto"> {{comm.text}}</p>
+        </div>
+    </div>
+</div>
+{% endfor %}
 
 {% if user.is_authenticated %}
 <p>
-    <form action=""  class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="post">
+<form id="commentForm" action="" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="post">
     {%csrf_token %}
     {{ form }}
-    <button type="submit"  class="btn btn-outline-primary me-2" value="Отправить">Оставить комментарий</button>
+    <button type="submit" class="btn btn-outline-primary me-2 mt-2" value="Отправить">Оставить комментарий</button>
 </form>
 
 </p>
 {% endif %}
-
-{% for comm in comment %}
-
-      <div class="row-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-
-                <h4 class="mb-0">{{comm.user}}</h4>
-                <div class="mb-1 text-muted">Написал: <b>{{comm.created_at}}</b>
-
-                </div>
-                <p class="card-text mb-auto"> {{comm.text}}</p>
-            </div>
-
-            <div class="mb-1 text-muted d-flex p-4">
-                <button type="button" class="btn btn-outline-primary me-2">Закомментить</button>
-            </div>
-        </div>
-      </div>
-{% endfor %}

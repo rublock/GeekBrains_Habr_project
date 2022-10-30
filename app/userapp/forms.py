@@ -31,6 +31,9 @@ class MyUserRegisterForm(UserCreationForm):
 
 
 class ProfileForm(UserChangeForm):
+    avatar = forms.FileField()
+    avatar.widget.attrs.update({"class": "form-control"})
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -55,8 +58,6 @@ class ProfileForm(UserChangeForm):
                 choices=model.GENDER_CHOICES, attrs={"class": "form-control input"}
             ),
             "comments": forms.TextInput(attrs={"class": "form-control"}),
-            "skills_id": forms.TextInput(attrs={"class": "form-control"}),
-            "avatar": forms.FileInput(attrs={"class": "form-control"}),
         }
         fields = (
             "username",
@@ -69,5 +70,4 @@ class ProfileForm(UserChangeForm):
             "phone_number",
             "gender",
             "comments",
-            "skills_id",
         )

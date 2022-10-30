@@ -11,7 +11,11 @@
     <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css" media="screen">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 
-</head>
+{##}
+{#  <link rel="stylesheet" href="https://assets.habr.com/habr-web/css/chunk-vendors.76652d4b.css">#}
+{#    <link rel="stylesheet" href="https://assets.habr.com/habr-web/css/search.55a21187.css">#}
+
+  </head>
 
 <body>
     <header class="p-3 border-bottom bg-light sticky-xl-top">
@@ -27,7 +31,12 @@
                     <li><a href="{% url 'mainapp:statistic' %}" class="nav-link px-2 text-muted">Рейтинг</a></li>
                 </ul>
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{% url 'mainapp:home' %}" method="Get">
-                    <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search" name="search">
+                    <div class="autoComplete_wrapper" role="combobox" aria-owns="autoComplete_list_[id]" aria-haspopup="true" aria-expanded="false">
+                        <input id="autoComplete" name="search" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" placeholder="Поиск...">
+                        <div class="autoComplete_button">
+                            <button type="submit" class="autoComplete_button_icon"></button>
+                        </div>
+                    </div>
                 </form>
                 <div>
                     {% if user.is_authenticated %}
@@ -71,10 +80,11 @@
                                     <button class="btn btn-dark" type="button"
                                         onclick="location.href='{% url 'mainapp:delete_demo_posts' %}'">Удалить все
                                         демо-статьи</button>
+                                    {% if demo_categories %}
                                     <button class="btn btn-dark" type="button"
                                         onclick="location.href='{% url 'mainapp:create_category' %}'">Создать
                                         категории</button>
-
+                                    {% endif %}
                                 </div>
 
                             </div>
@@ -113,6 +123,8 @@
 
     {% bootstrap_javascript %}
     <script src="{% static 'js/app.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+    <script src="{% static "js/search_autocomplete.js" %}"></script>
 </body>
 
 </html>

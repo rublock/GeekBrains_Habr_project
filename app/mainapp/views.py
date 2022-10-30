@@ -1,7 +1,9 @@
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
+from django.core import serializers
+from django.http import JsonResponse
 
 from .forms import PostForm, CommentForm
 from .models import Post, Comment
@@ -76,10 +78,15 @@ def all_posts(request):
         ).order_by("-created_at")
 
     else:
-        posts = Post.objects.all().order_by("-created_at")
+        posts = Post.objects.order_by("-created_at")
     paginator = Paginator(posts, 3)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page_obj = request.GET.get("page")
+    try:
+        posts = paginator.page(page_obj)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
     return render(
         request,
         "home_page.html",
@@ -102,7 +109,7 @@ def author_posts(request, author_id):
 @login_required(login_url="/users/login")
 def post_new(request):
     context = {}
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST, request.FILES)
 
     if request.method == "POST":
         if form.is_valid():
@@ -120,7 +127,7 @@ def post_edit(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
 
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             result = form.save(commit=False)
             result.user = request.user
@@ -164,8 +171,30 @@ def detail(request, post_id):
 
 
 def posts_category(request, alias):
-    posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
-    return render(request, "home_page.html", {"posts": posts, "menu": menu.all()})
+    search_query = request.GET.get("search", "")
+
+    if search_query:
+        posts = Post.objects.filter(
+            Q(title__icontains=search_query)
+            | Q(description__icontains=search_query)
+            | Q(content__icontains=search_query)
+        ).order_by("-created_at")
+
+    else:
+        posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
+    paginator = Paginator(posts, 3)
+    page_obj = request.GET.get("page")
+    try:
+        posts = paginator.page(page_obj)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(
+        request,
+        "home_page.html",
+        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
+    )
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -187,3 +216,20 @@ def create_category(request):
     user = request.user
     DemoPosts.create_category(user)
     return redirect("/")
+
+
+def search_post_json(request):
+    search = request.GET.get("search", "")
+
+    if not search:
+        posts = Post.objects.none().values("id", "title")
+    else:
+        posts = (
+            Post.objects.filter(Q(title__icontains=search))
+            .order_by("-created_at")
+            .values("id", "title")[:10]
+        )
+
+    posts = list(posts)
+
+    return JsonResponse(posts, safe=False)

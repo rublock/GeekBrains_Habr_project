@@ -6,6 +6,7 @@ from . import views
 app_name = MainappConfig.name
 
 urlpatterns = [
+    path("search-post-json/", views.search_post_json, name="search-post-json"),
     path("", views.all_posts, name="home"),
     path("posts/<int:post_id>/", views.detail, name="detail"),
     path("post_new/", views.post_new, name="post-new"),
