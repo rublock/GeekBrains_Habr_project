@@ -126,6 +126,14 @@ def post_edit(request, post_id):
     return render(request, "article.html", context)
 
 
+@login_required(login_url="/users/login")
+def post_delete(request, post_id):
+    post_owner = Post.objects.values("user").get(post_id)["user"]
+    if not (request.user == post_owner or request.user.is_superuser):
+        return
+    Post.objects.get(post_id).delete()
+
+
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comment = Comment.objects.filter(post=post)
