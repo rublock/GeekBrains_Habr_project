@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from django.db.models import Q
 from django.core import serializers
 from django.http import JsonResponse
@@ -129,9 +129,8 @@ def post_edit(request, post_id):
 @login_required(login_url="/users/login")
 def post_delete(request, post_id):
     post_owner = Post.objects.values("user").get(pk=post_id)["user"]
-    if not (request.user == post_owner or request.user.is_superuser):
-        return
-    Post.objects.get(pk=post_id).delete()
+    if request.user.id == post_owner or request.user.is_superuser:
+        Post.objects.get(pk=post_id).delete()
     return redirect("/")
 
 
