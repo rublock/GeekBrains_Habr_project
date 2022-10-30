@@ -128,10 +128,11 @@ def post_edit(request, post_id):
 
 @login_required(login_url="/users/login")
 def post_delete(request, post_id):
-    post_owner = Post.objects.values("user").get(post_id)["user"]
+    post_owner = Post.objects.values("user").get(pk=post_id)["user"]
     if not (request.user == post_owner or request.user.is_superuser):
         return
-    Post.objects.get(post_id).delete()
+    Post.objects.get(pk=post_id).delete()
+    return redirect("/")
 
 
 def post_detail(request, post_id):
