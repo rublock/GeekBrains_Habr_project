@@ -9,6 +9,7 @@ from .forms import PostForm, CommentForm
 from .models import Post, Comment
 from .utils import *
 
+
 menu = Category.objects.all()
 
 
@@ -125,7 +126,7 @@ def post_edit(request, post_id):
     return render(request, "article.html", context)
 
 
-def detail(request, post_id):
+def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comment = Comment.objects.filter(post=post)
     if request.method == "POST":

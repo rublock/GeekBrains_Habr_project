@@ -18,7 +18,7 @@
                 <p class="mb-2">{{ post.description|safe|truncatechars:500 }}</p>
                 <div class="btn-group">
                     <div class="col-8">
-                        <a href="{% url 'mainapp:detail' post.id %}" class="btn btn-primary me-3 mb-2">Продолжить
+                        <a href="{% url 'mainapp:post_detail' post.id %}" class="btn btn-primary me-3 mb-2">Продолжить
                             чтение</a>
                         {% if user == post.user %}
                         <a href="{% url 'mainapp:post-edit' post.id %}" class="btn btn-secondary me-3 mb-2">Редактировать</a>
