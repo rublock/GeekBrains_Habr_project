@@ -53,12 +53,15 @@ def statistic(request):
     return render(
         request,
         "statistic.html",
-        {"active_posts": active_posts, "on_moderation_posts": on_moderation_posts,
-         "deleted_posts": deleted_posts,
-         "verified_user": verified_user,
-         "not_verified_user": not_verified_user,
-         "deleted_user": deleted_user,
-         "menu": menu.all()},
+        {
+            "active_posts": active_posts,
+            "on_moderation_posts": on_moderation_posts,
+            "deleted_posts": deleted_posts,
+            "verified_user": verified_user,
+            "not_verified_user": not_verified_user,
+            "deleted_user": deleted_user,
+            "menu": menu.all(),
+        },
     )
 
 
