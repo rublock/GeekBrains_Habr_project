@@ -5,6 +5,11 @@ from ckeditor.fields import RichTextField
 from django.urls import reverse
 
 
+class PostManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_deleted=False)
+
+
 class Category(models.Model):
     # Модель категорий
 
@@ -65,10 +70,15 @@ class Post(models.Model):
         blank=True,
     )
     content = RichTextField(null=True, blank=True)
-    objects = models.Manager()
+    objects_all = models.Manager()
+    objects = PostManager()
 
     def __str__(self):
         return f'{self.title}{"" if self.active else "(блок)"}'
+    
+    def delete(self):
+        self.is_deleted = True
+        self.save()
 
     class Meta:
         verbose_name = "статья"
