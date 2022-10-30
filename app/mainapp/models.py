@@ -68,6 +68,7 @@ class Post(models.Model):
         verbose_name="Главное изображение статьи",
         upload_to="post_image",
         blank=True,
+        max_length=150,
     )
     content = RichTextField(null=True, blank=True)
     objects_all = models.Manager()
