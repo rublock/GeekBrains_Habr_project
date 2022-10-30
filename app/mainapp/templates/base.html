@@ -9,6 +9,8 @@
     <title>{% block title %}codeBusters{% endblock %}</title>
     {% bootstrap_css %}
     <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css" media="screen">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
 </head>
 
 <body>
@@ -22,7 +24,7 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="#" class="nav-link px-2 text-muted">О проекте</a></li>
                     <li><a href="#" class="nav-link px-2 text-muted">Авторы</a></li>
-                    <li><a href="#" class="nav-link px-2 text-muted">Рейтинг</a></li>
+                    <li><a href="{% url 'mainapp:statistic' %}" class="nav-link px-2 text-muted">Рейтинг</a></li>
                 </ul>
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{% url 'mainapp:home' %}" method="Get">
                     <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search" name="search">
