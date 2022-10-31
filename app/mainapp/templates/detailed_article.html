@@ -17,7 +17,18 @@
                 </div>
                 <br>
                 <h3 class="mb-0">{{ post.title }}</h3>
-                <div class="mb-1 text-muted">{{ post.updated_at }}</div>
+                <div class="mb-1 text-muted">
+                    {{ post.updated_at }} |
+                    {% if post.user.last_name or post.user.first_name %}
+                        {{ post.user.last_name|capfirst }}
+                        {{ post.user.first_name|capfirst }}
+                        {% if post.user.first_name %}
+                            {{ post.user.middle_name|capfirst }}
+                        {% endif %}
+                    {% else %}
+                        {{ post.user.username }}
+                    {% endif %}
+                </div>
                 <p class="card-text mb-auto">{{ post.content|safe }}</p>
                 <br>
                 <h3 class="mb-0">Тематика статьи: </h3>
