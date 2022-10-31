@@ -14,7 +14,18 @@
                 {% else %}
                     <img class="responsive" width="100%" height="auto" src="{% static 'img/post_no_image.jpg' %}" >
                 {% endif %}
-                <div class="mb-1 text-muted">{{ post.updated_at }} ({{ post.user }})</div>
+                <div class="mb-1 text-muted">
+                    {{ post.updated_at }} |
+                    {% if post.user.last_name or post.user.first_name %}
+                        {{ post.user.last_name }}
+                        {{ post.user.first_name }}
+                        {% if post.user.first_name %}
+                            {{ post.user.middle_name }}
+                        {% endif %}
+                    {% else %}
+                        {{ post.user.username }}
+                    {% endif %}
+                </div>
                 <p class="mb-2">{{ post.description|safe|truncatechars:500 }}</p>
                 <div class="btn-group">
                     <div class="col-8">
