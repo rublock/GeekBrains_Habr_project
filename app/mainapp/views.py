@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from django.db.models import Q
 from django.core import serializers
 from django.http import JsonResponse
@@ -9,6 +9,7 @@ from .forms import PostForm, CommentForm
 from .models import Post, Comment
 from .utils import *
 from userapp.models import User
+
 
 menu = Category.objects.all()
 
@@ -130,7 +131,10 @@ def post_edit(request, post_id):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             result = form.save(commit=False)
-            result.user = request.user
+            if request.user.is_superuser:
+                result.user = post.user
+            else:
+                result.user = request.user
             result.save()
             return redirect("/")
     elif request.method == "GET":
@@ -148,7 +152,15 @@ def post_edit(request, post_id):
     return render(request, "article.html", context)
 
 
-def detail(request, post_id):
+@login_required(login_url="/users/login")
+def post_delete(request, post_id):
+    post_owner = Post.objects.values("user").get(pk=post_id)["user"]
+    if request.user.id == post_owner or request.user.is_superuser:
+        Post.objects.get(pk=post_id).delete()
+    return redirect("/")
+
+
+def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comment = Comment.objects.filter(post=post)
     if request.method == "POST":

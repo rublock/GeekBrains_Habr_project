@@ -9,8 +9,9 @@
                 <div>
                     <strong class="d-inline-block mb-2 mt-2 text-primary display-6">{{ post.category }}</strong>
                     <div class="col-10">
-                        {% if user == post.user %}
-                        <a href="{% url "mainapp:post-edit" post.id %}" class="btn btn-secondary">Редактировать</a>
+                        {% if user == post.user or user.is_superuser %}
+                        <a href="{% url "mainapp:post-edit" post.id %}" class="btn btn-secondary me-3 mb-2">Редактировать</a>
+                        <a href="{% url 'mainapp:post_delete' post.id %}" class="btn btn-danger mb-2">Удалить</a>
                         {% endif %}
                     </div>
                 </div>

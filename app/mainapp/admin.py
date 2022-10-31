@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.db.models import Manager as DefaultManager
 
 from ckeditor.widgets import CKEditorWidget
 
@@ -23,6 +24,9 @@ class CategoryModelAdmin(admin.ModelAdmin):
 class PostModelAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "user_id"]
     form = PostAdminForm
+
+    def get_queryset(self, request):
+        return self.model.objects_all.all()
 
 
 @admin.register(Comment)
