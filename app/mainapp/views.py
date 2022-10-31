@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from .forms import PostForm, CommentForm
 from .models import Post, Comment
 from .utils import *
+from userapp.models import User
 
 menu = Category.objects.all()
 
@@ -42,6 +43,28 @@ def reg_page(request):
 
 def terms_of_service(request):
     return render(request, "terms_of_service.html")
+
+
+def statistic(request):
+    active_posts = Post.objects.filter(active=True, is_deleted=False)
+    on_moderation_posts = Post.objects.filter(active=False, is_deleted=False)
+    deleted_posts = Post.objects.filter(is_deleted=True)
+    verified_user = User.objects.filter(is_email_verified=True, delete=False)
+    not_verified_user = User.objects.filter(is_email_verified=False, delete=False)
+    deleted_user = User.objects.filter(delete=True)
+    return render(
+        request,
+        "statistic.html",
+        {
+            "active_posts": active_posts,
+            "on_moderation_posts": on_moderation_posts,
+            "deleted_posts": deleted_posts,
+            "verified_user": verified_user,
+            "not_verified_user": not_verified_user,
+            "deleted_user": deleted_user,
+            "menu": menu.all(),
+        },
+    )
 
 
 def all_posts(request):
