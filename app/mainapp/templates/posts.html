@@ -10,7 +10,7 @@
                 <h3 class="mb-0">{{ post.title }}</h3>
                 {% comment %} <svg class="responsive" width="100%" height="400"></svg> {% endcomment %}
                 {% if post.image %}
-                    <img class="responsive" width="100%" height="auto" src="{{ post.image.url }}" >
+                    <img class="responsive" width="100%" height="auto" src="{{ post.image }}" >
                 {% else %}
                     <img class="responsive" width="100%" height="auto" src="{% static 'img/post_no_image.jpg' %}" >
                 {% endif %}
