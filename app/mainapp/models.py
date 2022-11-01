@@ -103,7 +103,9 @@ class Comment(models.Model):
     )
     text = models.TextField(verbose_name="Комментарий")
     active = models.BooleanField(verbose_name="активна", default=True, db_index=True)
-    is_deleted = models.BooleanField(verbose_name="Удалена", default=False, db_index=True)
+    is_deleted = models.BooleanField(
+        verbose_name="Удалена", default=False, db_index=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects_all = models.Manager()
