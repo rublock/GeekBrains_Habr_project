@@ -229,3 +229,14 @@
 }
 
 /* END Поле поиска с автодополнением */
+
+.removeComment {
+  background-image: url('/static/trash.svg');
+  background-size: 2rem;
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-color: transparent;
+  width: 46px;
+  height: 42px;
+  margin: auto  5px 5px 0;
+}
