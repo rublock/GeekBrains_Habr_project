@@ -5,7 +5,7 @@ from ckeditor.fields import RichTextField
 from django.urls import reverse
 
 
-class PostManager(models.Manager):
+class NotDeletedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_deleted=False)
 
@@ -72,7 +72,7 @@ class Post(models.Model):
     )
     content = RichTextField(null=True, blank=True)
     objects_all = models.Manager()
-    objects = PostManager()
+    objects = NotDeletedManager()
 
     def __str__(self):
         return f'{self.title}{"" if self.active else "(блок)"}'
@@ -103,10 +103,17 @@ class Comment(models.Model):
     )
     text = models.TextField(verbose_name="Комментарий")
     active = models.BooleanField(verbose_name="активна", default=True, db_index=True)
-    delete = models.BooleanField(verbose_name="Удалена", default=False, db_index=True)
+    is_deleted = models.BooleanField(
+        verbose_name="Удалена", default=False, db_index=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    objects = models.Manager()
+    objects_all = models.Manager()
+    objects = NotDeletedManager()
+
+    def delete(self):
+        self.is_deleted = True
+        self.save()
 
     class Meta:
         verbose_name = "коментарий"

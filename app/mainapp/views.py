@@ -245,3 +245,11 @@ def search_post_json(request):
     posts = list(posts)
 
     return JsonResponse(posts, safe=False)
+
+
+@login_required(login_url="/users/login")
+def comment_delete(request, pk):
+    comment_owner = Comment.objects.values("user").get(pk=pk)["user"]
+    if request.user.id == comment_owner or request.user.is_superuser:
+        Comment.objects.get(pk=pk).delete()
+    return redirect(request.META["HTTP_REFERER"])
