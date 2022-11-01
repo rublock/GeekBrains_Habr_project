@@ -33,6 +33,9 @@ class PostModelAdmin(admin.ModelAdmin):
 class CommentModelAdmin(admin.ModelAdmin):
     list_display = ["id", "user_id", "post_id"]
 
+    def get_queryset(self, request):
+        return self.model.objects_all.all()
+
 
 @admin.register(Status)
 class StatusModelAdmin(admin.ModelAdmin):

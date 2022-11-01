@@ -14,7 +14,8 @@
             </div>
             <p class="card-text mb-auto"> {{comm.text}}</p>
         </div>
-        <button type="button" class="btn btn-outline-secondary removeComment">
+        {% if user == comm.user or user.is_superuser %}
+        <a href="{% url 'mainapp:comment_delete' comm.id %}" class="btn btn-outline-secondary removeComment">
             <svg width="16" height="16" fill="currentColor" class="bi bi-trash"
                 viewBox="0 0 16 16">
                 <path
@@ -25,7 +26,8 @@
                 </path>
             </svg>
             <span class="visually-hidden">Button</span>
-        </button>
+        </a>
+        {% endif %}
     </div>
     
 </div>
