@@ -1,15 +1,23 @@
 import psycopg2
 import json
 import datetime
+import os
+from dotenv import load_dotenv
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+else:
+    print('Ошибка импорта переменных окружения')
 
 # создаю подключение к базе данных
 connection = psycopg2.connect(
-    user="postgres",
+    user=os.environ['DB_USER'],
     # пароль, который указали при установке PostgreSQL
-    password="2414",
-    host="127.0.0.1",
-    port="5432",
-    database="my_database")
+    password=os.environ['DB_PASSWORD'],
+    host=os.environ['DB_HOST'],
+    port=os.environ['DB_PORT'],
+    database=os.environ['DB_NAME'])
 
 # переменная для обращения к базе данных
 cursor = connection.cursor()
@@ -32,7 +40,6 @@ with open('articles_20.json', 'r', encoding='utf-8') as file_quotes:
     a = json.load(file_quotes)
     for i in a:
         tuple_quotes.append(tuple(i.values()))
-
 
 # переменная с командой внесения данных в таблицу
 insert_query = '''
