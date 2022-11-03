@@ -5,6 +5,11 @@ from ckeditor.fields import RichTextField
 from django.urls import reverse
 
 
+class NotDeletedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_deleted=False)
+
+
 class Category(models.Model):
     # Модель категорий
 
@@ -45,7 +50,7 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL, verbose_name="Автор", on_delete=models.CASCADE
     )
     title = models.CharField(
-        verbose_name="Заголовок статьи", max_length=70, unique=False
+        verbose_name="Заголовок статьи", max_length=110, unique=False
     )
     description = models.TextField(verbose_name="Описание")
     category = models.ForeignKey(
@@ -58,11 +63,23 @@ class Post(models.Model):
     # status = models.ForeignKey(Status, verbose_name='Статусы статьи', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField(
+        null=True,
+        verbose_name="Главное изображение статьи",
+        upload_to="post_image",
+        blank=True,
+        max_length=150,
+    )
     content = RichTextField(null=True, blank=True)
-    objects = models.Manager()
+    objects_all = models.Manager()
+    objects = NotDeletedManager()
 
     def __str__(self):
         return f'{self.title}{"" if self.active else "(блок)"}'
+
+    def delete(self):
+        self.is_deleted = True
+        self.save()
 
     class Meta:
         verbose_name = "статья"
@@ -86,10 +103,17 @@ class Comment(models.Model):
     )
     text = models.TextField(verbose_name="Комментарий")
     active = models.BooleanField(verbose_name="активна", default=True, db_index=True)
-    delete = models.BooleanField(verbose_name="Удалена", default=False, db_index=True)
+    is_deleted = models.BooleanField(
+        verbose_name="Удалена", default=False, db_index=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    objects = models.Manager()
+    objects_all = models.Manager()
+    objects = NotDeletedManager()
+
+    def delete(self):
+        self.is_deleted = True
+        self.save()
 
     class Meta:
         verbose_name = "коментарий"

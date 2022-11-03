@@ -6,18 +6,29 @@
     <div class="row-md-6">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
-                <div class="btn-group">
-                    <strong class="d-inline-block mb-2 mt-2 text-primary">{{ post.category }}</strong>
-                    <div class="col-10 ms-3">
-                        {% if user == post.user %}
-                        <a href="{% url "mainapp:post-edit" post.id %}" class="btn btn-secondary w-25">Редактировать</a>
+                <div>
+                    <strong class="d-inline-block mb-2 mt-2 text-primary display-6">{{ post.category }}</strong>
+                    <div class="col-10">
+                        {% if user == post.user or user.is_superuser %}
+                        <a href="{% url "mainapp:post-edit" post.id %}" class="btn btn-secondary me-3 mb-2">Редактировать</a>
+                        <a href="{% url 'mainapp:post_delete' post.id %}" class="btn btn-danger mb-2">Удалить</a>
                         {% endif %}
                     </div>
                 </div>
                 <br>
                 <h3 class="mb-0">{{ post.title }}</h3>
-                <!--<svg class="responsive" width="auto" height="400"></svg>-->
-                <div class="mb-1 text-muted">{{ post.updated_at }}</div>
+                <div class="mb-1 text-muted">
+                    {{ post.updated_at }} |
+                    {% if post.user.last_name or post.user.first_name %}
+                        {{ post.user.last_name|capfirst }}
+                        {{ post.user.first_name|capfirst }}
+                        {% if post.user.first_name %}
+                            {{ post.user.middle_name|capfirst }}
+                        {% endif %}
+                    {% else %}
+                        {{ post.user.username }}
+                    {% endif %}
+                </div>
                 <p class="card-text mb-auto">{{ post.content|safe }}</p>
                 <br>
                 <h3 class="mb-0">Тематика статьи: </h3>

@@ -9,7 +9,13 @@
     <title>{% block title %}codeBusters{% endblock %}</title>
     {% bootstrap_css %}
     <link rel="stylesheet" href="{% static 'css/styles.css'%}" type="text/css" media="screen">
-</head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+{##}
+{#  <link rel="stylesheet" href="https://assets.habr.com/habr-web/css/chunk-vendors.76652d4b.css">#}
+{#    <link rel="stylesheet" href="https://assets.habr.com/habr-web/css/search.55a21187.css">#}
+
+  </head>
 
 <body>
     <header class="p-3 border-bottom bg-light sticky-xl-top">
@@ -22,28 +28,71 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="#" class="nav-link px-2 text-muted">О проекте</a></li>
                     <li><a href="#" class="nav-link px-2 text-muted">Авторы</a></li>
-                    <li><a href="#" class="nav-link px-2 text-muted">Рейтинг</a></li>
+                    <li><a href="{% url 'mainapp:statistic' %}" class="nav-link px-2 text-muted">Рейтинг</a></li>
                 </ul>
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{% url 'mainapp:home' %}" method="Get">
-                    <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search" name="search">
+                    <div class="autoComplete_wrapper" role="combobox" aria-owns="autoComplete_list_[id]" aria-haspopup="true" aria-expanded="false">
+                        <input id="autoComplete" name="search" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off" placeholder="Поиск...">
+                        <div class="autoComplete_button">
+                            <button type="submit" class="autoComplete_button_icon"></button>
+                        </div>
+                    </div>
                 </form>
-                <div>
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'users:users-account' %}" class="user_btn">
-                        {{user}}
-                    </a>
-                    <a href="{% url 'users:logout' %}" class="user_btn">
-                        <button type="button" class="btn btn-primary">Выйти</button>
-                    </a>
-                    {% else %}
-                    <a href="{% url 'users:login' %}" class="user_btn">
-                        <button type="button" class="btn btn-outline-primary me-2">Войти</button>
-                    </a>
-                    <a href="{% url 'users:register' %}" class="user_btn">
-                        <button type="button" class="btn btn-primary">Регистрация</button>
-                    </a>
-                    {% endif %}
-                </div>
+
+                <div class="btn d-print-block" onclick="myFunctionDropMenu()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="grey" class="bi-people"
+                             viewBox="0 0 16 16">
+                            <title>Профиль</title>
+                            <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                        </svg>
+                        <ul id="myDropdown" class="dropdown-menu dropdown-menu-end shadow" style="width: 250px;">
+                            {% if user.is_authenticated %}
+                            <li><a class="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center" href="{% url 'users:users-profile' %}" title="Войти в профиль">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi-person" viewBox="0 0 16 16">
+                                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                </svg>
+                                Мой профиль - {{user}}
+                            </a></li>
+                            <li><a class="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center" href="{% url 'mainapp:author-posts' user.id %}" title="Просмотреть все мои статьи">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi-file-earmark-text" viewBox="0 0 16 16">
+                                  <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+                                  <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                                </svg>
+                                Мои статьи
+                            </a></li>
+                            <li><a class="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center" href="{% url 'mainapp:post-new' %}" title="Опубликовать новую статью">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi-file-earmark-plus" viewBox="0 0 16 16">
+                                  <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
+                                  <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                                </svg>
+                                Создать новую статью
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center link-danger" href="{% url 'users:logout' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi-box-arrow-right" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                                  <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                                </svg>
+                                <b>Выйти из аккаунта</b>
+                            </a></li>
+                            {% else %}
+                            <li><a class="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center" href="{% url 'users:login' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi-arrow-right-square" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                                </svg>
+                                Войти
+                            </a></li>
+                            <li><a class="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center" href="{% url 'users:register' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi-key" viewBox="0 0 16 16">
+                                  <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
+                                  <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                                Регистрация
+                            </a></li>
+                            {% endif %}
+                        </ul>
+
+                    </div>
 
                 {% if user.is_superuser %}
                 <nav class="navbar">
@@ -64,15 +113,19 @@
 
                                 <div class="d-grid gap-2">
                                     <button class="btn btn-dark" type="button"
+                                        onclick="location.href='/admin'">Перейти в админку
+                                    </button>
+                                    <button class="btn btn-dark" type="button"
                                         onclick="location.href='{% url 'mainapp:create_demo_post' %}'">Создать
                                         демо-статью</button>
                                     <button class="btn btn-dark" type="button"
                                         onclick="location.href='{% url 'mainapp:delete_demo_posts' %}'">Удалить все
                                         демо-статьи</button>
+                                    {% if demo_categories %}
                                     <button class="btn btn-dark" type="button"
                                         onclick="location.href='{% url 'mainapp:create_category' %}'">Создать
                                         категории</button>
-
+                                    {% endif %}
                                 </div>
 
                             </div>
@@ -111,6 +164,27 @@
 
     {% bootstrap_javascript %}
     <script src="{% static 'js/app.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+    <script src="{% static 'js/search_autocomplete.js' %}"></script>
+    <script>
+        function myFunctionDropMenu() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+          if (!event.target.matches('.btn') && !event.target.matches('.bi-people') && !event.target.matches('.d-print-block'))  {
+            var dropdowns = document.getElementsByClassName("dropdown-menu");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
+        }
+    </script>
+
 </body>
 
 </html>
