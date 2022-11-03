@@ -50,7 +50,7 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL, verbose_name="Автор", on_delete=models.CASCADE
     )
     title = models.CharField(
-        verbose_name="Заголовок статьи", max_length=70, unique=False
+        verbose_name="Заголовок статьи", max_length=110, unique=False
     )
     description = models.TextField(verbose_name="Описание")
     category = models.ForeignKey(
