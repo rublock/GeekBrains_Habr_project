@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from django.db.models import Q
 from django.core import serializers
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 
 from .forms import PostForm, CommentForm
 from .models import Post, Comment
@@ -22,12 +22,20 @@ class HomePageView(TemplateView):
         return context
 
 
-class Page404(TemplateView):
-    template_name = "404_page.html"
+def error_404_view(request, exception):
+    return render(request, "404.html")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+
+def error_400_view(request, exception):
+    return render(request, "400.html")
+
+
+def error_403_view(request, exception):
+    return render(request, "403.html")
+
+
+def error_500_view(request):
+    return render(request, "500.html", status=500)
 
 
 class DetailedArticle(TemplateView):
@@ -79,6 +87,7 @@ def all_posts(request):
         ).order_by("-created_at")
 
     else:
+        post_count = Post.objects.all().count
         posts = Post.objects.order_by("-created_at")
     paginator = Paginator(posts, 3)
     page_obj = request.GET.get("page")
@@ -91,7 +100,12 @@ def all_posts(request):
     return render(
         request,
         "home_page.html",
-        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
+        {
+            "page_obj": page_obj,
+            "posts": posts,
+            "menu": menu.all(),
+            "post_count": post_count,
+        },
     )
 
 
@@ -184,29 +198,38 @@ def post_detail(request, post_id):
 
 def posts_category(request, alias):
     search_query = request.GET.get("search", "")
-
-    if search_query:
-        posts = Post.objects.filter(
-            Q(title__icontains=search_query)
-            | Q(description__icontains=search_query)
-            | Q(content__icontains=search_query)
-        ).order_by("-created_at")
-
-    else:
-        posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
-    paginator = Paginator(posts, 3)
-    page_obj = request.GET.get("page")
-    try:
-        posts = paginator.page(page_obj)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        "home_page.html",
-        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
-    )
+    for e in Category.objects.all():
+        if alias == e.alias:
+            if search_query:
+                posts = Post.objects.filter(
+                    Q(title__icontains=search_query)
+                    | Q(description__icontains=search_query)
+                    | Q(content__icontains=search_query)
+                ).order_by("-created_at")
+            else:
+                post_count = Post.objects.filter(category__alias=alias).count
+                posts = Post.objects.filter(category__alias=alias).order_by(
+                    "-created_at"
+                )
+            paginator = Paginator(posts, 3)
+            page_obj = request.GET.get("page")
+            try:
+                posts = paginator.page(page_obj)
+            except PageNotAnInteger:
+                posts = paginator.page(1)
+            except EmptyPage:
+                posts = paginator.page(paginator.num_pages)
+            return render(
+                request,
+                "home_page.html",
+                {
+                    "page_obj": page_obj,
+                    "posts": posts,
+                    "menu": menu.all(),
+                    "post_count": post_count,
+                },
+            )
+    raise Http404("Category not found")
 
 
 @user_passes_test(lambda u: u.is_superuser)
