@@ -2,7 +2,7 @@ from drf_yasg.views import get_schema_view  # new
 from drf_yasg import openapi  # new
 from rest_framework import permissions
 
-from django.urls import path, include, re_path
+from django.urls import path, include
 
 
 schema_view = get_schema_view(  # new
@@ -13,7 +13,6 @@ schema_view = get_schema_view(  # new
         terms_of_service="https://www.google.com/policies/terms/",
         license=openapi.License(name="BSD License"),
     ),
-    # url=f'{settings.APP_URL}/api/v3/',
     patterns=[
         path("api/", include("api.urls")),
     ],
