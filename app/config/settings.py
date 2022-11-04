@@ -24,6 +24,7 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split()
 LOCAL_APPS = [
     "mainapp",
     "userapp",
+    "devautorapp",
 ]
 
 THIRD_PARTY_APPS = [
