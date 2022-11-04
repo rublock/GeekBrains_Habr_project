@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser, DjangoModelPermissions
 
@@ -8,7 +10,19 @@ from mainapp.models import Post, Comment
 
 class PostViewSet(ModelViewSet):
     serializer_class = PostModelSerializer
-    queryset = Post.objects.all()
+
+    def get_queryset(self):
+        queryset = Post.objects.all().order_by("-created_at")
+        search_query = self.request.GET.get("search", "")
+
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query)
+                | Q(description__icontains=search_query)
+                | Q(content__icontains=search_query)
+            )
+
+        return queryset
 
     def get_serializer_class(self):
         if self.action == 'create':
