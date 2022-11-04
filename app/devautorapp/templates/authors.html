@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Главная страница{% endblock %}
+{% block content %}
+
+{% for autor in dev_autor %}
+
+
+<div class="container">
+    <div class="row-md-6">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-3 d-flex flex-column position-static" >
+               {% if autor.avatar.url %}
+					<img class="profile-pic-v2" src="{{ autor.avatar.url }}">
+					{% else %}
+					<img class="profile-pic-v2" src="{% static 'user_avatar/user.png'%}">
+					{% endif %}
+            </div>
+            <div class="col p-3 d-flex flex-column position-static">
+                <h2 class="mb-0">{{ autor.last_name }} {{ autor.first_name }} {{ autor.middle_name }}</h2>
+                <p>{{ autor.comments }} </p>
+
+            </div>
+            <div class="col p-3 d-flex flex-column position-static">
+                <ul class="list-group">
+                    <li  class="list-group-item">
+                        <a href='{{ autor.gb }}' class="nav-link px-2 text-muted" target='_blank'><img width="32" height="32" src="{% static 'img/gb.png' %}"> GeekBrains </a>
+                    </li>
+                    <li  class="list-group-item">
+                        <a href='{{ autor.telegramm }}' class="nav-link px-2 text-muted" target='_blank'><img src="{% static 'img/telegramm.png' %}"> Telrgramm</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}
