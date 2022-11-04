@@ -3,6 +3,7 @@ from rest_framework.pagination import PageNumberPagination
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser, DjangoModelPermissions
+from rest_framework import filters
 
 from .serializers import PostModelSerializer, PostCreateModelSerializer
 from .permissons import IsOwner
@@ -16,21 +17,12 @@ class PostViewSetPagination(PageNumberPagination):
 
 
 class PostViewSet(ModelViewSet):
+    queryset = Post.objects.all()
     serializer_class = PostModelSerializer
     pagination_class = PostViewSetPagination
-
-    def get_queryset(self):
-        queryset = Post.objects.all().order_by("-created_at")
-        search_query = self.request.GET.get("search", "")
-
-        if search_query:
-            queryset = queryset.filter(
-                Q(title__icontains=search_query)
-                | Q(description__icontains=search_query)
-                | Q(content__icontains=search_query)
-            )
-
-        return queryset
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', 'description', 'content']
+    ordering_fields = ['created_at']
 
     def get_serializer_class(self):
         if self.action == 'create':
