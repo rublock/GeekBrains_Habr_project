@@ -12,8 +12,8 @@ router = DefaultRouter()
 router.register("posts", PostViewSet, basename="Post")
 
 urlpatterns = [
-    path("v1/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("v1/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
+    path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("v1/", include(router.urls)),
 ]
