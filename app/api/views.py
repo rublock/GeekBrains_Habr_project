@@ -1,7 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser, DjangoModelPermissions
 
 from .serializers import PostModelSerializer, PostCreateModelSerializer
+from .permissons import IsOwner
 from mainapp.models import Post, Comment
 
 
@@ -15,6 +16,12 @@ class PostViewSet(ModelViewSet):
         return PostModelSerializer
 
     def get_permissions(self):
+
         if self.action == 'create':
-            return [IsAuthenticated()]
-        return [IsAuthenticatedOrReadOnly()]
+            self.permission_classes = [IsAuthenticated]
+        elif self.action == 'destroy':
+            self.permission_classes = [IsOwner|IsAdminUser]
+        else:
+            self.permission_classes = [IsAuthenticatedOrReadOnly]
+
+        return super(self.__class__, self).get_permissions()
