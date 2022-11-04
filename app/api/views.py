@@ -1,4 +1,5 @@
 from django.db.models import Q
+from rest_framework.pagination import PageNumberPagination
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser, DjangoModelPermissions
@@ -8,8 +9,15 @@ from .permissons import IsOwner
 from mainapp.models import Post, Comment
 
 
+class PostViewSetPagination(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = "page_size"
+    max_page_size = 10
+
+
 class PostViewSet(ModelViewSet):
     serializer_class = PostModelSerializer
+    pagination_class = PostViewSetPagination
 
     def get_queryset(self):
         queryset = Post.objects.all().order_by("-created_at")
