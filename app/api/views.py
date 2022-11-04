@@ -1,4 +1,3 @@
-from django.db.models import Q
 from rest_framework.pagination import PageNumberPagination
 
 from rest_framework.viewsets import ModelViewSet
@@ -7,7 +6,7 @@ from rest_framework import filters
 
 from .serializers import PostModelSerializer, PostCreateModelSerializer
 from .permissons import IsOwner
-from mainapp.models import Post, Comment
+from mainapp.models import Post
 
 
 class PostViewSetPagination(PageNumberPagination):
