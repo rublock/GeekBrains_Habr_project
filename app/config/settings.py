@@ -26,6 +26,7 @@ LOCAL_APPS = [
     "mainapp",
     "userapp",
     "api",
+    "devautorapp",
 ]
 
 THIRD_PARTY_APPS = [
