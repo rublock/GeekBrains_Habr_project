@@ -13,3 +13,8 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler400 = "mainapp.views.error_400_view"
+handler403 = "mainapp.views.error_403_view"
+handler404 = "mainapp.views.error_404_view"
+handler500 = "mainapp.views.error_500_view"
