@@ -29,8 +29,12 @@ class PostViewSet(ModelViewSet):
     pagination_class = PostViewSetPagination
 
     filter_backends = (filters.SearchFilter, filters.OrderingFilter)
-    search_fields = ("title", "description", "content")
-    ordering_fields = "created_at"
+    search_fields = (
+        "title",
+        "description",
+        "content",
+    )
+    ordering_fields = ("created_at",)
 
     def get_serializer_class(self):
         if self.action == "retrieve":
