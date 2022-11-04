@@ -9,7 +9,7 @@ from .views import PostViewSet
 app_name = ApiConfig.name
 
 router = DefaultRouter()
-router.register("posts", PostViewSet)
+router.register("posts", PostViewSet, basename="Post")
 
 urlpatterns = [
     path("v1/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),

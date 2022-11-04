@@ -99,7 +99,10 @@ class Comment(models.Model):
         null=True,
     )
     post = models.ForeignKey(
-        Post, verbose_name="Название статьи", on_delete=models.CASCADE
+        Post,
+        related_name="comments",
+        verbose_name="Название статьи",
+        on_delete=models.CASCADE,
     )
     text = models.TextField(verbose_name="Комментарий")
     active = models.BooleanField(verbose_name="активна", default=True, db_index=True)

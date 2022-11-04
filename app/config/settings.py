@@ -32,7 +32,6 @@ THIRD_PARTY_APPS = [
     "ckeditor",
     "ckeditor_uploader",
     "rest_framework",
-    "rest_framework_simplejwt",
 ]
 
 INSTALLED_APPS = [
@@ -155,7 +154,11 @@ EMAIL_PORT = int(os.getenv("EMAIL_PORT", "465"))
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
 }
 
 # API (JWT)
