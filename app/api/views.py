@@ -18,10 +18,13 @@ class PostViewSet(ModelViewSet):
     def get_permissions(self):
 
         if self.action == 'create':
+            # Создавать посты могут только авторизованные пользователи
             self.permission_classes = [IsAuthenticated]
-        elif self.action == 'destroy':
+        elif self.action in ('destroy', 'update', 'partial_update'):
+            # Удалять и редактировать посты могут только авторы и админы
             self.permission_classes = [IsOwner|IsAdminUser]
         else:
+            # Читать посты могут все
             self.permission_classes = [IsAuthenticatedOrReadOnly]
 
         return super(self.__class__, self).get_permissions()
