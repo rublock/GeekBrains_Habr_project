@@ -23,7 +23,7 @@
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                    <img src="{% static 'img/logo.png' %}" alt="logo">
+                    <img class="logo" src="{% static 'img/logo.png' %}" alt="logo">
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
@@ -167,24 +167,6 @@
     <script src="{% static 'js/app.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
     <script src="{% static 'js/search_autocomplete.js' %}"></script>
-    <script>
-        function myFunctionDropMenu() {
-            document.getElementById("myDropdown").classList.toggle("show");
-        }
-
-        window.onclick = function(event) {
-          if (!event.target.matches('.btn') && !event.target.matches('.bi-people') && !event.target.matches('.d-print-block'))  {
-            var dropdowns = document.getElementsByClassName("dropdown-menu");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-              var openDropdown = dropdowns[i];
-              if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-              }
-            }
-          }
-        }
-    </script>
 
 </body>
 
