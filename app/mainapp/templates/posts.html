@@ -53,12 +53,12 @@
                         </a>
 
                             {% if user.is_superuser or user|is_moderator %}
-                                {% if not post.active %}
+                                {% if post.active %}
                                     <a type="button" class="btn btn-success"
-                                       href="{% url 'mainapp:post_active' post.id %}" title="Одобрить">Одобрено</a>
+                                       href="{% url 'mainapp:post_active' post.id %}" title="Отклонить">Одобрено</a>
                                 {% else %}
                                    <a type="button" class="btn btn-danger"
-                                      href="{% url 'mainapp:post_active' post.id %}" title="Отклонить">Отклонено</a>
+                                      href="{% url 'mainapp:post_active' post.id %}" title="Одобрить">Отклонено</a>
                                 {% endif %}
                             {% endif %}
 

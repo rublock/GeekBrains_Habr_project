@@ -187,7 +187,10 @@ def post_active(request, post_id):
     return redirect("/")
 
 def post_detail(request, post_id):
+    # Модератор и суперюзер всегда видят статью, а пользователи - только активную
     post = get_object_or_404(Post, pk=post_id)
+    if not post.active and not request.user.is_superuser and not request.user.groups.filter(name='moderator').exists():
+        raise Http404
 
     # Модератор и суперюзер видят все комменты, а пользователи - только активные
     comment = Comment.objects.filter(post=post)
@@ -295,9 +298,9 @@ def comment_delete(request, pk):
     return redirect(request.META["HTTP_REFERER"])
 
 @login_required(login_url="/users/login")
-def comment_active(request, comment_id):
+def comment_active(request, pk):
     if request.user.is_superuser or request.user.groups.filter(name='moderator').exists():
-        post = Comment.objects.get(pk=comment_id)
-        post.active = not post.active
-        post.save()
-    return redirect("/")
+        comment = Comment.objects.get(pk=pk)
+        comment.active = not comment.active
+        comment.save()
+    return redirect("mainapp:post_detail", post_id=comment.post_id)
