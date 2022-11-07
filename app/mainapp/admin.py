@@ -24,7 +24,7 @@ class PostModelAdmin(admin.ModelAdmin):
     form = PostAdminForm
     list_display = ("id","active","title","category_id","user_id","created_at","updated_at",)
     list_editable = ("active",)
-    list_display_links = ("category_id","user_id",)
+    list_display_links = ("id","category_id","user_id",)
     ordering = ("active","-created_at","-updated_at",)
     list_filter = ("active", "is_deleted",)
 
@@ -36,7 +36,7 @@ class PostModelAdmin(admin.ModelAdmin):
 class CommentModelAdmin(admin.ModelAdmin):
     list_display = ("id","active","text","post_id","user_id","created_at","updated_at",)
     list_editable = ("active",)
-    list_display_links = ("post_id","user_id",)
+    list_display_links = ("id","post_id","user_id",)
     ordering = ("active","-created_at","-updated_at",)
     list_filter = ("active", "is_deleted",)
 
