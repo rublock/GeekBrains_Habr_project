@@ -79,12 +79,10 @@ def statistic(request):
 def all_posts(request):
     search_query = request.GET.get("search", "")
 
-    if request.user.groups.filter(name='moderator').exists() or request.user.is_superuser:
-        # Если админ или модератор, то показываем все статьи
-        queryset = Post.objects.all()
-    else:
-        # Если НЕ модератор, то показывае только активные статьи
-        queryset = Post.objects.filter(active=True)
+    # Модератор и суперюзер видят все посты, а пользователи - только активные
+    queryset = Post.objects.all()
+    if not request.user.is_superuser and not request.user.groups.filter(name='moderator').exists():
+        queryset = queryset.filter(active=True)
 
     if search_query:
         posts = queryset.filter(
@@ -176,7 +174,7 @@ def post_edit(request, post_id):
 @login_required(login_url="/users/login")
 def post_delete(request, post_id):
     post_owner = Post.objects.values("user").get(pk=post_id)["user"]
-    if request.user.id == post_owner or request.user.is_superuser or request.user.groups.filter(name='moderator').exists()
+    if request.user.id == post_owner or request.user.is_superuser or request.user.groups.filter(name='moderator').exists():
         Post.objects.get(pk=post_id).delete()
     return redirect("/")
 
@@ -190,7 +188,12 @@ def post_active(request, post_id):
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
+
+    # Модератор и суперюзер видят все комменты, а пользователи - только активные
     comment = Comment.objects.filter(post=post)
+    if not request.user.is_superuser and not request.user.groups.filter(name='moderator').exists():
+        comment = comment.filter(active=True)
+
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
