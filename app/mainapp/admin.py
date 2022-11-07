@@ -1,8 +1,5 @@
 from django import forms
 from django.contrib import admin
-from django.db.models import Manager as DefaultManager
-
-
 
 from ckeditor.widgets import CKEditorWidget
 
