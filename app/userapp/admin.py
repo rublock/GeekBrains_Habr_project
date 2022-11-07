@@ -26,11 +26,19 @@ class UserAdmin(admin.ModelAdmin):
     readonly_fields = ("password",)
     ordering = ("id",)
     fieldsets = (
-        ("Роль и права", {
-            "fields": ("is_staff","groups",)
-        }),
-        ("Профиль", {
-                'fields': (
+        (
+            "Роль и права",
+            {
+                "fields": (
+                    "is_staff",
+                    "groups",
+                )
+            },
+        ),
+        (
+            "Профиль",
+            {
+                "fields": (
                     "username",
                     "password",
                     "email",
@@ -44,12 +52,19 @@ class UserAdmin(admin.ModelAdmin):
                     "comments",
                     "skills_id",
                 )
-        }),
-        ("Статус аккаунта", {
-            "fields": ("is_active","delete",)
-        }),
+            },
+        ),
+        (
+            "Статус аккаунта",
+            {
+                "fields": (
+                    "is_active",
+                    "delete",
+                )
+            },
+        ),
     )
 
-    @admin.display(description='Модератор', boolean=True)
+    @admin.display(description="Модератор", boolean=True)
     def is_moderator(self, obj):
-        return obj.groups.filter(name='moderator').exists()
+        return obj.groups.filter(name="moderator").exists()
