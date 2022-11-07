@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static is_moderator %}
+{% load static %}
 {% block title %}Детализированная статья{% endblock %}
 {% block content %}
 <div class="container">
@@ -48,7 +48,7 @@
                     </svg>
                 </a>
 
-                {% if user == post.user or user.is_superuser or user|is_moderator %}
+                {% if user == post.user or user.is_superuser or user.is_moderator %}
                 <a type="button" class="btn btn-outline-success articleButtons"
                     href="{% url 'mainapp:post-edit' post.id %}" title="Редактировать статью">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -69,7 +69,7 @@
                     </svg>
                 </a>
 
-                   {% if user.is_superuser or user|is_moderator %}
+                   {% if user.is_superuser or user.is_moderator %}
                         {% if post.active %}
                             <a type="button" class="btn btn-success"
                                href="{% url 'mainapp:post_active' post.id %}" title="Отклоинть">Одобрено</a>
@@ -126,7 +126,7 @@
                         </svg>
                     </a>
 
-                    {% if user == post.user or user.is_superuser or user|is_moderator %}
+                    {% if user == post.user or user.is_superuser or user.is_moderator %}
                     <a type="button" class="btn btn-outline-success articleButtons"
                         href="{% url 'mainapp:post-edit' post.id %}" title="Редактировать статью">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -147,7 +147,7 @@
                         </svg>
                     </a>
 
-                       {% if user.is_superuser or user|is_moderator %}
+                       {% if user.is_superuser or user.is_moderator %}
                             {% if post.active %}
                                 <a type="button" class="btn btn-success"
                                    href="{% url 'mainapp:post_active' post.id %}" title="Отклонить">Одобрено</a>

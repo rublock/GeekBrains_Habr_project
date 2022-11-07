@@ -80,12 +80,13 @@ def all_posts(request):
     search_query = request.GET.get("search", "")
 
     # Модератор и суперюзер видят все посты, а пользователи - только активные
-    queryset = Post.objects.all()
     if (
-        not request.user.is_superuser
-        and not request.user.groups.filter(name="moderator").exists()
+        request.user.is_authenticated
+        and ( request.user.is_superuser or request.user.is_moderator )
     ):
-        queryset = queryset.filter(active=True)
+        queryset = Post.objects.all()
+    else:
+        queryset = Post.objects.filter(active=True)
 
     if search_query:
         posts = queryset.filter(
@@ -180,7 +181,7 @@ def post_delete(request, post_id):
     if (
         request.user.id == post_owner
         or request.user.is_superuser
-        or request.user.groups.filter(name="moderator").exists()
+        or request.user.is_moderator
     ):
         Post.objects.get(pk=post_id).delete()
     return redirect("/")
@@ -190,8 +191,8 @@ def post_delete(request, post_id):
 def post_active(request, post_id):
     if (
         request.user.is_superuser
-        or request.user.groups.filter(name="moderator").exists()
-    ):
+        or request.user.is_moderator
+        ):
         post = Post.objects.get(pk=post_id)
         post.active = not post.active
         post.save()
@@ -200,21 +201,15 @@ def post_active(request, post_id):
 
 def post_detail(request, post_id):
     # Модератор и суперюзер всегда видят статью, а пользователи - только активную
-    post = get_object_or_404(Post, pk=post_id)
     if (
-        not post.active
-        and not request.user.is_superuser
-        and not request.user.groups.filter(name="moderator").exists()
+        request.user.is_authenticated
+        and ( request.user.is_superuser or request.user.is_moderator )
     ):
-        raise Http404
-
-    # Модератор и суперюзер видят все комменты, а пользователи - только активные
-    comment = Comment.objects.filter(post=post)
-    if (
-        not request.user.is_superuser
-        and not request.user.groups.filter(name="moderator").exists()
-    ):
-        comment = comment.filter(active=True)
+        post = get_object_or_404(Post, pk=post_id)
+        comment = Comment.objects.filter(post=post)
+    else:
+        post = get_object_or_404(Post, pk=post_id, active=True)
+        comment = Comment.objects.filter(post=post, active=True)
 
     if request.method == "POST":
         form = CommentForm(request.POST)
@@ -315,7 +310,7 @@ def comment_delete(request, pk):
     if (
         request.user.id == comment_owner
         or request.user.is_superuser
-        or request.user.groups.filter(name="moderator").exists()
+        or request.user.is_moderator
     ):
         Comment.objects.get(pk=pk).delete()
     return redirect(request.META["HTTP_REFERER"])
@@ -325,7 +320,7 @@ def comment_delete(request, pk):
 def comment_active(request, pk):
     if (
         request.user.is_superuser
-        or request.user.groups.filter(name="moderator").exists()
+        or request.user.is_moderator
     ):
         comment = Comment.objects.get(pk=pk)
         comment.active = not comment.active

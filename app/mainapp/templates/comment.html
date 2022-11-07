@@ -1,4 +1,4 @@
-{% load static django_bootstrap5 is_moderator %}
+{% load static django_bootstrap5 %}
 
 <h5 class="mb-0">Комментариев {{ comment.count }}</h5>
 
@@ -14,7 +14,7 @@
             </div>
             <p class="card-text mb-auto"> {{comm.text}}</p>
             <div class="text-end">
-                {% if user == comm.user or user.is_superuser or user|is_moderator %}
+                {% if user == comm.user or user.is_superuser or user.is_moderator %}
                 <a class="btn btn-outline-danger articleButtons" href="{% url 'mainapp:comment_delete' comm.id %}"
                     title="Удалить комментарий">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -26,7 +26,7 @@
                     <span class="visually-hidden">Button</span>
                 </a>
 
-                   {% if user.is_superuser or user|is_moderator %}
+                   {% if user.is_superuser or user.is_moderator %}
                         {% if comm.active %}
                             <a type="button" class="btn btn-success"
                                href="{% url 'mainapp:comment_active' comm.id %}" title="Отклонить">Одобрено</a>

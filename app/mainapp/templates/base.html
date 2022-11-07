@@ -1,5 +1,5 @@
 <!doctype html>
-{% load static django_bootstrap5 is_moderator%}
+{% load static django_bootstrap5 %}
 
 <html lang="ru">
 
@@ -95,7 +95,7 @@
 
                     </div>
 
-                {% if user.is_superuser or user|is_moderator %}
+                {% if user.is_superuser or user.is_moderator %}
                 <nav class="navbar">
                     <div class="container-fluid d-flex justify-content-end">
 
