@@ -26,6 +26,7 @@ class PostModelAdmin(admin.ModelAdmin):
     list_editable = ("active",)
     list_display_links = ("category_id","user_id",)
     ordering = ("active","-created_at","-updated_at",)
+    list_filter = ("active", "is_deleted",)
 
     def get_queryset(self, request):
         return self.model.objects_all.all()
@@ -37,6 +38,7 @@ class CommentModelAdmin(admin.ModelAdmin):
     list_editable = ("active",)
     list_display_links = ("post_id","user_id",)
     ordering = ("active","-created_at","-updated_at",)
+    list_filter = ("active", "is_deleted",)
 
     def get_queryset(self, request):
         return self.model.objects_all.all()
