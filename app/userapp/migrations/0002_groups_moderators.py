@@ -1,11 +1,22 @@
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from django.db import migrations
+from django.db.models import Q
+
+from mainapp.models import Comment, Post
 
 
 def add_group_permissions(apps, schema_editor):
+    post_ct = ContentType.objects.get_for_model(Post)
+    comment_ct = ContentType.objects.get_for_model(Comment)
+
+    permission = Permission.objects.filter(
+        Q(content_type=post_ct)
+        |Q(content_type=comment_ct)
+    )
+
     group, created = Group.objects.get_or_create(name="moderator")
-    group.permissions.set([33,34,35,36]) # Права на модерацию статей
-    group.permissions.set([25,26,27,28]) # Права на модерацию комментов
+    group.permissions.set(permission)
 
 
 class Migration(migrations.Migration):
