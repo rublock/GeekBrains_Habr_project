@@ -22,8 +22,14 @@ class UserAdmin(admin.ModelAdmin):
         "last_name",
         "is_active",
     )
-    list_display_links = ('username', 'email',)
-    readonly_fields = ("password", "get_html_photo",)
+    list_display_links = (
+        "username",
+        "email",
+    )
+    readonly_fields = (
+        "password",
+        "get_html_photo",
+    )
     fields = (
         "username",
         "password",
@@ -49,4 +55,4 @@ class UserAdmin(admin.ModelAdmin):
     get_html_photo.short_description = "Фото"
 
 
-admin.site.site_header = 'Code Busters admin module'
+admin.site.site_header = "Code Busters admin module"

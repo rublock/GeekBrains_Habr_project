@@ -23,7 +23,10 @@ class CategoryModelAdmin(admin.ModelAdmin):
 @admin.register(Post)
 class PostModelAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "user_id", "active"]
-    list_display_links = ('id', 'title',)
+    list_display_links = (
+        "id",
+        "title",
+    )
     form = PostAdminForm
 
     def get_queryset(self, request):
