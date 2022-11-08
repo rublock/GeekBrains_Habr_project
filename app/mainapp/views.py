@@ -71,7 +71,7 @@ def statistic(request):
             "verified_user": verified_user,
             "not_verified_user": not_verified_user,
             "deleted_user": deleted_user,
-            "menu": menu.all(),
+            "menu": menu.filter(active=True),
         },
     )
 
@@ -103,7 +103,7 @@ def all_posts(request):
         {
             "page_obj": page_obj,
             "posts": posts,
-            "menu": menu.all(),
+            "menu": menu.filter(active=True),
             "post_count": post_count,
         },
     )
@@ -117,7 +117,7 @@ def author_posts(request, author_id):
     return render(
         request,
         "home_page.html",
-        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
+        {"page_obj": page_obj, "posts": posts, "menu": menu.filter(active=True)},
     )
 
 
@@ -133,7 +133,7 @@ def post_new(request):
             result.save()
             return redirect("/")
 
-    context = {"form": form}
+    context = {"form": form, "menu": menu.filter(active=True)}
     return render(request, "article.html", context)
 
 
@@ -192,7 +192,7 @@ def post_detail(request, post_id):
     return render(
         request,
         "detailed_article.html",
-        {"menu": menu.all(), "post": post, "form": form, "comment": comment},
+        {"menu": menu.filter(active=True), "post": post, "form": form, "comment": comment},
     )
 
 
@@ -225,7 +225,7 @@ def posts_category(request, alias):
                 {
                     "page_obj": page_obj,
                     "posts": posts,
-                    "menu": menu.all(),
+                    "menu": menu.filter(active=True),
                     "post_count": post_count,
                 },
             )

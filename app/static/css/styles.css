@@ -1,3 +1,7 @@
+.bg{
+  background: url("../img/tech-background.jpg") repeat; 
+}
+
 .regContainer {
   display: flex;
   align-items: center;

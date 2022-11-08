@@ -3,7 +3,7 @@
     <h2>Кол-во постов: {{ post_count }}</h2>
     {% if posts %}
     {% for post in posts %}
-    <div class="row-md-6">
+    <div class="row-md-6 bg-white">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
                 <strong class="d-inline-block mb-2 text-success">{{ post.category }}</strong>
@@ -25,7 +25,7 @@
                         {{ post.user.username }}
                     {% endif %}
                 </div>
-                <p class="mb-2">{{ post.description|safe|truncatechars:500 }}</p>
+                <p class="mb-2">{{ post.content|safe|truncatewords:60 }}</p>
                 <div class="btn-group">
                     <div class="col-8">
                         <a href="{% url 'mainapp:post_detail' post.id %}" class="btn btn-primary">Продолжить
@@ -66,15 +66,15 @@
     <ul class="pagination">
         <li class="page-item">
             {%if posts.has_previous %}
-            <a class="page-link" href="?page={{posts.previous_page_number}}" aria-label="Previous">
+            <a class="page-link fw-bolder" href="?page={{posts.previous_page_number}}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
             {% endif %}
         </li>
-        <li class="page-item"><a class="page-link" href="#"><span>{{posts.number}}</span></a></li>
+        <li class="page-item"><a class="page-link fw-bolder" href="#"><span>{{posts.number}}</span></a></li>
         <li class="page-item">
             {%if posts.has_next %}
-            <a class="page-link" href="?page={{posts.next_page_number}}" aria-label="Next">
+            <a class="page-link fw-bolder" href="?page={{posts.next_page_number}}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>
             {% endif %}
