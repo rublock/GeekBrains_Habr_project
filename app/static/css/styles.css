@@ -65,12 +65,12 @@
 
 
 .profile-pic-v2 {
-    max-width: 200px;
-    max-height: 200px;
-    border-radius: 50%;
-    border: 3px solid #4e86b6;
-    box-shadow: 0 0 7px #008080;
-   }
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 50%;
+  border: 3px solid #4e86b6;
+  box-shadow: 0 0 7px #008080;
+}
 
 .main {
   min-height: calc(100vh - 350px);

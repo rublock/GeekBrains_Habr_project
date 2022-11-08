@@ -15,6 +15,7 @@ urlpatterns = [
     path("comment_delete/<int:pk>/", views.comment_delete, name="comment_delete"),
     path("author_posts/<int:author_id>/", views.author_posts, name="author-posts"),
     path("reg_page/", views.reg_page, name="reg_page"),
+    path("faq/", views.faq, name="faq"),
     path("terms_of_service/", views.terms_of_service, name="terms_of_service"),
     # path("authors/", views.authors, name="authors"),
     path("statistic/", views.statistic, name="statistic"),

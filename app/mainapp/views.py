@@ -276,3 +276,7 @@ def comment_delete(request, pk):
     if request.user.id == comment_owner or request.user.is_superuser:
         Comment.objects.get(pk=pk).delete()
     return redirect(request.META["HTTP_REFERER"])
+
+
+def faq(request):
+    return render(request, "faq.html")
