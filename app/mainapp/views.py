@@ -221,7 +221,12 @@ def post_detail(request, post_id):
     return render(
         request,
         "detailed_article.html",
-        {"menu": menu.filter(active=True), "post": post, "form": form, "comment": comment},
+        {
+            "menu": menu.filter(active=True),
+            "post": post,
+            "form": form,
+            "comment": comment,
+        },
     )
 
 
