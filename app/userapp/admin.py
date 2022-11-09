@@ -74,8 +74,6 @@ class UserAdmin(admin.ModelAdmin):
         ),
     )
 
-    
-
     def get_html_photo(self, object):
         if object.avatar:
             return mark_safe(f"<img src='{object.avatar.url}' width=50>")
@@ -85,5 +83,6 @@ class UserAdmin(admin.ModelAdmin):
     @admin.display(description="Модератор", boolean=True)
     def is_moderator(self, obj):
         return obj.groups.filter(name="moderator").exists()
+
 
 admin.site.site_header = "Code Busters admin module"
