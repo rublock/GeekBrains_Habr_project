@@ -3,8 +3,10 @@
 {% block title %}Статистика{% endblock %}
 {% block content %}
 
-<div class="container main">
-    <div>
+<div class="container">
+    <div class="row-md-6 bg-white">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
 
     <canvas id="myChart" width="250" height="100"></canvas>
 <script>
@@ -52,9 +54,14 @@ const myChart = new Chart(ctx, {
 });
 </script>
 </div>
+</div>
+</div>
 </br>
 </br>
-<div>
+
+    <div class="row-md-6 bg-white">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
 
 <canvas id="myChart1" width="250" height="100"></canvas>
 <script>
@@ -101,6 +108,7 @@ const myChart1 = new Chart(ctx1, {
 });
 </script>
     </div>
-
+    </div>
+    </div>
 </div>
 {% endblock content %}

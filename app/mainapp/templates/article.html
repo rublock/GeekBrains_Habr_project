@@ -3,15 +3,25 @@
 
 {% block content %}
 
-<form action="" method="POST" enctype="multipart/form-data">
-        <div class="container">
-            <div>
-                {% csrf_token %}
-                {{ form.media }}
-                {{ form.as_div }}
-                {{ content|safe }}
-                <input type="submit" class="btn btn-primary mt-3 col-7" name="Обновить информацию">
+<div class="container">
+    <div class="row-md-6 bg-white">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <form action="" method="POST" enctype="multipart/form-data">
+                        <div class="container">
+                            <div>
+                                {% csrf_token %}
+                                {{ form.media }}
+                                {{ form.as_div }}
+                                {{ content|safe }}
+                                <input type="submit" class="btn btn-primary mt-3 col-7" name="Обновить информацию">
+                            </div>
+                        </div>
+                </form>
             </div>
         </div>
-</form>
+    </div>
+</div>
+
+
 {% endblock %}

@@ -18,7 +18,7 @@
 
   </head>
 
-<body>
+<body class="bg">
     <header class="p-3 border-bottom bg-light sticky-xl-top">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -123,6 +123,13 @@
                                     <button class="btn btn-dark" type="button"
                                         onclick="location.href='{% url 'mainapp:delete_demo_posts' %}'">Удалить все
                                         демо-статьи</button>
+                                          <button class="btn btn-dark" type="button"
+                                        onclick="location.href='{% url 'mainapp:clear_database' %}'">Очистить базу
+                                          </button>
+                                    <button class="btn btn-dark" type="button"
+                                        onclick="location.href='{% url 'mainapp:load_database' %}'">Очистить и
+                                        загрузить базу
+                                          </button>
                                     {% if demo_categories %}
                                     <button class="btn btn-dark" type="button"
                                         onclick="location.href='{% url 'mainapp:create_category' %}'">Создать
@@ -155,7 +162,7 @@
 
     {% block content %}{% endblock %}
 
-    <footer class="py-3 my-4">
+    <footer class="py-3 my-4 bg-white ">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
             <li><a href="{% url 'devautorapp:dev_authors' %}" class="nav-link px-2 text-muted">Авторы</a></li>
             <li><a href="{% url 'mainapp:statistic' %}" class="nav-link px-2 text-muted">Рейтинг</a></li>

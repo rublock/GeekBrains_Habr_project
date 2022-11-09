@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from .models import Skills, User
 
@@ -19,12 +20,20 @@ class UserAdmin(admin.ModelAdmin):
         "is_moderator",
         "username",
         "email",
+        "get_html_photo",
         "first_name",
         "last_name",
         "is_active",
     )
-    readonly_fields = ("password",)
+    readonly_fields = (
+        "password",
+        "get_html_photo",
+    )
     ordering = ("id",)
+    list_display_links = (
+        "username",
+        "email",
+    )
     fieldsets = (
         (
             "Роль и права",
@@ -46,6 +55,7 @@ class UserAdmin(admin.ModelAdmin):
                     "last_name",
                     "middle_name",
                     "avatar",
+                    "get_html_photo",
                     "birthday",
                     "phone_number",
                     "gender",
@@ -68,3 +78,12 @@ class UserAdmin(admin.ModelAdmin):
     @admin.display(description="Модератор", boolean=True)
     def is_moderator(self, obj):
         return obj.groups.filter(name="moderator").exists()
+
+    def get_html_photo(self, object):
+        if object.avatar:
+            return mark_safe(f"<img src='{object.avatar.url}' width=50>")
+
+    get_html_photo.short_description = "Фото"
+
+
+admin.site.site_header = "Code Busters admin module"

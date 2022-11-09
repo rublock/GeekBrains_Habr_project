@@ -14,4 +14,10 @@
         or
     - in docker container `docker-compose -f dev-docker-compose.yml up -d`
 5. Optionally from `app/` `python manage.py makemigrations && python manage.py migrate`
-6. To login in Django Administration page create superuser from `app/` execute `python manage.py createsuperuser`
+6. If you needed to download data to your database, make next command from `app/` `python manage.py loaddata database.json` 
+7. If you made point 6 login and password to superuser is:
+   - login - `admin`
+   - password - `admin`
+8. If you don't do the point 6, you mast create the superuser to login in Django Administration page. 
+   
+To create superuser from `app/` execute `python manage.py createsuperuser`
