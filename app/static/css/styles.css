@@ -1,7 +1,3 @@
-.bg{
-  background: url("../img/tech-background.jpg") repeat; 
-}
-
 .regContainer {
   display: flex;
   align-items: center;
@@ -254,4 +250,8 @@
 
 .logo {
   margin-top: 7px;
+}
+
+.bg{
+  background: url("../img/tech-background.jpg") repeat;
 }
