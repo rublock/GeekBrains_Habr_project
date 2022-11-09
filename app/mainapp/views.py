@@ -318,6 +318,16 @@ def comment_delete(request, pk):
         Comment.objects.get(pk=pk).delete()
     return redirect(request.META["HTTP_REFERER"])
 
+@user_passes_test(lambda u: u.is_superuser)
+def clear_database(request):
+    management.call_command("flush", verbosity=0, interactive=False)
+    return redirect("/")
+
+@user_passes_test(lambda u: u.is_superuser)
+def load_database(request):
+    management.call_command("flush", verbosity=0, interactive=False)
+    management.call_command("loaddata", "database.json", verbosity=0)
+    return redirect("/")
 
 @login_required(login_url="/users/login")
 def comment_active(request, pk):
@@ -326,20 +336,3 @@ def comment_active(request, pk):
         comment.active = not comment.active
         comment.save()
     return redirect("mainapp:post_detail", post_id=comment.post_id)
-
-
-def faq(request):
-    return render(request, "faq.html")
-
-
-@user_passes_test(lambda u: u.is_superuser)
-def clear_database(request):
-    management.call_command("flush", verbosity=0, interactive=False)
-    return redirect("/")
-
-
-@user_passes_test(lambda u: u.is_superuser)
-def load_database(request):
-    management.call_command("flush", verbosity=0, interactive=False)
-    management.call_command("loaddata", "database.json", verbosity=0)
-    return redirect("/")
