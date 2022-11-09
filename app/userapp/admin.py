@@ -25,9 +25,15 @@ class UserAdmin(admin.ModelAdmin):
         "last_name",
         "is_active",
     )
-    readonly_fields = ("password", "get_html_photo",)
+    readonly_fields = (
+        "password",
+        "get_html_photo",
+    )
     ordering = ("id",)
-    list_display_links = ('username', 'email',)
+    list_display_links = (
+        "username",
+        "email",
+    )
     fieldsets = (
         (
             "Роль и права",
