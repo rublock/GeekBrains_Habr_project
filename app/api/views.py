@@ -24,8 +24,6 @@ class PostViewSetPagination(PageNumberPagination):
 
 
 class PostViewSet(ModelViewSet):
-    queryset = Post.objects.all()
-
     pagination_class = PostViewSetPagination
 
     filter_backends = (filters.SearchFilter, filters.OrderingFilter)
@@ -35,6 +33,13 @@ class PostViewSet(ModelViewSet):
         "content",
     )
     ordering_fields = ("created_at",)
+
+    def get_queryset(self):
+        # Модератор и суперюзер видят все посты, а пользователи-только активные
+        user = self.request.user
+        if user.is_authenticated and (user.is_superuser or user.is_moderator):
+            return Post.objects.all()
+        return Post.objects.filter(active=True)
 
     def get_serializer_class(self):
         if self.action == "retrieve":
