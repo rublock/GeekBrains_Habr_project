@@ -58,3 +58,7 @@ class User(AbstractUser):
     def activate_user(self):
         self.is_active = True
         self.save()
+
+    @property
+    def is_moderator(self):
+        return self.groups.filter(name="moderator").exists()
