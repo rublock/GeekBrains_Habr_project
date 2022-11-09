@@ -10,7 +10,7 @@
             <a href="{% url 'users:logout' %}">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></a>
         </div>
-        <div  class="modal-body p-5 pt-0 ">
+        <div  class="modal-body p-5 pt-0 bg-white">
             <form action="{% url 'users:login' %}" method="post" class="" >
                 {% csrf_token %}
                 {% bootstrap_form login_form %}
