@@ -335,12 +335,12 @@ def faq(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def clear_database(request):
-    management.call_command('flush', verbosity=0, interactive=False)
+    management.call_command("flush", verbosity=0, interactive=False)
     return redirect("/")
 
 
 @user_passes_test(lambda u: u.is_superuser)
 def load_database(request):
-    management.call_command('flush', verbosity=0, interactive=False)
-    management.call_command('loaddata', 'database.json', verbosity=0)
+    management.call_command("flush", verbosity=0, interactive=False)
+    management.call_command("loaddata", "database.json", verbosity=0)
     return redirect("/")
