@@ -1,4 +1,7 @@
 from django.urls import path
+from django.core import management
+from django.core.management.commands import loaddata
+
 
 from .apps import MainappConfig
 from . import views
@@ -16,11 +19,14 @@ urlpatterns = [
     path("author_posts/<int:author_id>/", views.author_posts, name="author-posts"),
     path("reg_page/", views.reg_page, name="reg_page"),
     path("terms_of_service/", views.terms_of_service, name="terms_of_service"),
-    # path("authors/", views.authors, name="authors"),
     path("statistic/", views.statistic, name="statistic"),
     path("detailed_article/", views.DetailedArticle.as_view(), name="detailed_article"),
     path("create_demo_post/", views.create_demo_post, name="create_demo_post"),
     path("delete_demo_posts/", views.delete_demo_posts, name="delete_demo_posts"),
     path("create_category/", views.create_category, name="create_category"),
+    path("clear_database/", views.clear_database, name="clear_database"),
+    path("load_database/", views.load_database, name="load_database"),
     path("<slug:alias>/", views.posts_category, name="posts_category"),
 ]
+
+# management.call_command(loaddata.Command(), 'test_data', verbosity=0)

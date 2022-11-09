@@ -1,9 +1,13 @@
+from django.contrib.sites import management
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from django.db.models import Q
 from django.core import serializers
 from django.http import JsonResponse, Http404
+from django.core import management
+from django.core.management.commands import loaddata
+
 
 from .forms import PostForm, CommentForm
 from .models import Post, Comment
@@ -281,3 +285,16 @@ def comment_delete(request, pk):
     if request.user.id == comment_owner or request.user.is_superuser:
         Comment.objects.get(pk=pk).delete()
     return redirect(request.META["HTTP_REFERER"])
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def clear_database(request):
+    management.call_command('flush', verbosity=0, interactive=False)
+    return redirect("/")
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def load_database(request):
+    management.call_command('flush', verbosity=0, interactive=False)
+    management.call_command('loaddata', 'database.json', verbosity=0)
+    return redirect("/")
