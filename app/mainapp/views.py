@@ -246,9 +246,7 @@ def posts_category(request, alias):
                 ).order_by("-created_at")
             else:
                 post_count = queryset.filter(category__alias=alias).count
-                posts = queryset.filter(category__alias=alias).order_by(
-                    "-created_at"
-                )
+                posts = queryset.filter(category__alias=alias).order_by("-created_at")
             paginator = Paginator(posts, 3)
             page_obj = request.GET.get("page")
             try:
