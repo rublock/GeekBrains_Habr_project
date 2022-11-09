@@ -318,3 +318,7 @@ def comment_active(request, pk):
         comment.active = not comment.active
         comment.save()
     return redirect("mainapp:post_detail", post_id=comment.post_id)
+
+
+def faq(request):
+    return render(request, "faq.html")
