@@ -9,6 +9,7 @@ class PostListSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
             "id",
+            "active",
             "category",
             "user",
             "title",
@@ -24,7 +25,7 @@ class CommentListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ("id", "user", "parent", "text", "created_at", "updated_at")
+        fields = ("id", "active", "user", "parent", "text", "created_at", "updated_at")
 
 
 class PostRetrieveSerializer(serializers.ModelSerializer):

@@ -56,7 +56,7 @@ class Post(models.Model):
     category = models.ForeignKey(
         Category, verbose_name="Категории статей", on_delete=models.CASCADE
     )
-    active = models.BooleanField(verbose_name="активна", default=True, db_index=True)
+    active = models.BooleanField(verbose_name="активна", default=False, db_index=True)
     is_deleted = models.BooleanField(
         verbose_name="Удалена", default=False, db_index=True
     )
@@ -105,7 +105,7 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
     )
     text = models.TextField(verbose_name="Комментарий")
-    active = models.BooleanField(verbose_name="активна", default=True, db_index=True)
+    active = models.BooleanField(verbose_name="активна", default=False, db_index=True)
     is_deleted = models.BooleanField(
         verbose_name="Удалена", default=False, db_index=True
     )
