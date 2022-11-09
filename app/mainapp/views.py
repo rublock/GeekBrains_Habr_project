@@ -227,19 +227,26 @@ def post_detail(request, post_id):
 
 def posts_category(request, alias):
     search_query = request.GET.get("search", "")
+
+    # Модератор и суперюзер видят все посты, а пользователи - только активные
+    if request.user.is_authenticated and (
+        request.user.is_superuser or request.user.is_moderator
+    ):
+        queryset = Post.objects.all()
+    else:
+        queryset = Post.objects.filter(active=True)
+
     for e in Category.objects.all():
         if alias == e.alias:
             if search_query:
-                posts = Post.objects.filter(
+                posts = queryset.filter(
                     Q(title__icontains=search_query)
                     | Q(description__icontains=search_query)
                     | Q(content__icontains=search_query)
                 ).order_by("-created_at")
             else:
-                post_count = Post.objects.filter(category__alias=alias).count
-                posts = Post.objects.filter(category__alias=alias).order_by(
-                    "-created_at"
-                )
+                post_count = queryset.filter(category__alias=alias).count
+                posts = queryset.filter(category__alias=alias).order_by("-created_at")
             paginator = Paginator(posts, 3)
             page_obj = request.GET.get("page")
             try:
