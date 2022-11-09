@@ -123,6 +123,13 @@
                                     <button class="btn btn-dark" type="button"
                                         onclick="location.href='{% url 'mainapp:delete_demo_posts' %}'">Удалить все
                                         демо-статьи</button>
+                                          <button class="btn btn-dark" type="button"
+                                        onclick="location.href='{% url 'mainapp:clear_database' %}'">Очистить базу
+                                          </button>
+                                    <button class="btn btn-dark" type="button"
+                                        onclick="location.href='{% url 'mainapp:load_database' %}'">Очистить и
+                                        загрузить базу
+                                          </button>
                                     {% if demo_categories %}
                                     <button class="btn btn-dark" type="button"
                                         onclick="location.href='{% url 'mainapp:create_category' %}'">Создать
