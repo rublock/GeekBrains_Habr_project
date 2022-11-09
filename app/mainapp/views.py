@@ -189,7 +189,7 @@ def post_delete(request, post_id):
 @login_required(login_url="/users/login")
 def post_active(request, post_id):
     if request.user.is_superuser or request.user.is_moderator:
-        post = Post.objects.get(pk=post_id)
+        post = get_object_or_404(Post, pk=post_id)
         post.active = not post.active
         post.save()
     return redirect("/")
@@ -314,7 +314,7 @@ def comment_delete(request, pk):
 @login_required(login_url="/users/login")
 def comment_active(request, pk):
     if request.user.is_superuser or request.user.is_moderator:
-        comment = Comment.objects.get(pk=pk)
+        comment = get_object_or_404(Comment, pk=pk)
         comment.active = not comment.active
         comment.save()
     return redirect("mainapp:post_detail", post_id=comment.post_id)
