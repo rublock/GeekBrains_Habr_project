@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import views, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
@@ -65,6 +66,8 @@ class PostViewSet(ModelViewSet):
 
 
 class PostLikeAPIView(views.APIView):
+    renderer_classes = [JSONRenderer]
+
     def get(self, request, *args, **kwargs):
         try:
             post_id = self.kwargs["post_id"]
