@@ -89,7 +89,7 @@ class StatusModelAdmin(admin.ModelAdmin):
 
 @admin.register(PostLikes)
 class PostLikesModelAdmin(admin.ModelAdmin):
-    list_display = ["id", "post_id", "user_id", "like_count", "active"]
+    list_display = ["id", "post_id", "user_id", "status", "active"]
 
 
 @admin.register(CommentLikes)

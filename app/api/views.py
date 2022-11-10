@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.db.models.aggregates import Count
 from rest_framework import views, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
@@ -67,23 +68,28 @@ class PostViewSet(ModelViewSet):
 
 class PostLikeAPIView(views.APIView):
     renderer_classes = [JSONRenderer]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         try:
             post_id = self.kwargs["post_id"]
         except Exception:
             raise ValueError
-        post = get_object_or_404(Post, pk=post_id)
+        post: Post = get_object_or_404(Post, pk=post_id)
         instance, created = PostLikes.objects.get_or_create(user=request.user, post=post)
         if created:
-            active = True
+            like_status = True
         else:
-            active = not instance.active
+            like_status = not instance.status
         data = {
             "user": request.user.id,
             "post": post_id,
-            "active": active
+            "status": like_status
         }
         serializer = PostLikesSerializer(data=data)
         serializer.is_valid(raise_exception=True)
-        return Response(status=status.HTTP_201_CREATED)
+        instance.status = like_status
+        instance.save()
+        post.refresh_from_db()
+        response_data = {"likes": post.likes_count}
+        return Response(data=response_data, status=status.HTTP_201_CREATED)

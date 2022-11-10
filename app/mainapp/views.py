@@ -204,6 +204,7 @@ def post_detail(request, post_id):
         comment = Comment.objects.filter(post=post)
     else:
         post = get_object_or_404(Post, pk=post_id, active=True)
+        post.refresh_from_db()
         comment = Comment.objects.filter(post=post, active=True)
 
     if request.method == "POST":

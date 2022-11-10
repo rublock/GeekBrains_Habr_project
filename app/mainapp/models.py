@@ -81,6 +81,10 @@ class Post(models.Model):
         self.is_deleted = True
         self.save()
 
+    @property
+    def likes_count(self):
+        return self.likes.filter(status=True, active=True).count()
+
     class Meta:
         verbose_name = "статья"
         verbose_name_plural = "статьи"
@@ -150,17 +154,11 @@ class CommentLikes(models.Model):
 
 
 class PostLikes(models.Model):
-    # Модель лайков к коментариям
-    LIKE = "Like"
-    DISLIKE = "Dislike"
-    LIKE_CHOICES = ((LIKE, "Like"), (DISLIKE, "Dislike"))
 
     post = models.ForeignKey(
         Post, verbose_name="Название статьи", related_name="likes", on_delete=models.CASCADE
     )
-    like_count = models.CharField(
-        verbose_name="Лайки", max_length=10, blank=False, choices=LIKE_CHOICES
-    )
+    status = models.BooleanField(default=True, verbose_name="Статус")
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, verbose_name="Автор", related_name="likes", on_delete=models.CASCADE
     )
