@@ -86,5 +86,4 @@ class PostLikeAPIView(views.APIView):
         }
         serializer = PostLikesSerializer(data=data)
         serializer.is_valid(raise_exception=True)
-        data = serializer.validated_data
-        return Response(data=data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)
