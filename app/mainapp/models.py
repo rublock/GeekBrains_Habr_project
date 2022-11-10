@@ -156,13 +156,13 @@ class PostLikes(models.Model):
     LIKE_CHOICES = ((LIKE, "Like"), (DISLIKE, "Dislike"))
 
     post = models.ForeignKey(
-        Post, verbose_name="Название статьи", on_delete=models.CASCADE
+        Post, verbose_name="Название статьи", related_name="likes", on_delete=models.CASCADE
     )
     like_count = models.CharField(
         verbose_name="Лайки", max_length=10, blank=False, choices=LIKE_CHOICES
     )
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name="Автор", on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, verbose_name="Автор", related_name="likes", on_delete=models.CASCADE
     )
     active = models.BooleanField(verbose_name="активна", default=True, db_index=True)
 

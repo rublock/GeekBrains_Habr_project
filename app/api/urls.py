@@ -9,7 +9,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from .apps import ApiConfig
-from .views import PostViewSet
+from .views import PostViewSet, PostLikeAPIView
 from .schema import schema_view
 
 app_name = ApiConfig.name
@@ -19,6 +19,7 @@ router.register("posts", PostViewSet, basename="Post")
 
 urlpatterns = [
     path("v1/", include(router.urls)),
+    path("post_like/<int:post_id>/", PostLikeAPIView.as_view(), name="post_like"),
     # Авторизация по JWT токену
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

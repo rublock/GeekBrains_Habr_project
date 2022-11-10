@@ -1,6 +1,8 @@
+from django.shortcuts import get_object_or_404
+from rest_framework import views, status
 from rest_framework.pagination import PageNumberPagination
-
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
 from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
     IsAuthenticated,
@@ -12,9 +14,10 @@ from .serializers import (
     PostListSerializer,
     PostRetrieveSerializer,
     PostCreateSerializer,
+    PostLikesSerializer
 )
 from .permissons import IsOwner
-from mainapp.models import Post
+from mainapp.models import Post, PostLikes
 
 
 class PostViewSetPagination(PageNumberPagination):
@@ -59,3 +62,22 @@ class PostViewSet(ModelViewSet):
             # Читать посты могут все
             self.permission_classes = [IsAuthenticatedOrReadOnly]
         return super(self.__class__, self).get_permissions()
+
+
+class PostLikeAPIView(views.APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            post_id = self.kwargs["post_id"]
+        except Exception:
+            raise ValueError
+        post = get_object_or_404(Post, pk=post_id)
+        instance, created = PostLikes.objects.get_or_create(user=request.user, post=post)
+        data = {
+            "user": request.user.id,
+            "post": post_id,
+            "active": not instance.active
+        }
+        serializer = PostLikesSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        return Response(status=status.HTTP_201_CREATED)
