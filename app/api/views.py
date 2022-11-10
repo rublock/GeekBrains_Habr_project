@@ -72,10 +72,14 @@ class PostLikeAPIView(views.APIView):
             raise ValueError
         post = get_object_or_404(Post, pk=post_id)
         instance, created = PostLikes.objects.get_or_create(user=request.user, post=post)
+        if created:
+            active = True
+        else:
+            active = not instance.active
         data = {
             "user": request.user.id,
             "post": post_id,
-            "active": not instance.active
+            "active": active
         }
         serializer = PostLikesSerializer(data=data)
         serializer.is_valid(raise_exception=True)
