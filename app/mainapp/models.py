@@ -83,7 +83,7 @@ class Post(models.Model):
 
     @property
     def likes_count(self):
-        return self.likes.filter(status=True, active=True).count()
+        return self.post_likes.filter(status=True, active=True).count()
 
     class Meta:
         verbose_name = "статья"
@@ -118,32 +118,29 @@ class Comment(models.Model):
     objects_all = models.Manager()
     objects = NotDeletedManager()
 
+    def __str__(self):
+        return f"{self.post}"
+
     def delete(self):
         self.is_deleted = True
         self.save()
+
+    @property
+    def likes_count(self):
+        return self.comment_likes.filter(status=True, active=True).count()
 
     class Meta:
         verbose_name = "коментарий"
         verbose_name_plural = "коментарии"
 
-    def __str__(self):
-        return f"{self.post}"
-
 
 class CommentLikes(models.Model):
-    # Модель лайков к коментариям
-    LIKE = "Like"
-    DISLIKE = "Dislike"
-    LIKE_CHOICES = ((LIKE, "Like"), (DISLIKE, "Dislike"))
-
     comment = models.ForeignKey(
-        Comment, verbose_name="Название статьи", on_delete=models.CASCADE
+        Comment, verbose_name="Название статьи", related_name="comment_likes", on_delete=models.CASCADE
     )
-    like_count = models.CharField(
-        verbose_name="Лайки", max_length=10, blank=False, choices=LIKE_CHOICES
-    )
+    status = models.BooleanField(default=True, verbose_name="Статус")
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name="Автор", on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, verbose_name="Автор", related_name="comment_likes", on_delete=models.CASCADE
     )
     active = models.BooleanField(verbose_name="активна", default=True, db_index=True)
 
@@ -154,18 +151,16 @@ class CommentLikes(models.Model):
 
 
 class PostLikes(models.Model):
-
     post = models.ForeignKey(
-        Post, verbose_name="Название статьи", related_name="likes", on_delete=models.CASCADE
+        Post, verbose_name="Название статьи", related_name="post_likes", on_delete=models.CASCADE
     )
     status = models.BooleanField(default=True, verbose_name="Статус")
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name="Автор", related_name="likes", on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, verbose_name="Автор", related_name="post_likes", on_delete=models.CASCADE
     )
     active = models.BooleanField(verbose_name="активна", default=True, db_index=True)
 
     class Meta:
         verbose_name = "Лайк к статье"
         verbose_name_plural = "Лайки к статьям"
-
         unique_together = ("post_id", "user_id")

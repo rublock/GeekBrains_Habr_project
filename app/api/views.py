@@ -16,10 +16,11 @@ from .serializers import (
     PostListSerializer,
     PostRetrieveSerializer,
     PostCreateSerializer,
-    PostLikesSerializer
+    PostLikesSerializer,
+    CommentLikesSerializer,
 )
 from .permissons import IsOwner
-from mainapp.models import Post, PostLikes
+from mainapp.models import Post, PostLikes, Comment, CommentLikes
 
 
 class PostViewSetPagination(PageNumberPagination):
@@ -92,4 +93,33 @@ class PostLikeAPIView(views.APIView):
         instance.save()
         post.refresh_from_db()
         response_data = {"likes": post.likes_count}
-        return Response(data=response_data, status=status.HTTP_201_CREATED)
+        return Response(data=response_data, status=status.HTTP_200_OK)
+
+
+class CommentLikeAPIView(views.APIView):
+    renderer_classes = [JSONRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            comment_id = self.kwargs["comment_id"]
+        except Exception:
+            raise ValueError
+        comment: Comment = get_object_or_404(Comment, pk=comment_id)
+        instance, created = CommentLikes.objects.get_or_create(user=request.user, comment=comment)
+        if created:
+            like_status = True
+        else:
+            like_status = not instance.status
+        data = {
+            "user": request.user.id,
+            "comment": comment_id,
+            "status": like_status
+        }
+        serializer = CommentLikesSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        instance.status = like_status
+        instance.save()
+        comment.refresh_from_db()
+        response_data = {"likes": post.likes_count}
+        return Response(data=response_data, status=status.HTTP_200_OK)
