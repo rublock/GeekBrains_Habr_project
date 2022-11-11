@@ -106,7 +106,7 @@
                 <br>
                 <div class="text-end">
 
-                    <a type="button" class="btn btn-outline-secondary" title="Прокомментировать"
+                    <a type="button" class="btn btn-outline-secondary articleButtons" title="Прокомментировать"
                         href="#commentForm">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-chat-quote-fill" viewBox="0 0 16 16">
@@ -134,7 +134,7 @@
 
 
                     {% if user == post.user or user.is_superuser or user.is_moderator %}
-                    <a type="button" class="btn btn-outline-success"
+                    <a type="button" class="btn btn-outline-success articleButtons"
                         href="{% url 'mainapp:post-edit' post.id %}" title="Редактировать статью">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-pen-fill" viewBox="0 0 16 16">
@@ -144,7 +144,7 @@
                         </svg>
                     </a>
 
-                    <a type="button" class="btn btn-outline-danger articleButtons"
+                    <a type="button" class="btn btn-outline-danger articleButtons articleButtons"
                         href="{% url 'mainapp:post_delete' post.id %}" title="Удалить статью">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-trash3-fill" viewBox="0 0 16 16">

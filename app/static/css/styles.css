@@ -239,6 +239,15 @@
 
 /* END Поле поиска с автодополнением */
 
+.articleButtons {
+  background-size: 2rem;
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-color: transparent;
+  width: 46px;
+  height: 42px;
+}
+
 .logo {
   margin-top: 7px;
 }
@@ -250,4 +259,5 @@
 .likeContainer {
   display: flex;
   justify-content: center;
+  height: 28px;
 }
