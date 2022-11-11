@@ -82,7 +82,7 @@ class PostLikesSerializer(serializers.ModelSerializer):
 
 class CommentLikesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CommentLikes()
+        model = CommentLikes
         fields = (
             "comment",
             "user",

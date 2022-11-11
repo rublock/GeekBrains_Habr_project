@@ -121,5 +121,5 @@ class CommentLikeAPIView(views.APIView):
         instance.status = like_status
         instance.save()
         comment.refresh_from_db()
-        response_data = {"likes": post.likes_count}
+        response_data = {"likes": comment.likes_count}
         return Response(data=response_data, status=status.HTTP_200_OK)

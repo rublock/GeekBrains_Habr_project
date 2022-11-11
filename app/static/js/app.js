@@ -84,3 +84,22 @@ if (getButtonUrlDataset != "") {
         }
     });
 }
+getCommentLikeButtonUrlDataset = document.querySelector(".likeButton.comment").dataset.like
+if (getCommentLikeButtonUrlDataset != "") {
+    document.querySelector(".likeButton.comment").addEventListener("click", () => {
+        let requestURL = new URL(String(protocolHost + getCommentLikeButtonUrlDataset + "?format=json"));
+        const xhr = new XMLHttpRequest();
+        xhr.open
+            ("GET", requestURL, false);
+        xhr.send();
+        let likeJson = JSON.parse(xhr.response);
+        if (xhr.status === 401) {
+        return
+        } else if (likeJson.likes != 0) {
+            document.querySelector(".likeSpan.comment").style.display = "flex";
+            document.querySelector(".likeSpan.comment").innerHTML = likeJson.likes
+        } else if (likeJson.likes === 0) {
+            document.querySelector(".likeSpan.comment").style.display = "none";
+        }
+    });
+}
