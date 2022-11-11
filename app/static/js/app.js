@@ -46,3 +46,16 @@ window.onclick = function (event) {
         }
     }
 }
+
+let protocolHost = window.location.protocol + '//' + window.location.host
+getButtonUrlDataset = document.querySelector('.likeButton').dataset.like
+
+document.querySelector('.likeButton').addEventListener('click', () => {
+    let requestURL = new URL(String(protocolHost + getButtonUrlDataset));
+    const xhr = new XMLHttpRequest();
+    xhr.open
+        ('GET', requestURL, false);
+    xhr.send();
+    console.log(xhr.response);
+    console.log(xhr.status);
+});
