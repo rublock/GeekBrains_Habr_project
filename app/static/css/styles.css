@@ -261,3 +261,11 @@
   justify-content: center;
   height: 28px;
 }
+
+.likeSpanHidden {
+  display: none;
+}
+
+.likeSpanDownHidden {
+  display: none;
+}

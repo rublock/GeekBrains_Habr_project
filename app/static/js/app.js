@@ -57,14 +57,15 @@ document.querySelector('.likeButton').addEventListener('click', () => {
         ('GET', requestURL, false);
     xhr.send();
     let likeJson = JSON.parse(xhr.response);
-    if (likeJson.likes != 0) {
+    if (xhr.status === 401) {
+       return
+    } else if (likeJson.likes != 0) {
         document.querySelector(".likeSpan").style.display = "flex";
         document.querySelector('.likeSpan').innerHTML = likeJson.likes
     } else if (likeJson.likes === 0) {
         document.querySelector(".likeSpan").style.display = "none";
     }
 });
-
 document.querySelector('.likeButtonDown').addEventListener('click', () => {
     let requestURL = new URL(String(protocolHost + getButtonUrlDataset + '?format=json'));
     const xhr = new XMLHttpRequest();
@@ -72,7 +73,9 @@ document.querySelector('.likeButtonDown').addEventListener('click', () => {
         ('GET', requestURL, false);
     xhr.send();
     let likeJson = JSON.parse(xhr.response);
-    if (likeJson.likes != 0) {
+    if (xhr.status === 401) {
+       return
+    } else if (likeJson.likes != 0) {
         document.querySelector(".likeSpanDown").style.display = "flex";
         document.querySelector('.likeSpanDown').innerHTML = likeJson.likes
     } else if (likeJson.likes === 0) {

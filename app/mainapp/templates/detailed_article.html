@@ -51,7 +51,7 @@
                     </path>
 
                 </svg>
-                <span class="likeSpan">{{ post.likes_count }}</span>
+                <span class="likeSpan{% if post.likes_count == 0 %} likeSpanHidden{% endif %}">{{ post.likes_count }}</span>
             </div>
             </a>
 
@@ -135,7 +135,7 @@
                             </path>
 
                         </svg>
-                        <span class="likeSpanDown">{{ post.likes_count }}</span>
+                        <span class="likeSpanDown{% if post.likes_count == 0 %} likeSpanDownHidden{% endif %}">{{ post.likes_count }}</span>
                     </div>
                     </a>
 
