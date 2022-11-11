@@ -57,5 +57,25 @@ document.querySelector('.likeButton').addEventListener('click', () => {
         ('GET', requestURL, false);
     xhr.send();
     let likeJson = JSON.parse(xhr.response);
-    document.querySelector('.likeSpan').innerHTML = likeJson.likes
+    if (likeJson.likes != 0) {
+        document.querySelector(".likeSpan").style.display = "flex";
+        document.querySelector('.likeSpan').innerHTML = likeJson.likes
+    } else if (likeJson.likes === 0) {
+        document.querySelector(".likeSpan").style.display = "none";
+    }
+});
+
+document.querySelector('.likeButtonDown').addEventListener('click', () => {
+    let requestURL = new URL(String(protocolHost + getButtonUrlDataset + '?format=json'));
+    const xhr = new XMLHttpRequest();
+    xhr.open
+        ('GET', requestURL, false);
+    xhr.send();
+    let likeJson = JSON.parse(xhr.response);
+    if (likeJson.likes != 0) {
+        document.querySelector(".likeSpanDown").style.display = "flex";
+        document.querySelector('.likeSpanDown').innerHTML = likeJson.likes
+    } else if (likeJson.likes === 0) {
+        document.querySelector(".likeSpanDown").style.display = "none";
+    }
 });
