@@ -41,7 +41,7 @@
 
 
                 <a type="button" class="btn btn-outline-warning likeButton" title="Лайкнуть"
-                data-like={% url 'api:post_like' post.id %}>
+                data-like="{% if request.user.is_authenticated %}{% url 'api:post_like' post.id %}{% endif %}">
                 <div class="likeContainer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
                     class="bi bi-fire" viewBox="0 0 16 16">
@@ -125,7 +125,7 @@
                     </a>
 
                     <a type="button" class="btn btn-outline-warning likeButtonDown" title="Лайкнуть"
-                        data-like={% url 'api:post_like' post.id %}>
+                        data-like="{% if request.user.is_authenticated %}{% url 'api:post_like' post.id %}{% endif %}">
                         <div class="likeContainer">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
                             class="bi bi-fire" viewBox="0 0 16 16">
