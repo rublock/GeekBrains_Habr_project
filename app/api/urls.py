@@ -20,7 +20,11 @@ router.register("posts", PostViewSet, basename="Post")
 urlpatterns = [
     path("v1/", include(router.urls)),
     path("post_like/<int:post_id>/", PostLikeAPIView.as_view(), name="post_like"),
-    path("comment_like/<int:comment_id>/", CommentLikeAPIView.as_view(), name="comment_like"),
+    path(
+        "comment_like/<int:comment_id>/",
+        CommentLikeAPIView.as_view(),
+        name="comment_like",
+    ),
     # Авторизация по JWT токену
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

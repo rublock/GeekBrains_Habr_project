@@ -136,11 +136,17 @@ class Comment(models.Model):
 
 class CommentLikes(models.Model):
     comment = models.ForeignKey(
-        Comment, verbose_name="Название статьи", related_name="comment_likes", on_delete=models.CASCADE
+        Comment,
+        verbose_name="Название статьи",
+        related_name="comment_likes",
+        on_delete=models.CASCADE,
     )
     status = models.BooleanField(default=True, verbose_name="Статус")
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name="Автор", related_name="comment_likes", on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL,
+        verbose_name="Автор",
+        related_name="comment_likes",
+        on_delete=models.CASCADE,
     )
     active = models.BooleanField(verbose_name="активна", default=True, db_index=True)
 
@@ -152,11 +158,17 @@ class CommentLikes(models.Model):
 
 class PostLikes(models.Model):
     post = models.ForeignKey(
-        Post, verbose_name="Название статьи", related_name="post_likes", on_delete=models.CASCADE
+        Post,
+        verbose_name="Название статьи",
+        related_name="post_likes",
+        on_delete=models.CASCADE,
     )
     status = models.BooleanField(default=True, verbose_name="Статус")
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name="Автор", related_name="post_likes", on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL,
+        verbose_name="Автор",
+        related_name="post_likes",
+        on_delete=models.CASCADE,
     )
     active = models.BooleanField(verbose_name="активна", default=True, db_index=True)
 

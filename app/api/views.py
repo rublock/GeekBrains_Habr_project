@@ -77,16 +77,14 @@ class PostLikeAPIView(views.APIView):
         except Exception:
             raise ValueError
         post: Post = get_object_or_404(Post, pk=post_id)
-        instance, created = PostLikes.objects.get_or_create(user=request.user, post=post)
+        instance, created = PostLikes.objects.get_or_create(
+            user=request.user, post=post
+        )
         if created:
             like_status = True
         else:
             like_status = not instance.status
-        data = {
-            "user": request.user.id,
-            "post": post_id,
-            "status": like_status
-        }
+        data = {"user": request.user.id, "post": post_id, "status": like_status}
         serializer = PostLikesSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         instance.status = like_status
@@ -106,16 +104,14 @@ class CommentLikeAPIView(views.APIView):
         except Exception:
             raise ValueError
         comment: Comment = get_object_or_404(Comment, pk=comment_id)
-        instance, created = CommentLikes.objects.get_or_create(user=request.user, comment=comment)
+        instance, created = CommentLikes.objects.get_or_create(
+            user=request.user, comment=comment
+        )
         if created:
             like_status = True
         else:
             like_status = not instance.status
-        data = {
-            "user": request.user.id,
-            "comment": comment_id,
-            "status": like_status
-        }
+        data = {"user": request.user.id, "comment": comment_id, "status": like_status}
         serializer = CommentLikesSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         instance.status = like_status
