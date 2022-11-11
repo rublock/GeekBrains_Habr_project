@@ -1,9 +1,12 @@
+from django.contrib.sites import management
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from django.db.models import Q
 from django.core import serializers
 from django.http import JsonResponse, Http404
+from django.core import management
+from django.core.management.commands import loaddata
 
 from .forms import PostForm, CommentForm
 from .models import Post, Comment
@@ -71,7 +74,7 @@ def statistic(request):
             "verified_user": verified_user,
             "not_verified_user": not_verified_user,
             "deleted_user": deleted_user,
-            "menu": menu.all(),
+            "menu": menu.filter(active=True),
         },
     )
 
@@ -111,7 +114,7 @@ def all_posts(request):
         {
             "page_obj": page_obj,
             "posts": posts,
-            "menu": menu.all(),
+            "menu": menu.filter(active=True),
             "post_count": post_count,
         },
     )
@@ -125,7 +128,7 @@ def author_posts(request, author_id):
     return render(
         request,
         "home_page.html",
-        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
+        {"page_obj": page_obj, "posts": posts, "menu": menu.filter(active=True)},
     )
 
 
@@ -141,7 +144,7 @@ def post_new(request):
             result.save()
             return redirect("/")
 
-    context = {"form": form}
+    context = {"form": form, "menu": menu.filter(active=True)}
     return render(request, "article.html", context)
 
 
@@ -222,7 +225,12 @@ def post_detail(request, post_id):
     return render(
         request,
         "detailed_article.html",
-        {"menu": menu.all(), "post": post, "form": form, "comment": comment},
+        {
+            "menu": menu.filter(active=True),
+            "post": post,
+            "form": form,
+            "comment": comment,
+        },
     )
 
 
@@ -262,7 +270,7 @@ def posts_category(request, alias):
                 {
                     "page_obj": page_obj,
                     "posts": posts,
-                    "menu": menu.all(),
+                    "menu": menu.filter(active=True),
                     "post_count": post_count,
                 },
             )
@@ -317,6 +325,19 @@ def comment_delete(request, pk):
     ):
         Comment.objects.get(pk=pk).delete()
     return redirect(request.META["HTTP_REFERER"])
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def clear_database(request):
+    management.call_command("flush", verbosity=0, interactive=False)
+    return redirect("/")
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def load_database(request):
+    management.call_command("flush", verbosity=0, interactive=False)
+    management.call_command("loaddata", "database.json", verbosity=0)
+    return redirect("/")
 
 
 @login_required(login_url="/users/login")

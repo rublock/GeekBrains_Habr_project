@@ -13,6 +13,8 @@ class PostForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["category"].label = "Категория"
+        self.fields["content"].label = "Содержимое"
 
     class Meta:
         model = Post

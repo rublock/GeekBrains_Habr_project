@@ -75,7 +75,7 @@ def login(request):
         if user and user.is_active:
             auth.login(request, user)
             return redirect("/")
-    content = {"login_form": login_form, "menu": menu.all()}
+    content = {"login_form": login_form, "menu": menu.filter(active=True)}
     return render(request, "userapp/login.html", content)
 
 
@@ -86,7 +86,7 @@ def logout(request):
 
 def register(request):
     register_form = MyUserRegisterForm(request.POST, request.FILES)
-    content = {"register_form": register_form, "menu": menu.all()}
+    content = {"register_form": register_form, "menu": menu.filter(active=True)}
     if request.method == "POST":
         if register_form.is_valid():
             user = register_form.save()
