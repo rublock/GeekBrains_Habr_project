@@ -3,112 +3,135 @@
 {% block title %}Статистика{% endblock %}
 {% block content %}
 
+
 <div class="container">
     <div class="row-md-6 bg-white">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
+                <h4 class="text-center">Топ 10 самых огненных статей</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Название статьи</th>
+                            <th scope="col">Кол-во лайков</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in post_likes %}
+                            <tr>
+                                <td><a class="nav-link active" href='../posts/{{p.post}}'>{{ p.post__title }}</a></td>
+                                <td>{{p.dcount}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row-md-6 bg-white">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <canvas id="myChart" width="250" height="100"></canvas>
+                <script>
 
-    <canvas id="myChart" width="250" height="100"></canvas>
-<script>
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['На модерации', 'Опубликованы', 'Заблокированы',],
+                        datasets: [{
+                            label: 'Статистика по статьям',
+                            data: [{{ on_moderation_posts.count }}, {{ active_posts.count }}, {{ deleted_posts.count }},],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(22, 160, 133, 1)',
+                                'rgba(255, 206, 86, 1)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(22, 160, 133, 1)',
+                                'rgba(255, 206, 86, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
 
-const ctx = document.getElementById('myChart').getContext('2d');
-const myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['На модерации', 'Опубликованы', 'Заблокированы'],
-        datasets: [{
-            label: 'Статистика по статьям',
-            data: [{{ on_moderation_posts.count }}, {{ active_posts.count }}, {{ deleted_posts.count }}],
-            backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(22, 160, 133, 1)',
-                'rgba(255, 206, 86, 1)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(22, 160, 133, 1)',
-                'rgba(255, 206, 86, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-
-    options: {
-        indexAxis: 'y',
-        elements: {
-      bar: {
-        borderWidth: 2,
-      }
-    },
-      responsive: true,
-    plugins: {
-      legend: {
-        position: 'right',
-      },
-      title: {
-        display: true,
-        text: 'Статистика по статьям'
-      }
-    }
-    }
-});
-</script>
-</div>
-</div>
-</div>
-</br>
-</br>
+                    options: {
+                        indexAxis: 'y',
+                        elements: {
+                      bar: {
+                        borderWidth: 2,
+                      }
+                    },
+                      responsive: true,
+                    plugins: {
+                      legend: {
+                        position: 'right',
+                      },
+                      title: {
+                        display: true,
+                        text: 'Статистика по статьям'
+                      }
+                    }
+                    }
+                });
+                </script>
+            </div>
+        </div>
+    </div>
+    </br>
+    </br>
 
     <div class="row-md-6 bg-white">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
 
-<canvas id="myChart1" width="250" height="100"></canvas>
-<script>
+                <canvas id="myChart1" width="250" height="100"></canvas>
+                <script>
 
-const ctx1 = document.getElementById('myChart1').getContext('2d');
-const myChart1 = new Chart(ctx1, {
-    type: 'pie',
-    data: {
-        labels: ['Зарегистрированные', 'Не подтвержденные', 'Заблокированные'],
-        datasets: [{
-            label: 'Статистика по пользователям',
-            data: [{{ verified_user.count }}, {{ not_verified_user.count }}, {{ deleted_user.count }}],
-            backgroundColor: [
-                'rgba(22, 160, 133, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 99, 132, 1)'
-            ],
-            borderColor: [
-                'rgba(22, 160, 133, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 99, 132, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        indexAxis: 'y',
-        elements: {
-      bar: {
-        borderWidth: 2,
-      }
-    },
-      responsive: true,
-    plugins: {
-      legend: {
-        position: 'right',
-      },
-      title: {
-        display: true,
-        text: 'Статистика по пользователям'
-      }
-    }
-    }
-});
-</script>
-    </div>
-    </div>
+                const ctx1 = document.getElementById('myChart1').getContext('2d');
+                const myChart1 = new Chart(ctx1, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Зарегистрированные', 'Не подтвержденные', 'Заблокированные'],
+                        datasets: [{
+                            label: 'Статистика по пользователям',
+                            data: [{{ verified_user.count }}, {{ not_verified_user.count }}, {{ deleted_user.count }}],
+                            backgroundColor: [
+                                'rgba(22, 160, 133, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 99, 132, 1)'
+                            ],
+                            borderColor: [
+                                'rgba(22, 160, 133, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 99, 132, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        elements: {
+                      bar: {
+                        borderWidth: 2,
+                      }
+                    },
+                      responsive: true,
+                    plugins: {
+                      legend: {
+                        position: 'right',
+                      },
+                      title: {
+                        display: true,
+                        text: 'Статистика по пользователям'
+                      }
+                    }
+                    }
+                });
+                </script>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock content %}
