@@ -8,6 +8,7 @@ from django.http import JsonResponse, Http404
 from django.core import management
 from django.core.management.commands import loaddata
 
+from config.settings import BASE_DIR
 from .forms import PostForm, CommentForm
 from .models import Post, Comment
 from .utils import *
@@ -336,7 +337,7 @@ def clear_database(request):
 @user_passes_test(lambda u: u.is_superuser)
 def load_database(request):
     management.call_command("flush", verbosity=0, interactive=False)
-    management.call_command("loaddata", "database.json", verbosity=0)
+    management.call_command("loaddata", f"{BASE_DIR}/database.json", verbosity=0)
     return redirect("/")
 
 
