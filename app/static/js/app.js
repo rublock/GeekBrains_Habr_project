@@ -77,23 +77,27 @@ getButtonUrlDataset.forEach(element => {
     };
 });
 
-//Ром, лайкатеся только 1й коментарий, я знаю как пофиксить, сделаю позже.
-getCommentLikeButtonUrlDataset = document.querySelector(".likeButtonComment").dataset.like
-if (getCommentLikeButtonUrlDataset != "") {
-    document.querySelector(".likeButtonComment").addEventListener("click", () => {
-        let requestURL = new URL(String(protocolHost + getCommentLikeButtonUrlDataset + "?format=json"));
-        const xhr = new XMLHttpRequest();
-        xhr.open
-            ("GET", requestURL, false);
-        xhr.send();
-        let likeJson = JSON.parse(xhr.response);
-        if (xhr.status === 401) {
-        return
-        } else if (likeJson.likes != 0) {
-            document.querySelector(".likeSpanComment").style.display = "flex";
-            document.querySelector(".likeSpanComment").innerHTML = likeJson.likes
-        } else if (likeJson.likes === 0) {
-            document.querySelector(".likeSpanComment").style.display = "none";
-        }
-    });
-}
+const likeButtons = document.querySelectorAll(".likeButtonComment")
+likeButtons.forEach(likeButton => {
+    const link = likeButton.dataset.like
+    if (link != "") {
+        likeButton.addEventListener("click", () => {
+            const requestURL = new URL(String(protocolHost + link + "?format=json"));
+            const xhr = new XMLHttpRequest();
+            xhr.open
+                ("GET", requestURL, false);
+            xhr.send();
+            const likeJson = JSON.parse(xhr.response);
+            with (likeButton.querySelector(".likeSpanComment")) {
+                if (xhr.status === 401) {
+                    return
+                } else if (likeJson.likes != 0) {
+                        style.display = "flex";
+                        innerHTML = likeJson.likes;
+                } else if (likeJson.likes === 0) {
+                    style.display = "none";
+                }
+            }
+        });
+    }
+});
