@@ -46,3 +46,58 @@ window.onclick = function (event) {
         }
     }
 }
+
+let protocolHost = window.location.protocol + '//' + window.location.host
+getButtonUrlDataset = document.querySelectorAll('.likeButton')
+
+getButtonUrlDataset.forEach(element => {
+    if (element.dataset.like != "") {
+        element.addEventListener('click', () => {
+            let requestURL = new URL(String(protocolHost + element.dataset.like));
+            const xhr = new XMLHttpRequest();
+            xhr.open
+                ('GET', requestURL, false);
+            xhr.status
+            xhr.send();
+            let likeJson = JSON.parse(xhr.response);
+            getLikeSpanButtons = document.querySelectorAll('.likeSpan')
+            if (xhr.status === 401) {
+                return
+            } else if (likeJson.likes != 0) {
+                getLikeSpanButtons.forEach(elem => {
+                    elem.style.display = "flex";
+                    elem.innerHTML = likeJson.likes
+                })
+            } else if (likeJson.likes === 0) {
+                getLikeSpanButtons.forEach(elem => {
+                    elem.style.display = "none";
+                })
+            }
+        });
+    };
+});
+
+const likeButtons = document.querySelectorAll(".likeButtonComment")
+likeButtons.forEach(likeButton => {
+    const link = likeButton.dataset.like
+    if (link != "") {
+        likeButton.addEventListener("click", () => {
+            const requestURL = new URL(String(protocolHost + link + "?format=json"));
+            const xhr = new XMLHttpRequest();
+            xhr.open
+                ("GET", requestURL, false);
+            xhr.send();
+            const likeJson = JSON.parse(xhr.response);
+            with (likeButton.querySelector(".likeSpanComment")) {
+                if (xhr.status === 401) {
+                    return
+                } else if (likeJson.likes != 0) {
+                        style.display = "flex";
+                        innerHTML = likeJson.likes;
+                } else if (likeJson.likes === 0) {
+                    style.display = "none";
+                }
+            }
+        });
+    }
+});

@@ -1,6 +1,10 @@
+from django.shortcuts import get_object_or_404
+from django.db.models.aggregates import Count
+from rest_framework import views, status
 from rest_framework.pagination import PageNumberPagination
-
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
 from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
     IsAuthenticated,
@@ -12,9 +16,11 @@ from .serializers import (
     PostListSerializer,
     PostRetrieveSerializer,
     PostCreateSerializer,
+    PostLikesSerializer,
+    CommentLikesSerializer,
 )
 from .permissons import IsOwner
-from mainapp.models import Post
+from mainapp.models import Post, PostLikes, Comment, CommentLikes
 
 
 class PostViewSetPagination(PageNumberPagination):
@@ -59,3 +65,57 @@ class PostViewSet(ModelViewSet):
             # Читать посты могут все
             self.permission_classes = [IsAuthenticatedOrReadOnly]
         return super(self.__class__, self).get_permissions()
+
+
+class PostLikeAPIView(views.APIView):
+    renderer_classes = [JSONRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            post_id = self.kwargs["post_id"]
+        except Exception:
+            raise ValueError
+        post: Post = get_object_or_404(Post, pk=post_id)
+        instance, created = PostLikes.objects.get_or_create(
+            user=request.user, post=post
+        )
+        if created:
+            like_status = True
+        else:
+            like_status = not instance.status
+        data = {"user": request.user.id, "post": post_id, "status": like_status}
+        serializer = PostLikesSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        instance.status = like_status
+        instance.save()
+        post.refresh_from_db()
+        response_data = {"likes": post.likes_count}
+        return Response(data=response_data, status=status.HTTP_200_OK)
+
+
+class CommentLikeAPIView(views.APIView):
+    renderer_classes = [JSONRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            comment_id = self.kwargs["comment_id"]
+        except Exception:
+            raise ValueError
+        comment: Comment = get_object_or_404(Comment, pk=comment_id)
+        instance, created = CommentLikes.objects.get_or_create(
+            user=request.user, comment=comment
+        )
+        if created:
+            like_status = True
+        else:
+            like_status = not instance.status
+        data = {"user": request.user.id, "comment": comment_id, "status": like_status}
+        serializer = CommentLikesSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        instance.status = like_status
+        instance.save()
+        comment.refresh_from_db()
+        response_data = {"likes": comment.likes_count}
+        return Response(data=response_data, status=status.HTTP_200_OK)

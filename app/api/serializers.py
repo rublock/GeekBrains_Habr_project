@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from mainapp.models import Post, Comment
+from mainapp.models import Post, Comment, PostLikes, CommentLikes
 
 
 class PostListSerializer(serializers.ModelSerializer):
@@ -66,4 +66,26 @@ class PostCreateSerializer(serializers.ModelSerializer):
             "image",
             "created_at",
             "updated_at",
+        )
+
+
+class PostLikesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostLikes
+        fields = (
+            "post",
+            "user",
+            "active",
+            "status",
+        )
+
+
+class CommentLikesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommentLikes
+        fields = (
+            "comment",
+            "user",
+            "active",
+            "status",
         )
