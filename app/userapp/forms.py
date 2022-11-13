@@ -6,8 +6,8 @@ from django.contrib.auth.forms import (
     UserCreationForm,
     AuthenticationForm,
     UserChangeForm,
+    PasswordChangeForm,
 )
-
 
 User = get_user_model()
 
@@ -71,3 +71,9 @@ class ProfileForm(UserChangeForm):
             "gender",
             "comments",
         )
+class ChangePasswordForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)        
+        self.fields["old_password"].widget = forms.PasswordInput(attrs={"class": "form-control"})
+        self.fields["new_password1"].widget = forms.PasswordInput(attrs={"class": "form-control"})
+        self.fields["new_password2"].widget = forms.PasswordInput(attrs={"class": "form-control"})
