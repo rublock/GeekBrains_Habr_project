@@ -7,9 +7,11 @@ from django.core import serializers
 from django.http import JsonResponse, Http404
 from django.core import management
 from django.core.management.commands import loaddata
+from django.db.models import Count
 
+from config.settings import BASE_DIR
 from .forms import PostForm, CommentForm
-from .models import Post, Comment
+from .models import Post, Comment, PostLikes
 from .utils import *
 from userapp.models import User
 
@@ -64,6 +66,12 @@ def statistic(request):
     verified_user = User.objects.filter(is_email_verified=True, delete=False)
     not_verified_user = User.objects.filter(is_email_verified=False, delete=False)
     deleted_user = User.objects.filter(delete=True)
+    post_likes = (
+        PostLikes.objects.all()
+        .values("post__title", "post")
+        .annotate(dcount=Count("post"))
+        .order_by("-dcount")[:10]
+    )
     return render(
         request,
         "statistic.html",
@@ -74,6 +82,7 @@ def statistic(request):
             "verified_user": verified_user,
             "not_verified_user": not_verified_user,
             "deleted_user": deleted_user,
+            "post_likes": post_likes,
             "menu": menu.filter(active=True),
         },
     )
@@ -336,7 +345,7 @@ def clear_database(request):
 @user_passes_test(lambda u: u.is_superuser)
 def load_database(request):
     management.call_command("flush", verbosity=0, interactive=False)
-    management.call_command("loaddata", "database.json", verbosity=0)
+    management.call_command("loaddata", f"{BASE_DIR}/database.json", verbosity=0)
     return redirect("/")
 
 
