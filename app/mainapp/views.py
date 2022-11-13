@@ -107,8 +107,9 @@ def all_posts(request):
         ).order_by("-created_at")
 
     else:
-        post_count = queryset.count
         posts = queryset.order_by("-created_at")
+
+    post_count = posts.count
     paginator = Paginator(posts, 3)
     page_obj = request.GET.get("page")
     try:
