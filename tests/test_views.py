@@ -5,12 +5,11 @@ import pytest
 from django.contrib.auth.models import AnonymousUser
 from django.contrib import auth
 from django.test import RequestFactory, TestCase
-from django.urls import reverse, reverse_lazy
-from mainapp.models import Comment, Post
-from mainapp.views import (comment_delete, post_delete, post_detail, post_edit,
+from django.urls import reverse
+from mainapp.models import Post, User
+from mainapp.views import (post_delete, post_detail, post_edit,
                            post_new)
 from mixer.backend.django import mixer
-from userapp.models import User
 
 # region TO_DEL
 import time
