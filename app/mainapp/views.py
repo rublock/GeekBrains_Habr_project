@@ -15,7 +15,6 @@ from .models import Post, Comment, PostLikes
 from .utils import *
 from userapp.models import User
 
-
 menu = Category.objects.all()
 
 
