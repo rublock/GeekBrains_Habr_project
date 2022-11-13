@@ -13,7 +13,12 @@ from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.conf import settings
 from .models import User
 from .utils import generate_token
-from userapp.forms import MyUserRegisterForm, MyUserLoginForm, ProfileForm, ChangePasswordForm
+from userapp.forms import (
+    MyUserRegisterForm,
+    MyUserLoginForm,
+    ProfileForm,
+    ChangePasswordForm,
+)
 from django.contrib import auth
 from django.urls import reverse
 from mainapp.models import Category
@@ -125,18 +130,17 @@ def profile(request):
     context = {"user": request.user, "form": form}
     return render(request, "userapp/profile.html", context)
 
+
 def change_password(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ChangePasswordForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect('users:users-profile')
+            update_session_auth_hash(request, user)
+            messages.success(request, "Your password was successfully updated!")
+            return redirect("users:users-profile")
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, "Please correct the error below.")
     else:
         form = ChangePasswordForm(request.user)
-    return render(request, 'userapp/change_password.html', {
-        'form': form
-    })
+    return render(request, "userapp/change_password.html", {"form": form})

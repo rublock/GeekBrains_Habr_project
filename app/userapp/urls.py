@@ -15,7 +15,7 @@ urlpatterns = [
     path("register/", userapp.register, name="register"),
     path("account/", userapp.account, name="users-account"),
     path("profile/", userapp.profile, name="users-profile"),
-    path('password/', userapp.change_password, name='change_password'),
+    path("password/", userapp.change_password, name="change_password"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
