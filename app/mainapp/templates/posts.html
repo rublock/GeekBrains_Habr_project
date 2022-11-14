@@ -71,22 +71,36 @@
     {% endfor %}
     {% endif %}
 </div>
-<div class="paginationContainer">
+
+
+<nav class="paginationContainer" aria-label="Page navigation">
     <ul class="pagination">
-        <li class="page-item">
-            {%if posts.has_previous %}
-            <a class="page-link fw-bolder" href="?page={{posts.previous_page_number}}" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
+        {% if posts.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">begin</span>
+                </a>
+            </li>
+        {% endif %}
+        {% for n in posts.paginator.page_range %}
+            {% if posts.number == n %}
+                <li class="page-item active">
+                    <span class="page-link">{{ n }}</span>
+                </li>
+            {% elif n > posts.number|add:'-5' and n < posts.number|add:'5' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                </li>
             {% endif %}
-        </li>
-        <li class="page-item"><a class="page-link fw-bolder" href="#"><span>{{posts.number}}</span></a></li>
-        <li class="page-item">
-            {%if posts.has_next %}
-            <a class="page-link fw-bolder" href="?page={{posts.next_page_number}}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-            {% endif %}
-        </li>
+        {% endfor %}
+        {% if posts.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ posts.paginator.num_pages }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">end</span>
+                </a>
+            </li>
+        {% endif %}
     </ul>
-</div>
+</nav>

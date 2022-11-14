@@ -255,3 +255,13 @@
 .bg {
   background: url("../img/tech-background.jpg") repeat;
 }
+
+.likeContainer {
+  display: flex;
+  justify-content: center;
+  height: 28px;
+}
+
+.likeSpanHidden {
+  display: none;
+}
