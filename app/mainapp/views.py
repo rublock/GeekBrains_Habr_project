@@ -109,10 +109,8 @@ def all_posts(request):
     # Сортировка статей
     order = request.GET.get("order", "")
     if order == "likes":
-        posts = (
-            queryset
-            .annotate(dcount=Count("post_likes"))
-            .order_by("-dcount", "-created_at")
+        posts = queryset.annotate(dcount=Count("post_likes")).order_by(
+            "-dcount", "-created_at"
         )
     else:
         posts = queryset.order_by("-created_at")
