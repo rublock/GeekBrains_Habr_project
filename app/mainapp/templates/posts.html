@@ -1,6 +1,26 @@
 {% load static %}
 <div>
-    <h2>Кол-во постов: {{ post_count }}</h2>
+    <div class="d-flex align-self-center">
+        <div class="me-auto">
+            <h2>Кол-во постов: {{ post_count }}</h2>
+        </div>
+    <div>
+        <div class="btn-group bg-white" role="group">
+            <a class="btn btn-sm
+                {% if not request.GET.order or request.GET.order == 'new' %}btn-secondary
+                {% else %}btn-outline-secondary
+                {% endif %}"
+                href="/?search={{ request.GET.search }}&order=new"
+                role="button">Новые</a>
+            <a class="btn btn-sm
+                {% if request.GET.order == 'likes' %}btn-secondary
+                {% else %}btn-outline-secondary
+                {% endif %}"
+                href="/?search={{ request.GET.search }}&order=likes"
+                role="button">Лучшие</a>
+            </div>
+        </div>
+    </div>
     {% if posts %}
     {% for post in posts %}
     <div class="row-md-6 bg-white">
