@@ -151,7 +151,7 @@
             {% block menu %}
             {% for razdel in menu %}
             {% if razdel == cat_selected %}
-            <div>{{ razdel.name }}</div>
+            <a class="nav-link">{{ razdel.name }}</a>
             {% else %}
             <a href="../../{{ razdel.alias }}" title="{{ razdel.description }}">{{ razdel.name }}</a>
             {% endif %}
