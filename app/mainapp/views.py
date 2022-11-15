@@ -100,12 +100,18 @@ def all_posts(request):
         queryset = Post.objects.filter(active=True)
 
     if search_query:
-        posts = queryset.filter(
+        queryset = queryset.filter(
             Q(title__icontains=search_query)
             | Q(description__icontains=search_query)
             | Q(content__icontains=search_query)
-        ).order_by("-created_at")
+        )
 
+    # Сортировка статей
+    order = request.GET.get("order", "")
+    if order == "likes":
+        posts = queryset.annotate(dcount=Count("post_likes")).order_by(
+            "-dcount", "-created_at"
+        )
     else:
         posts = queryset.order_by("-created_at")
 
