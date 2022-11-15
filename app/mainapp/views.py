@@ -8,7 +8,6 @@ from django.http import JsonResponse, Http404
 from django.core import management
 from django.core.management.commands import loaddata
 from django.db.models import Count
-
 from config.settings import BASE_DIR
 from .forms import PostForm, CommentForm
 from .models import Post, Comment, PostLikes
