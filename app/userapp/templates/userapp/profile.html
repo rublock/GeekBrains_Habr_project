@@ -23,7 +23,7 @@
 			</div>
 			<div class="col-5">
 				<div class="card card-body">
-
+					{% include 'mainapp/includes/messages.html' %}
 					{% csrf_token %}
 					{{ form.as_p }}
 					<button type="submit" class="btn btn-primary mt-3">Обновить</button>

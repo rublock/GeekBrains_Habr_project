@@ -1,12 +1,16 @@
+from django.contrib.sites import management
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from django.db.models import Q
 from django.core import serializers
-from django.http import JsonResponse
-
+from django.http import JsonResponse, Http404
+from django.core import management
+from django.core.management.commands import loaddata
+from django.db.models import Count
+from config.settings import BASE_DIR
 from .forms import PostForm, CommentForm
-from .models import Post, Comment
+from .models import Post, Comment, PostLikes
 from .utils import *
 from userapp.models import User
 
@@ -22,12 +26,20 @@ class HomePageView(TemplateView):
         return context
 
 
-class Page404(TemplateView):
-    template_name = "404_page.html"
+def error_404_view(request, exception):
+    return render(request, "404.html")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+
+def error_400_view(request, exception):
+    return render(request, "400.html")
+
+
+def error_403_view(request, exception):
+    return render(request, "403.html")
+
+
+def error_500_view(request):
+    return render(request, "500.html", status=500)
 
 
 class DetailedArticle(TemplateView):
@@ -53,6 +65,12 @@ def statistic(request):
     verified_user = User.objects.filter(is_email_verified=True, delete=False)
     not_verified_user = User.objects.filter(is_email_verified=False, delete=False)
     deleted_user = User.objects.filter(delete=True)
+    post_likes = (
+        PostLikes.objects.all()
+        .values("post__title", "post")
+        .annotate(dcount=Count("post"))
+        .order_by("-dcount")[:10]
+    )
     return render(
         request,
         "statistic.html",
@@ -63,7 +81,8 @@ def statistic(request):
             "verified_user": verified_user,
             "not_verified_user": not_verified_user,
             "deleted_user": deleted_user,
-            "menu": menu.all(),
+            "post_likes": post_likes,
+            "menu": menu.filter(active=True),
         },
     )
 
@@ -71,15 +90,31 @@ def statistic(request):
 def all_posts(request):
     search_query = request.GET.get("search", "")
 
+    # Модератор и суперюзер видят все посты, а пользователи - только активные
+    if request.user.is_authenticated and (
+        request.user.is_superuser or request.user.is_moderator
+    ):
+        queryset = Post.objects.all()
+    else:
+        queryset = Post.objects.filter(active=True)
+
     if search_query:
-        posts = Post.objects.filter(
+        queryset = queryset.filter(
             Q(title__icontains=search_query)
             | Q(description__icontains=search_query)
             | Q(content__icontains=search_query)
-        ).order_by("-created_at")
+        )
 
+    # Сортировка статей
+    order = request.GET.get("order", "")
+    if order == "likes":
+        posts = queryset.annotate(dcount=Count("post_likes")).order_by(
+            "-dcount", "-created_at"
+        )
     else:
-        posts = Post.objects.order_by("-created_at")
+        posts = queryset.order_by("-created_at")
+
+    post_count = posts.count
     paginator = Paginator(posts, 3)
     page_obj = request.GET.get("page")
     try:
@@ -91,7 +126,12 @@ def all_posts(request):
     return render(
         request,
         "home_page.html",
-        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
+        {
+            "page_obj": page_obj,
+            "posts": posts,
+            "menu": menu.filter(active=True),
+            "post_count": post_count,
+        },
     )
 
 
@@ -103,7 +143,7 @@ def author_posts(request, author_id):
     return render(
         request,
         "home_page.html",
-        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
+        {"page_obj": page_obj, "posts": posts, "menu": menu.filter(active=True)},
     )
 
 
@@ -119,7 +159,7 @@ def post_new(request):
             result.save()
             return redirect("/")
 
-    context = {"form": form}
+    context = {"form": form, "menu": menu.filter(active=True)}
     return render(request, "article.html", context)
 
 
@@ -155,14 +195,42 @@ def post_edit(request, post_id):
 @login_required(login_url="/users/login")
 def post_delete(request, post_id):
     post_owner = Post.objects.values("user").get(pk=post_id)["user"]
-    if request.user.id == post_owner or request.user.is_superuser:
+    if (
+        request.user.id == post_owner
+        or request.user.is_superuser
+        or request.user.is_moderator
+    ):
         Post.objects.get(pk=post_id).delete()
     return redirect("/")
 
 
+@login_required(login_url="/users/login")
+def post_active(request, post_id):
+    if request.user.is_superuser or request.user.is_moderator:
+        post = get_object_or_404(Post, pk=post_id)
+        post.active = not post.active
+        post.save()
+    return redirect("/")
+
+
 def post_detail(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    comment = Comment.objects.filter(post=post)
+    if request.user.is_authenticated:
+        if request.user.is_superuser or request.user.is_moderator:
+            # Модератор и админ видят все статьи и комменты
+            post = get_object_or_404(Post, pk=post_id)
+            comment = Comment.objects.filter(post=post).order_by("-created_at")
+        else:
+            # Авторизованные пользователи видять только активые, а так же
+            # свои, котоыре находятся на модерации
+            post = get_object_or_404(Post, pk=post_id)
+            comment = Comment.objects.filter(
+                Q(post=post) & (Q(active=True) | Q(user=request.user.id))
+            ).order_by("-created_at")
+    else:
+        # Неавторизованные пользователи видят только активные статьи и комменты
+        post = get_object_or_404(Post, pk=post_id, active=True)
+        comment = Comment.objects.filter(post=post, active=True).order_by("-created_at")
+
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -178,35 +246,56 @@ def post_detail(request, post_id):
     return render(
         request,
         "detailed_article.html",
-        {"menu": menu.all(), "post": post, "form": form, "comment": comment},
+        {
+            "menu": menu.filter(active=True),
+            "post": post,
+            "form": form,
+            "comment": comment,
+        },
     )
 
 
 def posts_category(request, alias):
     search_query = request.GET.get("search", "")
 
-    if search_query:
-        posts = Post.objects.filter(
-            Q(title__icontains=search_query)
-            | Q(description__icontains=search_query)
-            | Q(content__icontains=search_query)
-        ).order_by("-created_at")
-
+    # Модератор и суперюзер видят все посты, а пользователи - только активные
+    if request.user.is_authenticated and (
+        request.user.is_superuser or request.user.is_moderator
+    ):
+        queryset = Post.objects.all()
     else:
-        posts = Post.objects.filter(category__alias=alias).order_by("-created_at")
-    paginator = Paginator(posts, 3)
-    page_obj = request.GET.get("page")
-    try:
-        posts = paginator.page(page_obj)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        "home_page.html",
-        {"page_obj": page_obj, "posts": posts, "menu": menu.all()},
-    )
+        queryset = Post.objects.filter(active=True)
+
+    for e in Category.objects.all():
+        if alias == e.alias:
+            if search_query:
+                posts = queryset.filter(
+                    Q(title__icontains=search_query)
+                    | Q(description__icontains=search_query)
+                    | Q(content__icontains=search_query)
+                ).order_by("-created_at")
+            else:
+                post_count = queryset.filter(category__alias=alias).count
+                posts = queryset.filter(category__alias=alias).order_by("-created_at")
+            paginator = Paginator(posts, 3)
+            page_obj = request.GET.get("page")
+            try:
+                posts = paginator.page(page_obj)
+            except PageNotAnInteger:
+                posts = paginator.page(1)
+            except EmptyPage:
+                posts = paginator.page(paginator.num_pages)
+            return render(
+                request,
+                "home_page.html",
+                {
+                    "page_obj": page_obj,
+                    "posts": posts,
+                    "menu": menu.filter(active=True),
+                    "post_count": post_count,
+                },
+            )
+    raise Http404("Category not found")
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -250,6 +339,36 @@ def search_post_json(request):
 @login_required(login_url="/users/login")
 def comment_delete(request, pk):
     comment_owner = Comment.objects.values("user").get(pk=pk)["user"]
-    if request.user.id == comment_owner or request.user.is_superuser:
+    if (
+        request.user.id == comment_owner
+        or request.user.is_superuser
+        or request.user.is_moderator
+    ):
         Comment.objects.get(pk=pk).delete()
     return redirect(request.META["HTTP_REFERER"])
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def clear_database(request):
+    management.call_command("flush", verbosity=0, interactive=False)
+    return redirect("/")
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def load_database(request):
+    management.call_command("flush", verbosity=0, interactive=False)
+    management.call_command("loaddata", f"{BASE_DIR}/database.json", verbosity=0)
+    return redirect("/")
+
+
+@login_required(login_url="/users/login")
+def comment_active(request, pk):
+    if request.user.is_superuser or request.user.is_moderator:
+        comment = get_object_or_404(Comment, pk=pk)
+        comment.active = not comment.active
+        comment.save()
+    return redirect("mainapp:post_detail", post_id=comment.post_id)
+
+
+def faq(request):
+    return render(request, "faq.html")
