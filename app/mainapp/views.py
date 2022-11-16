@@ -214,16 +214,22 @@ def post_active(request, post_id):
 
 
 def post_detail(request, post_id):
-    # Модератор и суперюзер всегда видят статью, а пользователи - только активную
-    if request.user.is_authenticated and (
-        request.user.is_superuser or request.user.is_moderator
-    ):
-        post = get_object_or_404(Post, pk=post_id)
-        comment = Comment.objects.filter(post=post)
+    if request.user.is_authenticated:
+        if request.user.is_superuser or request.user.is_moderator:
+            # Модератор и админ видят все статьи и комменты
+            post = get_object_or_404(Post, pk=post_id)
+            comment = Comment.objects.filter(post=post).order_by("-created_at")
+        else:
+            # Авторизованные пользователи видять только активые, а так же
+            # свои, котоыре находятся на модерации
+            post = get_object_or_404(Post, pk=post_id)
+            comment = Comment.objects.filter(
+                Q(post=post) & (Q(active=True) | Q(user=request.user.id))
+            ).order_by("-created_at")
     else:
+        # Неавторизованные пользователи видят только активные статьи и комменты
         post = get_object_or_404(Post, pk=post_id, active=True)
-        post.refresh_from_db()
-        comment = Comment.objects.filter(post=post, active=True)
+        comment = Comment.objects.filter(post=post, active=True).order_by("-created_at")
 
     if request.method == "POST":
         form = CommentForm(request.POST)
