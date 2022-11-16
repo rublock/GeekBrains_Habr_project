@@ -32,11 +32,11 @@
 
                 {% if user.is_superuser or user.is_moderator %}
                     {% if comm.active %}
-                        <a type="button" class="btn btn-success"
-                               href="{% url 'mainapp:comment_active' comm.id %}" title="Отклонить">Одобрено</a>
+                        <a type="button" class="btn btn-success commentModerButton"
+                               data-cmoder="{% url 'mainapp:comment_active' comm.id %}" title="Отклонить">Одобрено</a>
                     {% else %}
-                        <a type="button" class="btn btn-danger"
-                           href="{% url 'mainapp:comment_active' comm.id %}" title="Одобрить">Отклонено</a>
+                        <a type="button" class="btn btn-danger commentModerButton"
+                           data-cmoder="{% url 'mainapp:comment_active' comm.id %}" title="Одобрить">Отклонено</a>
                     {% endif %}
                 {% elif user == comm.user and not comm.active%}
                     <span class="btn btn-secondary disabled">На модерации</span>
