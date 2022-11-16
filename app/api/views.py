@@ -119,3 +119,35 @@ class CommentLikeAPIView(views.APIView):
         comment.refresh_from_db()
         response_data = {"likes": comment.likes_count}
         return Response(data=response_data, status=status.HTTP_200_OK)
+
+
+class PostActiveAPIView(views.APIView):
+    renderer_classes = [JSONRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            post_id = self.kwargs["post_id"]
+        except Exception:
+            raise ValueError
+        post: Post = get_object_or_404(Post, pk=post_id)
+        post.active = not post.active
+        post.save()
+        response_data = {"active": post.active}
+        return Response(data=response_data, status=status.HTTP_200_OK)
+
+
+class CommentActiveAPIView(views.APIView):
+    renderer_classes = [JSONRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            comment_id = self.kwargs["comment_id"]
+        except Exception:
+            raise ValueError
+        comment: Comment = get_object_or_404(Comment, pk=comment_id)
+        comment.active = not comment.active
+        comment.save()
+        response_data = {"active": comment.active}
+        return Response(data=response_data, status=status.HTTP_200_OK)
