@@ -116,7 +116,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
-# STATIC_ROOT = BASE_DIR / 'static'  # python manage.py collectstatic
+STATIC_ROOT = BASE_DIR / "static_root"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
@@ -190,3 +190,4 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 }
+SECURE_CROSS_ORIGIN_OPENER_POLICY=None
