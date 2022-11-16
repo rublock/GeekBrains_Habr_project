@@ -4,8 +4,11 @@ from django.utils import timezone
 from userapp.models import User
 from config.settings import EMAIL_HOST_USER
 
+
 class Command(BaseCommand):
-    help = 'Создание администратора (логин и пароль admin, ОБЯЗАТЕЛЬНО сменить пароль!!!)'
+    help = (
+        "Создание администратора (логин и пароль admin, ОБЯЗАТЕЛЬНО сменить пароль!!!)"
+    )
 
     def handle(self, *args, **kwargs):
         admin, created = User.objects.get_or_create(
