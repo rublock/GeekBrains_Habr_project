@@ -78,10 +78,10 @@
 
                 {% if user.is_superuser or user.is_moderator %}
                 {% if post.active %}
-                <a type="button" class="btn btn-success" href="{% url 'mainapp:post_active' post.id %}"
+                <a type="button" class="btn btn-success articleModerButton" data-amoder="{% url 'mainapp:post_active' post.id %}"
                     title="Отклоинть">Одобрено</a>
                 {% else %}
-                <a type="button" class="btn btn-danger" href="{% url 'mainapp:post_active' post.id %}"
+                <a type="button" class="btn btn-danger articleModerButton" data-amoder="{% url 'mainapp:post_active' post.id %}"
                     title="Одобрить">Отклонено</a>
                 {% endif %}
                 {% endif %}
@@ -93,9 +93,9 @@
 
         <div class="col-md-6">
             {% if post.image %}
-            <img class="responsive" width="100%" height="100%" src="{{ post.image.url }}">
+            <img class="responsive" width="100%" height="auto" src="{{ post.image.url }}">
             {% else %}
-            <img class="responsive" width="100%" height="100%" src="{% static 'img/post_no_image.jpg' %}">
+            <img class="responsive" width="100%" height="auto" src="{% static 'img/post_no_image.jpg' %}">
             {% endif %}
         </div>
 
@@ -163,10 +163,10 @@
 
                     {% if user.is_superuser or user.is_moderator %}
                     {% if post.active %}
-                    <a type="button" class="btn btn-success" href="{% url 'mainapp:post_active' post.id %}"
+                    <a type="button" class="btn btn-success articleModerButton" data-amoder="{% url 'mainapp:post_active' post.id %}" 
                         title="Отклонить">Одобрено</a>
                     {% else %}
-                    <a type="button" class="btn btn-danger" href="{% url 'mainapp:post_active' post.id %}"
+                    <a type="button" class="btn btn-danger articleModerButton" data-amoder="{% url 'mainapp:post_active' post.id %}" 
                         title="Одобрить">Отклонено</a>
                     {% endif %}
                     {% endif %}

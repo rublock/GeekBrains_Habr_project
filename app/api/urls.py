@@ -9,7 +9,13 @@ from rest_framework_simplejwt.views import (
 )
 
 from .apps import ApiConfig
-from .views import PostViewSet, PostLikeAPIView, CommentLikeAPIView
+from .views import (
+    PostViewSet,
+    PostLikeAPIView,
+    CommentLikeAPIView,
+    PostActiveAPIView,
+    CommentActiveAPIView,
+)
 from .schema import schema_view
 
 app_name = ApiConfig.name
@@ -24,6 +30,13 @@ urlpatterns = [
         "comment_like/<int:comment_id>/",
         CommentLikeAPIView.as_view(),
         name="comment_like",
+    ),
+    # Модерация
+    path("post_active/<int:post_id>/", PostActiveAPIView.as_view(), name="post_active"),
+    path(
+        "comment_active/<int:comment_id>/",
+        CommentActiveAPIView.as_view(),
+        name="comment_active",
     ),
     # Авторизация по JWT токену
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
