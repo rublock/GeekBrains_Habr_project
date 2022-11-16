@@ -1,0 +1,86 @@
+version: '3.7'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.nginx
+    container_name: nginx
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - static-files:/var/html/static:ro
+      - media-files:/var/html/media:ro
+    depends_on:
+      - app
+    networks:
+      - main_net
+    ports:
+      - 80:80
+      # - 443:443
+    # secrets:
+    #   - certificate
+    #   - key
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.app
+    container_name: app
+    restart: always
+    command: [ "./entrypoint_app.sh" ]
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=db
+    depends_on:
+      - db
+    volumes:
+      - static-files:/app/static_root
+      - media-files:/app/media
+    networks:
+      - main_net
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
+
+  db:
+    image: postgres:14.5
+    container_name: db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - main_net
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '1'
+
+networks:
+  main_net:
+    driver: bridge
+
+volumes:
+  static-files: null
+  media-files: null
+  db-data: null
+
+# secrets:
+#   certificate:
+#     file: secrets/cert/cert.crt
+#   key:
+#     file: secrets/cert/cert.key
