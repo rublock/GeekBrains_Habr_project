@@ -111,7 +111,7 @@ let articleModerButton = document.querySelectorAll(".articleModerButton")
 articleModerButton.forEach(articleModerButton => {
     const link = articleModerButton.dataset.amoder
     articleModerButton.addEventListener("click", () => {
-        const requestURL = new URL(String(protocolHost + '/api' + link));
+        const requestURL = new URL(String(protocolHost + link));
         const xhr = new XMLHttpRequest();
         xhr.open
             ("GET", requestURL, false);
@@ -135,7 +135,7 @@ let commentModerButton = document.querySelectorAll(".commentModerButton")
 commentModerButton.forEach(commentModerButton => {
     const link = commentModerButton.dataset.cmoder
     commentModerButton.addEventListener("click", () => {
-        const requestURL = new URL(String(protocolHost + '/api' + link));
+        const requestURL = new URL(String(protocolHost + link));
         const xhr = new XMLHttpRequest();
         xhr.open
             ("GET", requestURL, false);

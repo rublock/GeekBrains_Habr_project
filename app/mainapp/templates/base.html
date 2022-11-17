@@ -153,7 +153,7 @@
             {% if razdel == cat_selected %}
             <a class="nav-link">{{ razdel.name }}</a>
             {% else %}
-            <a href="../../{{ razdel.alias }}" title="{{ razdel.description }}">{{ razdel.name }}</a>
+            <a class="razdelName" href="../../{{ razdel.alias }}" title="{{ razdel.description }}">{{ razdel.name }}</a>
             {% endif %}
             {% endfor %}
             {% endblock %}

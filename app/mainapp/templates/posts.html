@@ -75,10 +75,10 @@
                             {% if user.is_superuser or user.is_moderator %}
                                 {% if post.active %}
                                     <a type="button" class="btn btn-success articleModerButton"
-                                       data-amoder="{% url 'mainapp:post_active' post.id %}" title="Отклонить">Одобрено</a>
+                                       data-amoder="{% url 'api:post_active' post.id %}" title="Отклонить">Одобрено</a>
                                 {% else %}
                                    <a type="button" class="btn btn-danger articleModerButton"
-                                      data-amoder="{% url 'mainapp:post_active' post.id %}" title="Одобрить">Отклонено</a>
+                                      data-amoder="{% url 'api:post_active' post.id %}" title="Одобрить">Отклонено</a>
                                 {% endif %}
                             {% endif %}
 
